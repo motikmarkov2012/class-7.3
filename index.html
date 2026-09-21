@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7 «3» Класс — Сайт классного руководителя</title>
+    <title>7 «3» Класс — Портал класса</title>
     <!-- Подключаем Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,55 +13,90 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <div class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow">
+    <!-- ЭКРАН АВТОРИЗАЦИИ / ВЫБОРА РОЛИ (Показывается при входе, пока не выберут роль) -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center border border-slate-100">
+            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4 shadow-inner">
+                7 «3»
+            </div>
+            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Добро пожаловать!</h2>
+            <p class="text-slate-500 text-sm mb-6">Пожалуйста, выберите кто вы или войдите по секретному паролю для доступа к сайту.</p>
+
+            <div class="space-y-3 mb-6">
+                <button onclick="loginAs('guest')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
+                    <span>👤 Я Гость (ограниченный доступ)</span>
+                    <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-500">Без пароля</span>
+                </button>
+                <button onclick="loginAs('student')" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
+                    <span>🎓 Я Ученик класса</span>
+                    <span class="text-xs bg-indigo-200 px-2 py-1 rounded text-indigo-600">Пароль</span>
+                </button>
+                <button onclick="openPasswordPrompt('starosta')" class="w-full bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
+                    <span>⭐ Я Староста / Помощник</span>
+                    <span class="text-xs bg-violet-200 px-2 py-1 rounded text-violet-600">Пароль</span>
+                </button>
+                <button onclick="openPasswordPrompt('admin')" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
+                    <span>👑 Классрук / Разработчик (Матвей)</span>
+                    <span class="text-xs bg-amber-200 px-2 py-1 rounded text-amber-600">Пароль</span>
+                </button>
+            </div>
+            
+            <p class="text-xs text-slate-400">Марков мотик 2012</p>
+        </div>
+    </div>
+
+    <!-- ОКНО ВВОДА ПАРОЛЯ -->
+    <div id="password-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-center">
+            <button onclick="closePasswordPrompt()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 id="password-title" class="text-lg font-bold text-slate-800 mb-2">Введите пароль</h3>
+            <p class="text-xs text-slate-500 mb-4">Введите секретный код для подтверждения роли.</p>
+            <input type="password" id="secret-pass-input" placeholder="Пароль..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-4">
+            <button onclick="verifyPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Подтвердить</button>
+            <p id="password-error" class="text-xs text-red-500 mt-2 hidden">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ САЙТ (Скрыт до авторизации) -->
+    <div id="main-content" class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow hidden">
         
-        <!-- Верхняя панель авторизации -->
+        <!-- Верхняя панель текущего пользователя -->
         <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-            <div id="user-status" class="text-sm font-medium text-slate-600">
-                🔒 Режим гостя (просмотр)
-            </div>
-            <div class="flex gap-2">
-                <button id="login-btn" onclick="openLoginModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-sm">
-                    Войти по паролю
-                </button>
-                <button id="logout-btn" onclick="logout()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
-                    Выйти
-                </button>
-            </div>
+            <div id="current-user-badge" class="text-sm font-medium text-slate-600"></div>
+            <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
+                Сменить роль / Выйти
+            </button>
         </div>
 
         <!-- Шапка сайта -->
         <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-900 mb-2">7 «3» Класс</h1>
-            <p class="text-slate-500 text-lg">Добро пожаловать на официальную страницу нашего класса!</p>
+            <p class="text-slate-500 text-lg">Официальная страница нашего дружного класса</p>
         </header>
 
-        <!-- Блок классного руководителя -->
-        <section class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6">
+        <!-- Блок классного руководителя (скрывается или упрощается для гостей) -->
+        <section id="teacher-section" class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6">
             <div class="relative group">
                 <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
                 <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">Классный руководитель</span>
                 <h2 class="text-2xl md:text-3xl font-bold mb-2">Анастасия Евгеньевна</h2>
-                <p class="text-indigo-100 max-w-xl text-sm md:text-base leading-relaxed">
+                <p id="teacher-desc" class="text-indigo-100 max-w-xl text-sm md:text-base leading-relaxed">
                     Наш замечательный классный руководитель, наставник и друг. Ведёт 7 «3» к новым знаниям, победам и дружной атмосфере в коллективе!
                 </p>
             </div>
         </section>
 
-        <!-- Управление для админов / старост (скрыто по умолчанию) -->
-        <div id="admin-panel" class="hidden mb-8 bg-indigo-50 border border-indigo-100 p-4 rounded-2xl flex flex-wrap justify-between items-center gap-4">
-            <div>
-                <h4 class="font-bold text-indigo-900 text-sm">Панель управления</h4>
-                <p class="text-xs text-indigo-600" id="role-description">У вас расширенные права.</p>
-            </div>
-            <button id="add-student-btn" onclick="openAddStudentModal()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-sm">
+        <!-- Админ-панель для создания учеников (только для админов) -->
+        <div id="admin-controls" class="hidden mb-8 bg-indigo-50 border border-indigo-100 p-4 rounded-2xl flex justify-between items-center">
+            <p class="text-xs text-indigo-700 font-medium">Режим управления: вам доступны функции добавления и удаления учеников.</p>
+            <button onclick="openAddStudentModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-sm">
                 + Добавить ученика
             </button>
         </div>
 
-        <!-- Поиск учеников -->
+        <!-- Поиск -->
         <div class="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
             <h3 class="text-2xl font-bold text-slate-800">Ученики класса <span class="text-indigo-600 text-lg font-normal" id="students-count">(33)</span></h3>
             <div class="w-full sm:w-72">
@@ -79,40 +114,30 @@
         Марков мотик 2012
     </footer>
 
-    <!-- Модальное окно входа по паролю -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-slate-800 mb-4">Вход по секретному паролю</h3>
-            <p class="text-xs text-slate-500 mb-4">Введите ваш персональный пароль для получения прав доступа.</p>
-            <input type="password" id="password-input" placeholder="Введите пароль..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-4">
-            <button onclick="checkPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Войти</button>
-            <p id="login-error" class="text-xs text-red-500 mt-2 text-center hidden">Неверный пароль!</p>
-        </div>
-    </div>
-
-    <!-- Модальное окно карточки ученика -->
+    <!-- Модальное окно ученика -->
     <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative transform transition-all">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <div class="text-center mb-4">
                 <div id="modal-img-container" class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden shadow-inner bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold">
                     <span id="modal-initials">АМ</span>
                 </div>
                 <h3 id="modal-name" class="text-xl font-bold text-slate-800">Имя Фамилия</h3>
-                <p id="modal-birth" class="text-sm text-slate-500 mt-1">Дата рождения: 00.00.0000</p>
+                <p id="modal-birth" class="text-sm text-slate-500 mt-1">Дата рождения: скрыта</p>
             </div>
-            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки / Информация</label>
-                <textarea id="modal-notes" placeholder="Заметки недоступны для просмотра гостям..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-20" disabled></textarea>
+            <div id="modal-extra-info" class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 text-xs text-slate-600">
+                <!-- Сюда выводится доп. информация в зависимости от роли -->
             </div>
-            <button id="save-notes" onclick="saveNotes()" class="hidden w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition shadow-sm text-sm">Сохранить заметку</button>
+            <div id="notes-container" class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 hidden">
+                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки / Записи</label>
+                <textarea id="modal-notes" placeholder="Введите заметку..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-16"></textarea>
+            </div>
+            <button id="save-notes-btn" onclick="saveNotes()" class="hidden w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Сохранить заметку</button>
         </div>
     </div>
 
-    <!-- Скрипт с ролями и данными -->
+    <!-- Скрипт логики и прав -->
     <script>
-        // База учеников (можно расширять)
         let students = JSON.parse(localStorage.getItem('class_students')) || [
             { id: 1, name: "Афанасьев Марк Константинович", birth: "08.11.2013" },
             { id: 2, name: "Афонин Александр Андреевич", birth: "21.09.2013" },
@@ -149,72 +174,98 @@
             { id: 33, name: "Япарова Екатерина Дмитриевна", birth: "11.01.2013" }
         ];
 
-        // ТВОИ ПАРОЛИ И РОЛИ (можешь поменять секретные слова на любые свои!)
-        const roles = {
-            "matvey2012": { name: "Марков Матвей (Разработчик)", level: "admin" },
-            "teacher73": { name: "Анастасия Евгеньевна (Классный руководитель)", level: "admin" },
-            "starosta73": { name: "Староста класса", level: "moderator" },
-            "assistant73": { name: "Помощник старосты", level: "moderator" }
-        };
-
-        let currentRole = localStorage.getItem('user_role') || 'guest';
+        let currentUserRole = localStorage.getItem('user_role') || null;
+        let pendingRoleType = null;
         let currentStudentId = null;
 
-        function updateUI() {
-            const statusDiv = document.getElementById('user-status');
-            const loginBtn = document.getElementById('login-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const adminPanel = document.getElementById('admin-panel');
-            const addStudentBtn = document.getElementById('add-student-btn');
-            const modalNotes = document.getElementById('modal-notes');
-            const saveNotesBtn = document.getElementById('save-notes');
+        // ПАРОЛИ (можешь изменить на любые)
+        const passwords = {
+            'student': 'stud73',
+            'starosta': 'starosta73',
+            'admin': 'matvey2012' // Подходит и для классрука, и для Матвея
+        };
 
-            if (currentRole === 'guest') {
-                statusDiv.innerHTML = "🔒 Режим гостя (просмотр)";
-                loginBtn.classList.remove('hidden');
-                logoutBtn.classList.add('hidden');
-                adminPanel.classList.add('hidden');
-                modalNotes.disabled = true;
-                saveNotesBtn.classList.add('hidden');
-            } else {
-                const roleInfo = roles[currentRole];
-                statusDiv.innerHTML = `👤 Вошли как: <b>${roleInfo.name}</b>`;
-                loginBtn.classList.add('hidden');
-                logoutBtn.classList.remove('hidden');
-                adminPanel.classList.remove('hidden');
-                modalNotes.disabled = false;
-                saveNotesBtn.classList.remove('hidden');
-
-                if (roleInfo.level === 'admin') {
-                    document.getElementById('role-description').textContent = "Полные права администратора (доступно редактирование и добавление).";
-                    addStudentBtn.classList.remove('hidden');
-                } else {
-                    document.getElementById('role-description').textContent = "Права старостата (доступны заметки).";
-                    addStudentBtn.classList.add('hidden');
-                }
+        // Проверка при загрузке
+        window.onload = function() {
+            if (currentUserRole) {
+                showMainSite();
             }
-            renderStudents();
+        };
+
+        function loginAs(role) {
+            if (role === 'guest') {
+                currentUserRole = 'guest';
+                localStorage.setItem('user_role', 'guest');
+                showMainSite();
+            } else if (role === 'student') {
+                openPasswordPrompt('student');
+            }
         }
 
-        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); document.getElementById('login-modal').classList.add('flex'); }
-        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); document.getElementById('login-modal').classList.remove('flex'); document.getElementById('login-error').classList.add('hidden'); }
+        function openPasswordPrompt(type) {
+            pendingRoleType = type;
+            document.getElementById('password-modal').classList.remove('hidden');
+            document.getElementById('password-modal').classList.add('flex');
+            document.getElementById('secret-pass-input').value = '';
+            document.getElementById('password-error').classList.add('hidden');
+        }
 
-        function checkPassword() {
-            const pass = document.getElementById('password-input').value.trim();
-            if (roles[pass]) {
-                currentRole = pass;
-                localStorage.setItem('user_role', pass);
-                closeLoginModal();
-                updateUI();
+        function closePasswordPrompt() {
+            document.getElementById('password-modal').classList.add('hidden');
+            document.getElementById('password-modal').classList.remove('flex');
+        }
+
+        function verifyPassword() {
+            const val = document.getElementById('secret-pass-input').value.trim();
+            if (passwords[pendingRoleType] && val === passwords[pendingRoleType]) {
+                currentUserRole = pendingRoleType;
+                localStorage.setItem('user_role', pendingRoleType);
+                closePasswordPrompt();
+                showMainSite();
             } else {
-                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('password-error').classList.remove('hidden');
             }
         }
 
         function logout() {
-            currentRole = 'guest';
             localStorage.removeItem('user_role');
-            updateUI();
+            currentUserRole = null;
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('auth-screen').classList.add('flex');
+        }
+
+        function showMainSite() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+
+            const badge = document.getElementById('current-user-badge');
+            const adminControls = document.getElementById('admin-controls');
+
+            if (currentUserRole === 'guest') {
+                badge.innerHTML = "👤 Режим: <b>Гость</b> (только имена, без личных данных)";
+                adminControls.classList.add('hidden');
+            } else if (currentUserRole === 'student') {
+                badge.innerHTML = "🎓 Режим: <b>Ученик</b>";
+                adminControls.classList.add('hidden');
+            } else if (currentUserRole === 'starosta') {
+                badge.innerHTML = "⭐ Режим: <b>Староста / Помощник</b>";
+                adminControls.classList.add('hidden');
+            } else if (currentUserRole === 'admin') {
+                badge.innerHTML = "👑 Режим: <b>Классный руководитель / Разработчик (Матвей)</b>";
+                adminControls.classList.remove('hidden');
+            }
+            renderStudents();
+        }
+
+        // Обработка имени в зависимости от роли (Гость не видит отчество!)
+        function formatName(fullName) {
+            if (currentUserRole === 'guest') {
+                // Оставляем только Имя и Фамилию, убираем отчество
+                const parts = fullName.split(' ');
+                return parts.length >= 2 ? `${parts[0]} ${parts[1]}` : fullName;
+            }
+            return fullName; // Остальным показываем полное ФИО
         }
 
         function getInitials(name) {
@@ -226,23 +277,36 @@
             const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
             const filtered = students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
-            
+
             filtered.forEach(student => {
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-100 transition cursor-pointer flex flex-col items-center text-center group relative";
-                
-                let deleteBtnHtml = '';
-                if (currentRole !== 'guest' && roles[currentRole]?.level === 'admin') {
-                    deleteBtnHtml = `<button onclick="event.stopPropagation(); deleteStudent(${student.id})" class="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs font-bold p-1" title="Удалить">✕</button>`;
+
+                // Кнопка удаления для админа
+                let deleteBtn = '';
+                if (currentUserRole === 'admin') {
+                    deleteBtn = `<button onclick="event.stopPropagation(); deleteStudent(${student.id})" class="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs font-bold p-1">✕</button>`;
                 }
 
+                // Фотография скрывается или заменяется заглушкой для гостя
+                let imgHtml = '';
+                if (currentUserRole === 'guest') {
+                    imgHtml = `<div class="w-full h-full bg-slate-100 text-slate-400 flex items-center justify-center text-xs">🚫</div>`;
+                } else {
+                    imgHtml = `<img src="${student.id}.jpg" alt="Фото" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
+                }
+
+                const displayName = formatName(student.name);
+                // Гость видит фигню/подсказку вместо даты рождения
+                const displayBirth = currentUserRole === 'guest' ? 'Дата скрыта (для гостей)' : student.birth;
+
                 card.innerHTML = `
-                    ${deleteBtnHtml}
+                    ${deleteBtn}
                     <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3 shadow-inner group-hover:scale-105 transition">
-                        <img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
+                        ${imgHtml}
                     </div>
-                    <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${student.name}</h4>
-                    <span class="text-xs text-slate-400">${student.birth}</span>
+                    <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${displayName}</h4>
+                    <span class="text-xs text-slate-400">${displayBirth}</span>
                 `;
                 card.onclick = () => openStudentModal(student);
                 grid.appendChild(card);
@@ -251,11 +315,37 @@
 
         function openStudentModal(student) {
             currentStudentId = student.id;
-            document.getElementById('modal-name').textContent = student.name;
-            document.getElementById('modal-birth').textContent = `Дата рождения: ${student.birth}`;
-            document.getElementById('modal-img-container').innerHTML = `<img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
+            document.getElementById('modal-name').textContent = formatName(student.name);
             
-            document.getElementById('modal-notes').value = localStorage.getItem(`student_note_${student.id}`) || '';
+            const birthEl = document.getElementById('modal-birth');
+            const imgContainer = document.getElementById('modal-img-container');
+            const extraInfo = document.getElementById('modal-extra-info');
+            const notesContainer = document.getElementById('notes-container');
+            const saveBtn = document.getElementById('save-notes-btn');
+
+            if (currentUserRole === 'guest') {
+                birthEl.textContent = "Дата рождения: недоступно для гостей";
+                imgContainer.innerHTML = "🔒";
+                extraInfo.innerHTML = "⚠️ Вы вошли как гость. Здесь нет секретной информации, фотографий и дат. Войдите под своей ролью, чтобы увидеть больше!";
+                extraInfo.classList.remove('hidden');
+                notesContainer.classList.add('hidden');
+                saveBtn.classList.add('hidden');
+            } else {
+                birthEl.textContent = `Дата рождения: ${student.birth}`;
+                imgContainer.innerHTML = `<img src="${student.id}.jpg" alt="" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
+                extraInfo.classList.add('hidden');
+
+                // Заметки видны старостам и админам
+                if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
+                    notesContainer.classList.remove('hidden');
+                    saveBtn.classList.remove('hidden');
+                    document.getElementById('modal-notes').value = localStorage.getItem(`student_note_${student.id}`) || '';
+                } else {
+                    notesContainer.classList.add('hidden');
+                    saveBtn.classList.add('hidden');
+                }
+            }
+
             document.getElementById('student-modal').classList.remove('hidden');
             document.getElementById('student-modal').classList.add('flex');
         }
@@ -266,15 +356,15 @@
         }
 
         function saveNotes() {
-            if (currentStudentId !== null && currentRole !== 'guest') {
-                const noteText = document.getElementById('modal-notes').value;
-                localStorage.setItem(`student_note_${currentStudentId}`, noteText);
+            if (currentStudentId !== null && (currentUserRole === 'starosta' || currentUserRole === 'admin')) {
+                const text = document.getElementById('modal-notes').value;
+                localStorage.setItem(`student_note_${currentStudentId}`, text);
                 closeStudentModal();
             }
         }
 
         function deleteStudent(id) {
-            if (confirm("Вы уверены, что хотите удалить этого ученика?")) {
+            if (confirm("Удалить ученика?")) {
                 students = students.filter(s => s.id !== id);
                 localStorage.setItem('class_students', JSON.stringify(students));
                 renderStudents();
@@ -294,9 +384,6 @@
         document.getElementById('search-input').oninput = (e) => {
             renderStudents(e.target.value);
         };
-
-        // Запуск при загрузке
-        updateUI();
     </script>
 </body>
 </html>
