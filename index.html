@@ -15,6 +15,21 @@
 
     <div class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow">
         
+        <!-- Верхняя панель авторизации -->
+        <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+            <div id="user-status" class="text-sm font-medium text-slate-600">
+                🔒 Режим гостя (просмотр)
+            </div>
+            <div class="flex gap-2">
+                <button id="login-btn" onclick="openLoginModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-sm">
+                    Войти по паролю
+                </button>
+                <button id="logout-btn" onclick="logout()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
+                    Выйти
+                </button>
+            </div>
+        </div>
+
         <!-- Шапка сайта -->
         <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-900 mb-2">7 «3» Класс</h1>
@@ -24,7 +39,6 @@
         <!-- Блок классного руководителя -->
         <section class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6">
             <div class="relative group">
-                <!-- Фотография учителя: берется напрямую из коренной папки GitHub -->
                 <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
@@ -36,6 +50,17 @@
             </div>
         </section>
 
+        <!-- Управление для админов / старост (скрыто по умолчанию) -->
+        <div id="admin-panel" class="hidden mb-8 bg-indigo-50 border border-indigo-100 p-4 rounded-2xl flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h4 class="font-bold text-indigo-900 text-sm">Панель управления</h4>
+                <p class="text-xs text-indigo-600" id="role-description">У вас расширенные права.</p>
+            </div>
+            <button id="add-student-btn" onclick="openAddStudentModal()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-sm">
+                + Добавить ученика
+            </button>
+        </div>
+
         <!-- Поиск учеников -->
         <div class="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
             <h3 class="text-2xl font-bold text-slate-800">Ученики класса <span class="text-indigo-600 text-lg font-normal" id="students-count">(33)</span></h3>
@@ -45,9 +70,7 @@
         </div>
 
         <!-- Сетка учеников -->
-        <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Заполняется через скрипт -->
-        </div>
+        <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
 
     </div>
 
@@ -56,12 +79,23 @@
         Марков мотик 2012
     </footer>
 
-    <!-- Модальное окно ученика -->
+    <!-- Модальное окно входа по паролю -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-slate-800 mb-4">Вход по секретному паролю</h3>
+            <p class="text-xs text-slate-500 mb-4">Введите ваш персональный пароль для получения прав доступа.</p>
+            <input type="password" id="password-input" placeholder="Введите пароль..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-4">
+            <button onclick="checkPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Войти</button>
+            <p id="login-error" class="text-xs text-red-500 mt-2 text-center hidden">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- Модальное окно карточки ученика -->
     <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative transform transition-all">
-            <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <div class="text-center mb-4">
-                <!-- Фото в модальном окне (тоже напрямую из корня) -->
                 <div id="modal-img-container" class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden shadow-inner bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold">
                     <span id="modal-initials">АМ</span>
                 </div>
@@ -69,16 +103,17 @@
                 <p id="modal-birth" class="text-sm text-slate-500 mt-1">Дата рождения: 00.00.0000</p>
             </div>
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки об ученике</label>
-                <textarea id="modal-notes" placeholder="Добавить заметку..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-20"></textarea>
+                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки / Информация</label>
+                <textarea id="modal-notes" placeholder="Заметки недоступны для просмотра гостям..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-20" disabled></textarea>
             </div>
-            <button id="save-notes" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition shadow-sm text-sm">Сохранить заметку</button>
+            <button id="save-notes" onclick="saveNotes()" class="hidden w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition shadow-sm text-sm">Сохранить заметку</button>
         </div>
     </div>
 
-    <!-- Скрипт -->
+    <!-- Скрипт с ролями и данными -->
     <script>
-        const students = [
+        // База учеников (можно расширять)
+        let students = JSON.parse(localStorage.getItem('class_students')) || [
             { id: 1, name: "Афанасьев Марк Константинович", birth: "08.11.2013" },
             { id: 2, name: "Афонин Александр Андреевич", birth: "21.09.2013" },
             { id: 3, name: "Батовский Иван Игоревич", birth: "07.09.2013" },
@@ -114,17 +149,73 @@
             { id: 33, name: "Япарова Екатерина Дмитриевна", birth: "11.01.2013" }
         ];
 
-        const grid = document.getElementById('students-grid');
-        const searchInput = document.getElementById('search-input');
-        const modal = document.getElementById('student-modal');
-        const closeModal = document.getElementById('close-modal');
-        const modalName = document.getElementById('modal-name');
-        const modalBirth = document.getElementById('modal-birth');
-        const modalImgContainer = document.getElementById('modal-img-container');
-        const modalNotes = document.getElementById('modal-notes');
-        const saveNotesBtn = document.getElementById('save-notes');
-        
+        // ТВОИ ПАРОЛИ И РОЛИ (можешь поменять секретные слова на любые свои!)
+        const roles = {
+            "matvey2012": { name: "Марков Матвей (Разработчик)", level: "admin" },
+            "teacher73": { name: "Анастасия Евгеньевна (Классный руководитель)", level: "admin" },
+            "starosta73": { name: "Староста класса", level: "moderator" },
+            "assistant73": { name: "Помощник старосты", level: "moderator" }
+        };
+
+        let currentRole = localStorage.getItem('user_role') || 'guest';
         let currentStudentId = null;
+
+        function updateUI() {
+            const statusDiv = document.getElementById('user-status');
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const adminPanel = document.getElementById('admin-panel');
+            const addStudentBtn = document.getElementById('add-student-btn');
+            const modalNotes = document.getElementById('modal-notes');
+            const saveNotesBtn = document.getElementById('save-notes');
+
+            if (currentRole === 'guest') {
+                statusDiv.innerHTML = "🔒 Режим гостя (просмотр)";
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                adminPanel.classList.add('hidden');
+                modalNotes.disabled = true;
+                saveNotesBtn.classList.add('hidden');
+            } else {
+                const roleInfo = roles[currentRole];
+                statusDiv.innerHTML = `👤 Вошли как: <b>${roleInfo.name}</b>`;
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                adminPanel.classList.remove('hidden');
+                modalNotes.disabled = false;
+                saveNotesBtn.classList.remove('hidden');
+
+                if (roleInfo.level === 'admin') {
+                    document.getElementById('role-description').textContent = "Полные права администратора (доступно редактирование и добавление).";
+                    addStudentBtn.classList.remove('hidden');
+                } else {
+                    document.getElementById('role-description').textContent = "Права старостата (доступны заметки).";
+                    addStudentBtn.classList.add('hidden');
+                }
+            }
+            renderStudents();
+        }
+
+        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); document.getElementById('login-modal').classList.add('flex'); }
+        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); document.getElementById('login-modal').classList.remove('flex'); document.getElementById('login-error').classList.add('hidden'); }
+
+        function checkPassword() {
+            const pass = document.getElementById('password-input').value.trim();
+            if (roles[pass]) {
+                currentRole = pass;
+                localStorage.setItem('user_role', pass);
+                closeLoginModal();
+                updateUI();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            currentRole = 'guest';
+            localStorage.removeItem('user_role');
+            updateUI();
+        }
 
         function getInitials(name) {
             const parts = name.split(' ');
@@ -132,57 +223,80 @@
         }
 
         function renderStudents(filter = '') {
+            const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
             const filtered = students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
             
             filtered.forEach(student => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-100 transition cursor-pointer flex flex-col items-center text-center group";
+                card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-100 transition cursor-pointer flex flex-col items-center text-center group relative";
                 
+                let deleteBtnHtml = '';
+                if (currentRole !== 'guest' && roles[currentRole]?.level === 'admin') {
+                    deleteBtnHtml = `<button onclick="event.stopPropagation(); deleteStudent(${student.id})" class="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs font-bold p-1" title="Удалить">✕</button>`;
+                }
+
                 card.innerHTML = `
+                    ${deleteBtnHtml}
                     <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3 shadow-inner group-hover:scale-105 transition">
                         <img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
                     </div>
                     <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${student.name}</h4>
                     <span class="text-xs text-slate-400">${student.birth}</span>
                 `;
-                card.onclick = () => openModal(student);
+                card.onclick = () => openStudentModal(student);
                 grid.appendChild(card);
             });
         }
 
-        function openModal(student) {
+        function openStudentModal(student) {
             currentStudentId = student.id;
-            modalName.textContent = student.name;
-            modalBirth.textContent = `Дата рождения: ${student.birth}`;
+            document.getElementById('modal-name').textContent = student.name;
+            document.getElementById('modal-birth').textContent = `Дата рождения: ${student.birth}`;
+            document.getElementById('modal-img-container').innerHTML = `<img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
             
-            modalImgContainer.innerHTML = `<img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
-            
-            modalNotes.value = localStorage.getItem(`student_note_${student.id}`) || '';
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById('modal-notes').value = localStorage.getItem(`student_note_${student.id}`) || '';
+            document.getElementById('student-modal').classList.remove('hidden');
+            document.getElementById('student-modal').classList.add('flex');
         }
 
         function closeStudentModal() {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('student-modal').classList.add('hidden');
+            document.getElementById('student-modal').classList.remove('flex');
         }
 
-        closeModal.onclick = closeStudentModal;
-        modal.onclick = (e) => { if (e.target === modal) closeStudentModal(); };
-
-        saveNotesBtn.onclick = () => {
-            if (currentStudentId !== null) {
-                localStorage.setItem(`student_note_${currentStudentId}`, modalNotes.value);
+        function saveNotes() {
+            if (currentStudentId !== null && currentRole !== 'guest') {
+                const noteText = document.getElementById('modal-notes').value;
+                localStorage.setItem(`student_note_${currentStudentId}`, noteText);
                 closeStudentModal();
             }
-        };
+        }
 
-        searchInput.oninput = (e) => {
+        function deleteStudent(id) {
+            if (confirm("Вы уверены, что хотите удалить этого ученика?")) {
+                students = students.filter(s => s.id !== id);
+                localStorage.setItem('class_students', JSON.stringify(students));
+                renderStudents();
+            }
+        }
+
+        function openAddStudentModal() {
+            const name = prompt("Введите ФИО нового ученика:");
+            if (!name) return;
+            const birth = prompt("Введите дату рождения (например, 01.01.2013):") || "";
+            const newId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+            students.push({ id: newId, name: name, birth: birth });
+            localStorage.setItem('class_students', JSON.stringify(students));
+            renderStudents();
+        }
+
+        document.getElementById('search-input').oninput = (e) => {
             renderStudents(e.target.value);
         };
 
-        renderStudents();
+        // Запуск при загрузке
+        updateUI();
     </script>
 </body>
 </html>
