@@ -24,8 +24,8 @@
         <!-- Блок классного руководителя -->
         <section class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6">
             <div class="relative group">
-                <!-- Фотография учителя: берется из images/Teacher.jpg -->
-                <img src="images/Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
+                <!-- Фотография учителя: берется напрямую из коренной папки GitHub -->
+                <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
                 <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">Классный руководитель</span>
@@ -61,7 +61,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative transform transition-all">
             <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <div class="text-center mb-4">
-                <!-- Фото в модальном окне -->
+                <!-- Фото в модальном окне (тоже напрямую из корня) -->
                 <div id="modal-img-container" class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden shadow-inner bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold">
                     <span id="modal-initials">АМ</span>
                 </div>
@@ -141,7 +141,7 @@
                 
                 card.innerHTML = `
                     <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3 shadow-inner group-hover:scale-105 transition">
-                        <img src="images/${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
+                        <img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
                     </div>
                     <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${student.name}</h4>
                     <span class="text-xs text-slate-400">${student.birth}</span>
@@ -156,7 +156,7 @@
             modalName.textContent = student.name;
             modalBirth.textContent = `Дата рождения: ${student.birth}`;
             
-            modalImgContainer.innerHTML = `<img src="images/${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
+            modalImgContainer.innerHTML = `<img src="${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
             
             modalNotes.value = localStorage.getItem(`student_note_${student.id}`) || '';
             modal.classList.remove('hidden');
