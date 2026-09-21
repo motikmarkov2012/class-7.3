@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>7 «3» Класс — Сайт классного руководителя</title>
-    <!-- Подключаем Tailwind CSS для красивого дизайна -->
+    <!-- Подключаем Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -24,8 +24,8 @@
         <!-- Блок классного руководителя -->
         <section class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6">
             <div class="relative group">
-                <!-- Фотография учителя (ссылается на images/teacher.jpg) -->
-                <img src="images/teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
+                <!-- Фотография учителя: берется из images/Teacher.jpg -->
+                <img src="images/Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-indigo-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
                 <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">Классный руководитель</span>
@@ -46,36 +46,37 @@
 
         <!-- Сетка учеников -->
         <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Скрипт заполнит карточки автоматически -->
+            <!-- Заполняется через скрипт -->
         </div>
 
     </div>
 
-    <!-- Футер по требованиям -->
+    <!-- Футер -->
     <footer class="w-full text-center py-6 text-slate-400 text-sm border-t border-slate-200 mt-12">
         Марков мотик 2012
     </footer>
 
-    <!-- Модальное окно для подробной информации об ученике -->
+    <!-- Модальное окно ученика -->
     <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative transform transition-all">
             <button id="close-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <div class="text-center mb-4">
-                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-3 shadow-inner" id="modal-initials">
-                    АМ
+                <!-- Фото в модальном окне -->
+                <div id="modal-img-container" class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden shadow-inner bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold">
+                    <span id="modal-initials">АМ</span>
                 </div>
                 <h3 id="modal-name" class="text-xl font-bold text-slate-800">Имя Фамилия</h3>
                 <p id="modal-birth" class="text-sm text-slate-500 mt-1">Дата рождения: 00.00.0000</p>
             </div>
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки / Дополнительно</label>
-                <textarea id="modal-notes" placeholder="Добавить заметку об ученике..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-20"></textarea>
+                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Заметки об ученике</label>
+                <textarea id="modal-notes" placeholder="Добавить заметку..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-20"></textarea>
             </div>
             <button id="save-notes" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition shadow-sm text-sm">Сохранить заметку</button>
         </div>
     </div>
 
-    <!-- Скрипт с данными учеников -->
+    <!-- Скрипт -->
     <script>
         const students = [
             { id: 1, name: "Афанасьев Марк Константинович", birth: "08.11.2013" },
@@ -119,7 +120,7 @@
         const closeModal = document.getElementById('close-modal');
         const modalName = document.getElementById('modal-name');
         const modalBirth = document.getElementById('modal-birth');
-        const modalInitials = document.getElementById('modal-initials');
+        const modalImgContainer = document.getElementById('modal-img-container');
         const modalNotes = document.getElementById('modal-notes');
         const saveNotesBtn = document.getElementById('save-notes');
         
@@ -137,9 +138,10 @@
             filtered.forEach(student => {
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-100 transition cursor-pointer flex flex-col items-center text-center group";
+                
                 card.innerHTML = `
-                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg mb-3 group-hover:bg-indigo-600 group-hover:text-white transition">
-                        ${getInitials(student.name)}
+                    <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3 shadow-inner group-hover:scale-105 transition">
+                        <img src="images/${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
                     </div>
                     <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${student.name}</h4>
                     <span class="text-xs text-slate-400">${student.birth}</span>
@@ -153,7 +155,9 @@
             currentStudentId = student.id;
             modalName.textContent = student.name;
             modalBirth.textContent = `Дата рождения: ${student.birth}`;
-            modalInitials.textContent = getInitials(student.name);
+            
+            modalImgContainer.innerHTML = `<img src="images/${student.id}.jpg" alt="${student.name}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
+            
             modalNotes.value = localStorage.getItem(`student_note_${student.id}`) || '';
             modal.classList.remove('hidden');
             modal.classList.add('flex');
