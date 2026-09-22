@@ -13,29 +13,32 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ / ВЫБОРА РОЛИ -->
-    <div id="auth-screen" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+    <!-- ЭКРАН АВТОРИЗАЦИИ НА ВСЕЙ ЭКРАН С 7.3 -->
+    <div id="auth-screen" class="fixed inset-0 w-screen h-screen bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center border border-slate-100">
-            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-inner">
-                7 «3»
+            <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-inner">
+                7.3
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Добро пожаловать!</h2>
-            <p class="text-slate-500 text-sm mb-6">Выберите вашу роль для доступа к порталу класса.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Портал класса</h2>
+            <p class="text-slate-500 text-sm mb-6">Выберите вашу роль для входа.</p>
 
             <div class="space-y-3 mb-6">
-                <!-- Гость без стикеров и смайликов -->
+                <!-- Гость -->
                 <button onclick="loginAs('guest')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Гость</span>
                     <span class="text-xs text-slate-400">Без пароля</span>
                 </button>
+                <!-- Ученик -->
                 <button onclick="openPasswordPrompt('student')" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Ученик класса</span>
                     <span class="text-xs text-indigo-500">Пароль: stud73</span>
                 </button>
+                <!-- Староста и помощник -->
                 <button onclick="openPasswordPrompt('starosta')" class="w-full bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Староста и помощник</span>
                     <span class="text-xs text-violet-500">Пароль: starosta73</span>
                 </button>
+                <!-- Классный руководитель / Разработчик -->
                 <button onclick="openPasswordPrompt('admin')" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Классный руководитель</span>
                     <span class="text-xs text-amber-500">Пароль: teacher73</span>
@@ -53,11 +56,11 @@
             <h3 class="text-lg font-bold text-slate-800 mb-2">Авторизация</h3>
             <p class="text-xs text-slate-500 mb-4" id="password-desc">Введите ваши данные для входа.</p>
             
-            <input type="text" id="auth-name-input" placeholder="Ваше имя / ФИО..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-3">
+            <input type="text" id="auth-name-input" placeholder="Ваше имя (или буква для отладки)..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-3">
             <input type="password" id="secret-pass-input" placeholder="Пароль..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-4">
             
             <button onclick="verifyPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Войти</button>
-            <p id="password-error" class="text-xs text-red-500 mt-2 hidden">Неверный пароль или имя не соответствует роли!</p>
+            <p id="password-error" class="text-xs text-red-500 mt-2 hidden">Неверный пароль!</p>
         </div>
     </div>
 
@@ -133,7 +136,7 @@
             
             <div id="modal-extra-info" class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 text-xs text-slate-600"></div>
             
-            <!-- Кнопка отметить отсутствие (для старост и классрука) -->
+            <!-- Кнопка отметить отсутствие -->
             <div id="absence-container" class="mb-4 hidden">
                 <button id="toggle-absence-btn" onclick="toggleAbsence()" class="w-full py-2 px-4 rounded-xl text-xs font-semibold transition border">
                     Отметить отсутствующим сегодня
@@ -190,15 +193,13 @@
         let pendingRoleType = null;
         let currentStudentId = null;
 
-        // ПАРОЛИ
         const passwords = {
             'student': 'stud73',
             'starosta': 'starosta73',
             'admin': 'teacher73'
         };
 
-        // Текущая дата для отметок об отсутствии
-        const todayDateKey = new Date().toISOString().slice(0, 10); // формат YYYY-MM-DD
+        const todayDateKey = new Date().toISOString().slice(0, 10);
 
         window.onload = function() {
             if (currentUserRole) {
@@ -223,11 +224,11 @@
             document.getElementById('password-error').classList.add('hidden');
             
             if (type === 'starosta') {
-                document.getElementById('password-desc').textContent = "Введите имя и пароль старосты (starosta73).";
+                document.getElementById('password-desc').textContent = "Введите пароль старосты (starosta73).";
             } else if (type === 'admin') {
-                document.getElementById('password-desc').textContent = "Введите имя и пароль классного руководителя (teacher73).";
+                document.getElementById('password-desc').textContent = "Режим отладки: введите любую букву/цифру и пароль (teacher73).";
             } else {
-                document.getElementById('password-desc').textContent = "Введите ваше имя и пароль ученика (stud73).";
+                document.getElementById('password-desc').textContent = "Введите пароль ученика (stud73).";
             }
         }
 
@@ -237,26 +238,12 @@
         }
 
         function verifyPassword() {
-            const nameInput = document.getElementById('auth-name-input').value.trim().toLowerCase();
             const passInput = document.getElementById('secret-pass-input').value.trim();
             const errorElement = document.getElementById('password-error');
 
             if (!passwords[pendingRoleType] || passInput !== passwords[pendingRoleType]) {
                 errorElement.classList.remove('hidden');
                 return;
-            }
-
-            // Защита от входа под чужими ролями
-            if (pendingRoleType === 'starosta') {
-                if (!nameInput.includes('алина') && !nameInput.includes('волкова') && !nameInput.includes('катя') && !nameInput.includes('васильева') && !nameInput.includes('староста')) {
-                    errorElement.classList.remove('hidden');
-                    return;
-                }
-            } else if (pendingRoleType === 'admin') {
-                if (!nameInput.includes('анастасия') && !nameInput.includes('евгеньевна') && !nameInput.includes('матвей') && !nameInput.includes('марков') && !nameInput.includes('учитель')) {
-                    errorElement.classList.remove('hidden');
-                    return;
-                }
             }
 
             currentUserRole = pendingRoleType;
@@ -281,7 +268,6 @@
             const adminControls = document.getElementById('admin-controls');
             const dateBadge = document.getElementById('today-date-badge');
 
-            // Показываем красивую актуальную дату
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             dateBadge.textContent = "Сегодня: " + new Date().toLocaleDateString('ru-RU', options);
 
@@ -335,7 +321,6 @@
                     imgHtml = `<img src="${student.id}.jpg" alt="Фото" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
                 }
 
-                // Проверка, отмечен ли ученик отсутствующим сегодня
                 const isAbsent = localStorage.getItem(`absent_${student.id}_${todayDateKey}`) === 'true';
                 let absenceBadge = '';
                 if (isAbsent) {
@@ -384,7 +369,6 @@
                 imgContainer.innerHTML = `<img src="${student.id}.jpg" alt="" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
                 extraInfo.classList.add('hidden');
 
-                // Кнопка отсутствия доступна только старостам и классруку
                 if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
                     absenceContainer.classList.remove('hidden');
                     const isAbsent = localStorage.getItem(`absent_${student.id}_${todayDateKey}`) === 'true';
@@ -399,7 +383,6 @@
                     absenceContainer.classList.add('hidden');
                 }
 
-                // Заметки видны старостам и админу
                 if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
                     notesContainer.classList.remove('hidden');
                     saveBtn.classList.remove('hidden');
