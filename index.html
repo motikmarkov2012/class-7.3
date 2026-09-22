@@ -43,13 +43,13 @@
                 </button>
             </div>
 
-            <!-- БЫСТРАЯ ОТЛАДКА ДЛЯ ТЕБЯ -->
+            <!-- БЫСТРАЯ ОТЛАДКА С АЛИНОЙ И КАТЯЙ -->
             <div class="border-t border-slate-100 pt-4">
                 <p class="text-[11px] text-slate-400 mb-2 font-semibold">⚡ Быстрый вход (Отладка):</p>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="debugLogin('starosta', 'Волчкова Алина Андреевна')" class="bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-violet-200 transition truncate">🌟 Волчкова Алина (Староста)</button>
-                    <button onclick="debugLogin('starosta', 'Васильева Катерина Дмитриевна')" class="bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-violet-200 transition truncate">🌟 Васильева Катя (Староста)</button>
-                    <button onclick="debugLogin('admin', 'Анастасия Евгеньевна')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-amber-200 transition col-span-2">👩‍🏫 Анастасия Евгеньевна (Учитель)</button>
+                    <button onclick="debugLogin('starosta', 'Волчкова Алина Андреевна')" class="bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-violet-200 transition truncate">⭐ Алина (Староста)</button>
+                    <button onclick="debugLogin('starosta', 'Васильева Катерина Дмитриевна')" class="bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-violet-200 transition truncate">⭐ Катя (Староста)</button>
+                    <button onclick="debugLogin('admin', 'Анастасия Евгеньевна')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold py-2 px-2 rounded-lg border border-violet-200 transition col-span-2">👩‍🏫 Анастасия Евгеньевна (Учитель)</button>
                 </div>
             </div>
         </div>
@@ -118,23 +118,23 @@
             <p id="announcement-text" class="text-sm text-slate-600">Загрузка объявлений...</p>
         </div>
 
-        <!-- Учительская секция -->
-        <section id="teacher-section" class="bg-gradient-to-r from-amber-600 to-orange-600 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 border-4 border-amber-200">
+        <!-- Классный руководитель с красивой фиолетовой рамкой -->
+        <section id="teacher-section" class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 border-4 border-purple-300/60 ring-4 ring-purple-100">
             <div class="relative group">
-                <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-md border-4 border-white/20 bg-amber-800" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
+                <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-lg border-4 border-white/30 bg-purple-900" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
-                <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">👩‍🏫 Классный руководитель</span>
+                <span class="inline-block bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">👩‍🏫 Классный руководитель</span>
                 <h2 class="text-2xl md:text-3xl font-bold mb-2">Анастасия Евгеньевна</h2>
-                <p id="teacher-desc" class="text-amber-100 max-w-xl text-sm md:text-base leading-relaxed">
+                <p id="teacher-desc" class="text-purple-100 max-w-xl text-sm md:text-base leading-relaxed">
                     Наш замечательный классный руководитель, наставник и друг. Ведёт 7 «3» к новым знаниям, победам и дружной атмосфере!
                 </p>
             </div>
         </section>
 
-        <!-- Поиск -->
+        <!-- Поиск без лишнего текста счетчика -->
         <div class="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h3 class="text-2xl font-bold text-slate-800">Ученики класса <span class="text-indigo-600 text-lg font-normal" id="students-count">(33)</span></h3>
+            <h3 class="text-2xl font-bold text-slate-800">Ученики класса</h3>
             <div class="w-full sm:w-72">
                 <input type="text" id="search-input" placeholder="Поиск ученика..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-sm">
             </div>
@@ -173,7 +173,7 @@
                 <p id="modal-birth" class="text-sm text-slate-500 mt-2">Дата рождения</p>
             </div>
             
-            <!-- О себе / Био (Доступно каждому для своего профиля, либо учителю) -->
+            <!-- О себе / Био -->
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-xs font-semibold text-indigo-600 uppercase">О себе / Интересы</label>
@@ -240,7 +240,6 @@
             { id: 33, name: "Япарова Екатерина Дмитриевна", birth: "11.01.2013" }
         ];
 
-        // Список старост для автоматического выделения
         const starostaNames = ["Волчкова Алина Андреевна", "Васильева Катерина Дмитриевна"];
 
         let currentUserRole = localStorage.getItem('user_role') || null;
@@ -296,7 +295,6 @@
 
             const found = students.find(s => s.name.toLowerCase() === nameInput.toLowerCase() || s.name.toLowerCase().includes(nameInput.toLowerCase()));
             
-            // Если выбрана староста или имя совпало со списком старост
             let assignedRole = role;
             if (found && starostaNames.includes(found.name)) {
                 assignedRole = 'starosta';
@@ -446,7 +444,6 @@
                 
                 const isStarosta = starostaNames.includes(student.name);
                 
-                // Стильное выделение карточек для старост (фиолетовый акцент) и учеников
                 if (isStarosta) {
                     card.className = "bg-gradient-to-br from-violet-50 to-indigo-50 rounded-2xl p-5 shadow-md border-2 border-violet-300 hover:shadow-lg transition cursor-pointer flex flex-col items-center text-center group relative";
                 } else {
@@ -485,11 +482,9 @@
             document.getElementById('modal-bio-text').textContent = bioText;
             document.getElementById('bio-edit-container').classList.add('hidden');
 
-            // Кнопка «Написать о себе» доступна каждому для своей карточки, а также учителю/старосте
             const isOwner = currentUserName.toLowerCase() === student.name.toLowerCase() || currentUserRole === 'admin' || currentUserRole === 'starosta';
             document.getElementById('edit-bio-btn').classList.toggle('hidden', !isOwner);
 
-            // Кнопка отправки звёзд доступна учителю и старостам
             const giveStarContainer = document.getElementById('give-star-container');
             if (currentUserRole === 'admin' || currentUserRole === 'starosta') {
                 giveStarContainer.classList.remove('hidden');
@@ -497,7 +492,6 @@
                 giveStarContainer.classList.add('hidden');
             }
 
-            // Управление посещаемостью и заметками
             const absenceContainer = document.getElementById('absence-container');
             const notesContainer = document.getElementById('notes-container');
             
