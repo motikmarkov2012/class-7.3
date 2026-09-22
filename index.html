@@ -43,7 +43,7 @@
                 </button>
             </div>
 
-            <!-- БЫСТРАЯ ОТЛАДКА С АЛИНОЙ И КАТЯЙ -->
+            <!-- БЫСТРАЯ ОТЛАДКА ДЛЯ СТАРОСТ И УЧИТЕЛЯ -->
             <div class="border-t border-slate-100 pt-4">
                 <p class="text-[11px] text-slate-400 mb-2 font-semibold">⚡ Быстрый вход (Отладка):</p>
                 <div class="grid grid-cols-2 gap-2">
@@ -78,25 +78,18 @@
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
 
-        <!-- Статистика посещаемости -->
-        <div id="attendance-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 hidden">
+        <!-- Статистика посещаемости (без плашки "Всего учеников") -->
+        <div id="attendance-stats" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 hidden">
             <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
-                    <div class="text-xs text-slate-400 font-semibold uppercase">Всего учеников</div>
-                    <div class="text-2xl font-bold text-slate-800" id="stat-total">33</div>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">👥</div>
-            </div>
-            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
-                <div>
-                    <div class="text-xs text-slate-400 font-semibold uppercase">Присутствуют</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Присутствуют сегодня</div>
                     <div class="text-2xl font-bold text-emerald-600" id="stat-present">33</div>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">✅</div>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
-                    <div class="text-xs text-slate-400 font-semibold uppercase">Отсутствуют</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Отсутствуют сегодня</div>
                     <div class="text-2xl font-bold text-red-600" id="stat-absent">0</div>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold">❌</div>
@@ -118,13 +111,24 @@
             <p id="announcement-text" class="text-sm text-slate-600">Загрузка объявлений...</p>
         </div>
 
-        <!-- Классный руководитель с красивой фиолетовой рамкой -->
+        <!-- Рейтинг класса (Топ по звёздам и посещаемости) -->
+        <div class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
+                <h3 class="font-bold text-lg text-indigo-900">🏆 Топ класса</h3>
+                <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                    <button id="tab-stars-btn" onclick="switchRatingTab('stars')" class="px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition">⭐ По звёздам</button>
+                    <button id="tab-attendance-btn" onclick="switchRatingTab('attendance')" class="px-4 py-2 rounded-lg text-slate-600 transition">✅ По посещаемости</button>
+                </div>
+            </div>
+            <div id="rating-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- Классный руководитель (Без лишних стикеров, с красивой фиолетовой рамкой) -->
         <section id="teacher-section" class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 border-4 border-purple-300/60 ring-4 ring-purple-100">
             <div class="relative group">
                 <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-lg border-4 border-white/30 bg-purple-900" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="text-center md:text-left">
-                <span class="inline-block bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2">👩‍🏫 Классный руководитель</span>
                 <h2 class="text-2xl md:text-3xl font-bold mb-2">Анастасия Евгеньевна</h2>
                 <p id="teacher-desc" class="text-purple-100 max-w-xl text-sm md:text-base leading-relaxed">
                     Наш замечательный классный руководитель, наставник и друг. Ведёт 7 «3» к новым знаниям, победам и дружной атмосфере!
@@ -132,7 +136,7 @@
             </div>
         </section>
 
-        <!-- Поиск без лишнего текста счетчика -->
+        <!-- Поиск -->
         <div class="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
             <h3 class="text-2xl font-bold text-slate-800">Ученики класса</h3>
             <div class="w-full sm:w-72">
@@ -164,10 +168,20 @@
                 <div class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mt-2 border border-amber-200 shadow-sm">
                     ⭐ Звёзды: <span id="modal-stars-count">5</span>
                 </div>
-                <div id="give-star-container" class="mt-2 hidden">
-                    <button onclick="giveStarToStudent()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-1.5 px-3 rounded-xl shadow transition">
-                        ⭐ Отправить звезду (+1)
-                    </button>
+
+                <!-- Блок отправки звёзд (Разделен для старост и учителя) -->
+                <div id="give-star-container" class="mt-3 hidden">
+                    <div id="starosta-star-box" class="hidden">
+                        <button onclick="giveStarToStudent(1)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition">
+                            ⭐ Отправить звезду (+1)
+                        </button>
+                    </div>
+                    <div id="admin-star-box" class="hidden flex gap-2 items-center justify-center">
+                        <input type="number" id="admin-star-input" value="1" min="1" class="w-20 px-3 py-1.5 border border-amber-300 rounded-xl text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-amber-500 bg-amber-50/50">
+                        <button onclick="adminGiveStars()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-2 px-3 rounded-xl shadow transition">
+                            ⭐ Начислить звёзды
+                        </button>
+                    </div>
                 </div>
 
                 <p id="modal-birth" class="text-sm text-slate-500 mt-2">Дата рождения</p>
@@ -245,6 +259,7 @@
         let currentUserRole = localStorage.getItem('user_role') || null;
         let currentUserName = localStorage.getItem('user_name') || null;
         let currentStudentId = null;
+        let currentRatingMode = 'stars';
         const todayDateKey = new Date().toISOString().slice(0, 10);
 
         window.onload = function() {
@@ -356,6 +371,7 @@
 
             updateAttendanceStats();
             renderStudents();
+            renderRating();
         }
 
         function updateAttendanceStats() {
@@ -363,7 +379,6 @@
             students.forEach(s => {
                 if (localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true') absentCount++;
             });
-            document.getElementById('stat-total').textContent = students.length;
             document.getElementById('stat-present').textContent = students.length - absentCount;
             document.getElementById('stat-absent').textContent = absentCount;
         }
@@ -436,12 +451,70 @@
             navigator.clipboard.writeText(report).then(() => alert("Отчет скопирован!"));
         }
 
+        function switchRatingTab(mode) {
+            currentRatingMode = mode;
+            const starsBtn = document.getElementById('tab-stars-btn');
+            const attendanceBtn = document.getElementById('tab-attendance-btn');
+            if (mode === 'stars') {
+                starsBtn.className = "px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition";
+                attendanceBtn.className = "px-4 py-2 rounded-lg text-slate-600 transition";
+            } else {
+                attendanceBtn.className = "px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition";
+                starsBtn.className = "px-4 py-2 rounded-lg text-slate-600 transition";
+            }
+            renderRating();
+        }
+
+        function renderRating() {
+            const listEl = document.getElementById('rating-list');
+            listEl.innerHTML = '';
+
+            let sorted = [...students];
+            if (currentRatingMode === 'stars') {
+                sorted.sort((a, b) => {
+                    let starsA = parseInt(localStorage.getItem(`stars_${a.id}`) || '5');
+                    let starsB = parseInt(localStorage.getItem(`stars_${b.id}`) || '5');
+                    return starsB - starsA;
+                });
+            } else {
+                sorted.sort((a, b) => {
+                    let absA = localStorage.getItem(`absent_${a.id}_${todayDateKey}`) === 'true' ? 1 : 0;
+                    let absB = localStorage.getItem(`absent_${b.id}_${todayDateKey}`) === 'true' ? 1 : 0;
+                    return absA - absB; // Сначала присутствующие
+                });
+            }
+
+            sorted.slice(0, 6).forEach((s, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between";
+                
+                let badgeVal = '';
+                if (currentRatingMode === 'stars') {
+                    badgeVal = `⭐ ${parseInt(localStorage.getItem(`stars_${s.id}`) || '5')}`;
+                } else {
+                    const isAbs = localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true';
+                    badgeVal = isAbs ? '❌ Отсутствует' : '✅ Присутствует';
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${idx + 1}</div>
+                        <div>
+                            <div class="font-semibold text-xs text-slate-800 line-clamp-1">${s.name}</div>
+                            <div class="text-[10px] text-slate-400">Ученик 7 «3»</div>
+                        </div>
+                    </div>
+                    <div class="text-xs font-bold text-amber-600">${badgeVal}</div>
+                `;
+                listEl.appendChild(card);
+            });
+        }
+
         function renderStudents(filter = '') {
             const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const card = document.createElement('div');
-                
                 const isStarosta = starostaNames.includes(student.name);
                 
                 if (isStarosta) {
@@ -485,9 +558,21 @@
             const isOwner = currentUserName.toLowerCase() === student.name.toLowerCase() || currentUserRole === 'admin' || currentUserRole === 'starosta';
             document.getElementById('edit-bio-btn').classList.toggle('hidden', !isOwner);
 
+            // Управление отправкой звезд
             const giveStarContainer = document.getElementById('give-star-container');
-            if (currentUserRole === 'admin' || currentUserRole === 'starosta') {
+            const starostaBox = document.getElementById('starosta-star-box');
+            const adminBox = document.getElementById('admin-star-box');
+
+            if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
                 giveStarContainer.classList.remove('hidden');
+                if (currentUserRole === 'starosta') {
+                    starostaBox.classList.remove('hidden');
+                    adminBox.classList.add('hidden');
+                } else if (currentUserRole === 'admin') {
+                    adminBox.classList.remove('hidden');
+                    starostaBox.classList.add('hidden');
+                    document.getElementById('admin-star-input').value = '1';
+                }
             } else {
                 giveStarContainer.classList.add('hidden');
             }
@@ -517,15 +602,25 @@
             document.getElementById('student-modal').classList.remove('flex');
         }
 
-        function giveStarToStudent() {
+        function giveStarToStudent(amount) {
             if (currentStudentId !== null) {
                 let currentStars = parseInt(localStorage.getItem(`stars_${currentStudentId}`) || '5');
-                currentStars += 1;
+                currentStars += amount;
                 localStorage.setItem(`stars_${currentStudentId}`, currentStars);
                 document.getElementById('modal-stars-count').textContent = currentStars;
                 renderStudents(document.getElementById('search-input').value);
-                alert("⭐ Звезда успешно отправлена ученику!");
+                renderRating();
+                alert(`⭐ Успешно отправлено звезд: +${amount}!`);
             }
+        }
+
+        function adminGiveStars() {
+            const inputVal = parseInt(document.getElementById('admin-star-input').value);
+            if (isNaN(inputVal) || inputVal <= 0) {
+                alert("Введите корректное число звёзд!");
+                return;
+            }
+            giveStarToStudent(inputVal);
         }
 
         function toggleEditBio() {
@@ -555,6 +650,7 @@
                 closeStudentModal();
                 updateAttendanceStats();
                 renderStudents(document.getElementById('search-input').value);
+                renderRating();
             }
         }
 
