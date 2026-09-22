@@ -43,7 +43,7 @@
                 </button>
             </div>
 
-            <!-- БЫСТРАЯ ОТЛАДКА ДЛЯ СТАРОСТ И УЧИТЕЛЯ -->
+            <!-- БЫСТРАЯ ОТЛАДКА -->
             <div class="border-t border-slate-100 pt-4">
                 <p class="text-[11px] text-slate-400 mb-2 font-semibold">⚡ Быстрый вход (Отладка):</p>
                 <div class="grid grid-cols-2 gap-2">
@@ -60,7 +60,12 @@
         
         <!-- Верхняя панель -->
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-            <div id="current-user-badge" class="text-sm font-medium text-slate-600"></div>
+            <div class="flex items-center gap-3">
+                <div id="current-user-badge" class="text-sm font-medium text-slate-600"></div>
+                <div id="my-wallet" class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-amber-200 shadow-sm flex items-center gap-1 hidden">
+                    ⭐ Мои звёзды: <span id="my-wallet-stars">5</span>
+                </div>
+            </div>
             <div class="flex items-center gap-2">
                 <button id="absent-report-btn" onclick="generateAbsentReport()" class="hidden bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-emerald-200">
                     Отчет по отсутствующим
@@ -78,7 +83,7 @@
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
 
-        <!-- Статистика посещаемости (без плашки "Всего учеников") -->
+        <!-- Статистика посещаемости -->
         <div id="attendance-stats" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 hidden">
             <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
@@ -96,9 +101,9 @@
             </div>
         </div>
 
-        <!-- Именинники -->
+        <!-- Именинники (С умным расчетом дней) -->
         <div id="birthdays-section" class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 hidden">
-            <h4 class="font-bold text-sm text-indigo-900 mb-3">🎂 Именинники на этой неделе</h4>
+            <h4 class="font-bold text-sm text-indigo-900 mb-3">🎂 Именинники (на этой неделе и рядом)</h4>
             <div id="birthdays-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
@@ -111,7 +116,7 @@
             <p id="announcement-text" class="text-sm text-slate-600">Загрузка объявлений...</p>
         </div>
 
-        <!-- Рейтинг класса (Топ по звёздам и посещаемости) -->
+        <!-- Рейтинг класса -->
         <div class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm mb-8">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
                 <h3 class="font-bold text-lg text-indigo-900">🏆 Топ класса</h3>
@@ -123,7 +128,7 @@
             <div id="rating-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
-        <!-- Классный руководитель (Без лишних стикеров, с красивой фиолетовой рамкой) -->
+        <!-- Классный руководитель -->
         <section id="teacher-section" class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-3xl shadow-xl text-white p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 border-4 border-purple-300/60 ring-4 ring-purple-100">
             <div class="relative group">
                 <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-36 h-36 md:w-44 md:h-44 rounded-2xl object-cover shadow-lg border-4 border-white/30 bg-purple-900" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
@@ -154,9 +159,9 @@
         Портал 7 «3» класса
     </footer>
 
-    <!-- Модальное окно ученика со Звёздами ⭐ и Био -->
-    <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+    <!-- Модальное окно ученика -->
+    <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <div class="text-center mb-4">
                 <div id="modal-img-container" class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden shadow-inner bg-indigo-50 flex items-center justify-center text-indigo-600 text-2xl font-bold">
@@ -169,11 +174,16 @@
                     ⭐ Звёзды: <span id="modal-stars-count">5</span>
                 </div>
 
-                <!-- Блок отправки звёзд (Разделен для старост и учителя) -->
+                <!-- Блок отправки звёзд -->
                 <div id="give-star-container" class="mt-3 hidden">
+                    <div id="student-star-box" class="hidden">
+                        <button onclick="studentGiveStar()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition">
+                            ⭐ Подарить свою звезду (1 шт)
+                        </button>
+                    </div>
                     <div id="starosta-star-box" class="hidden">
                         <button onclick="giveStarToStudent(1)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition">
-                            ⭐ Отправить звезду (+1)
+                            ⭐ Отправить звезду старосты (+1)
                         </button>
                     </div>
                     <div id="admin-star-box" class="hidden flex gap-2 items-center justify-center">
@@ -185,8 +195,40 @@
                 </div>
 
                 <p id="modal-birth" class="text-sm text-slate-500 mt-2">Дата рождения</p>
+                <p id="modal-birthday-countdown" class="text-xs font-semibold text-indigo-600 mt-1"></p>
             </div>
             
+            <!-- МАГАЗИН ПОДАРКОВ И ПОЖЕЛАНИЙ -->
+            <div id="gifts-section" class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200 mb-4">
+                <h4 class="text-xs font-bold text-amber-900 uppercase mb-2">🎁 Подарить классный подарок и комментарий</h4>
+                <div class="grid grid-cols-3 gap-2 mb-3">
+                    <button onclick="sendGift('🍕 Пицца в столовой', 10)" class="bg-white p-2 rounded-lg border border-amber-200 hover:bg-amber-100 text-center transition shadow-sm">
+                        <div class="text-lg">🍕</div>
+                        <div class="text-[10px] font-bold text-amber-800">Пицца</div>
+                        <div class="text-[9px] text-amber-600">10 ⭐</div>
+                    </button>
+                    <button onclick="sendGift('🎮 Час без ДЗ', 15)" class="bg-white p-2 rounded-lg border border-amber-200 hover:bg-amber-100 text-center transition shadow-sm">
+                        <div class="text-lg">🎮</div>
+                        <div class="text-[10px] font-bold text-amber-800">Без ДЗ</div>
+                        <div class="text-[9px] text-amber-600">15 ⭐</div>
+                    </button>
+                    <button onclick="sendGift('👑 Корона 7.3', 5)" class="bg-white p-2 rounded-lg border border-amber-200 hover:bg-amber-100 text-center transition shadow-sm">
+                        <div class="text-lg">👑</div>
+                        <div class="text-[10px] font-bold text-amber-800">Корона</div>
+                        <div class="text-[9px] text-amber-600">5 ⭐</div>
+                    </button>
+                </div>
+                <input type="text" id="gift-comment-input" placeholder="Напишите поздравление или комментарий..." class="w-full bg-white border border-amber-200 p-2 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 mb-2">
+            </div>
+
+            <!-- СПИСОК ПОЛУЧЕННЫХ ПОДАРКОВ И КОММЕНТАРИЕВ -->
+            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
+                <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">💬 Подарки и пожелания</label>
+                <div id="modal-gifts-list" class="space-y-2 max-h-32 overflow-y-auto text-xs text-slate-600">
+                    <p class="italic text-slate-400">Пока никто ничего не отправил...</p>
+                </div>
+            </div>
+
             <!-- О себе / Био -->
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
                 <div class="flex justify-between items-center mb-1">
@@ -260,7 +302,10 @@
         let currentUserName = localStorage.getItem('user_name') || null;
         let currentStudentId = null;
         let currentRatingMode = 'stars';
-        const todayDateKey = new Date().toISOString().slice(0, 10);
+        
+        // Автоматически определяем сегодняшнюю актуальную дату
+        const todayDateObj = new Date();
+        const todayDateKey = todayDateObj.toISOString().slice(0, 10);
 
         window.onload = function() {
             if (currentUserRole && currentUserName) {
@@ -268,8 +313,14 @@
             }
             setupNameAutocomplete();
             loadAnnouncement();
-            checkBirthdaysThisWeek();
+            checkBirthdays();
+            displayTodayDate();
         };
+
+        function displayTodayDate() {
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('today-date-badge').textContent = `📅 Сегодня: ${todayDateObj.toLocaleDateString('ru-RU', options)}`;
+        }
 
         function setupNameAutocomplete() {
             const input = document.getElementById('login-name-input');
@@ -353,6 +404,7 @@
             document.getElementById('main-content').classList.remove('hidden');
 
             const badge = document.getElementById('current-user-badge');
+            const wallet = document.getElementById('my-wallet');
             const absentReportBtn = document.getElementById('absent-report-btn');
             const editAnnBtn = document.getElementById('edit-announcement-btn');
             const statsBlock = document.getElementById('attendance-stats');
@@ -365,6 +417,17 @@
             } else if (currentUserRole === 'guest') roleTitle = 'Гость';
 
             badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (${roleTitle})`;
+
+            if (currentUserRole === 'student' || currentUserRole === 'starosta') {
+                const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+                if (me) {
+                    wallet.classList.remove('hidden');
+                    document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '5';
+                }
+            } else {
+                wallet.classList.add('hidden');
+            }
+
             absentReportBtn.classList.toggle('hidden', currentUserRole === 'student' || currentUserRole === 'guest');
             editAnnBtn.classList.toggle('hidden', currentUserRole !== 'admin');
             statsBlock.classList.toggle('hidden', currentUserRole === 'guest');
@@ -388,41 +451,67 @@
             return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.substring(0, 2);
         }
 
-        function checkBirthdaysThisWeek() {
-            const now = new Date();
-            const currentDayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
-            const startOfWeek = new Date(now);
-            startOfWeek.setDate(now.getDate() - currentDayOfWeek);
-            startOfWeek.setHours(0, 0, 0, 0);
+        // Находим ученика с максимальным количеством звезд в классе
+        function getTopStarStudentId() {
+            let maxStars = -1;
+            let topId = null;
+            students.forEach(s => {
+                const stars = parseInt(localStorage.getItem(`stars_${s.id}`) || '5');
+                if (stars > maxStars) {
+                    maxStars = stars;
+                    topId = s.id;
+                }
+            });
+            return topId;
+        }
 
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            endOfWeek.setHours(23, 59, 59, 999);
+        function getBirthdayStatusText(birthStr) {
+            const parts = birthStr.split('.');
+            if (parts.length !== 3) return "";
+            const bMonth = parseInt(parts[1]) - 1;
+            const bDay = parseInt(parts[0]);
+            
+            const currentYear = todayDateObj.getFullYear();
+            let bDate = new Date(currentYear, bMonth, bDay);
+            
+            const diffTime = bDate.setHours(0,0,0,0) - new Date(todayDateObj.getFullYear(), todayDateObj.getMonth(), todayDateObj.getDate()).setHours(0,0,0,0);
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-            const thisWeekBirthdays = students.filter(s => {
+            if (diffDays === 0) return "🎂 День рождения СЕГОДНЯ!";
+            if (diffDays === -1) return "🎂 День рождения БЫЛ ВЧЕРА";
+            if (diffDays < 0 && diffDays >= -7) return `🎂 День рождения был ${Math.abs(diffDays)} дн. назад`;
+            if (diffDays === 1) return "🎂 День рождения ЗАВТРА!";
+            if (diffDays > 1 && diffDays <= 7) return `🎂 День рождения через ${diffDays} дн.`;
+            return `Дата: ${birthStr.substring(0, 5)}`;
+        }
+
+        function checkBirthdays() {
+            const section = document.getElementById('birthdays-section');
+            const listEl = document.getElementById('birthdays-list');
+
+            const currentYear = todayDateObj.getFullYear();
+            const relevant = students.filter(s => {
                 const parts = s.birth.split('.');
                 if (parts.length === 3) {
                     const bMonth = parseInt(parts[1]) - 1;
                     const bDay = parseInt(parts[0]);
-                    const bDateThisYear = new Date(now.getFullYear(), bMonth, bDay);
-                    return bDateThisYear >= startOfWeek && bDateThisYear <= endOfWeek;
+                    let bDate = new Date(currentYear, bMonth, bDay);
+                    const diffDays = Math.round((bDate - todayDateObj) / (1000 * 60 * 60 * 24));
+                    return diffDays >= -2 && diffDays <= 7;
                 }
                 return false;
             });
 
-            const section = document.getElementById('birthdays-section');
-            const listEl = document.getElementById('birthdays-list');
-
-            if (thisWeekBirthdays.length > 0) {
+            if (relevant.length > 0) {
                 listEl.innerHTML = '';
-                thisWeekBirthdays.forEach(s => {
+                relevant.forEach(s => {
                     const card = document.createElement('div');
                     card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center gap-3";
                     card.innerHTML = `
                         <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">${getInitials(s.name)}</div>
                         <div>
                             <div class="font-semibold text-xs text-slate-800 line-clamp-1">${s.name}</div>
-                            <div class="text-[11px] text-indigo-600 font-medium">Дата: ${s.birth.substring(0, 5)}</div>
+                            <div class="text-[11px] text-indigo-600 font-semibold">${getBirthdayStatusText(s.birth)}</div>
                         </div>
                     `;
                     listEl.appendChild(card);
@@ -447,7 +536,7 @@
 
         function generateAbsentReport() {
             const absentList = students.filter(s => localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true').map(s => s.name);
-            const report = `Отчет об отсутствующих на ${new Date().toLocaleDateString('ru-RU')} (7 «3»):\n` + (absentList.length === 0 ? "Все присутствуют!" : absentList.map((n, i) => `${i+1}. ${n}`).join('\n'));
+            const report = `Отчет об отсутствующих на ${todayDateObj.toLocaleDateString('ru-RU')} (7 «3»):\n` + (absentList.length === 0 ? "Все присутствуют!" : absentList.map((n, i) => `${i+1}. ${n}`).join('\n'));
             navigator.clipboard.writeText(report).then(() => alert("Отчет скопирован!"));
         }
 
@@ -480,9 +569,11 @@
                 sorted.sort((a, b) => {
                     let absA = localStorage.getItem(`absent_${a.id}_${todayDateKey}`) === 'true' ? 1 : 0;
                     let absB = localStorage.getItem(`absent_${b.id}_${todayDateKey}`) === 'true' ? 1 : 0;
-                    return absA - absB; // Сначала присутствующие
+                    return absA - absB;
                 });
             }
+
+            const topStarId = getTopStarStudentId();
 
             sorted.slice(0, 6).forEach((s, idx) => {
                 const card = document.createElement('div');
@@ -496,11 +587,13 @@
                     badgeVal = isAbs ? '❌ Отсутствует' : '✅ Присутствует';
                 }
 
+                let extraTag = s.id === topStarId && currentRatingMode === 'stars' ? `<span class="text-[9px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">🏆 Лидер</span>` : '';
+
                 card.innerHTML = `
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">${idx + 1}</div>
                         <div>
-                            <div class="font-semibold text-xs text-slate-800 line-clamp-1">${s.name}</div>
+                            <div class="font-semibold text-xs text-slate-800 line-clamp-1 flex items-center gap-1">${s.name} ${extraTag}</div>
                             <div class="text-[10px] text-slate-400">Ученик 7 «3»</div>
                         </div>
                     </div>
@@ -513,12 +606,15 @@
         function renderStudents(filter = '') {
             const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
+            const topStarId = getTopStarStudentId();
+
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const card = document.createElement('div');
                 const isStarosta = starostaNames.includes(student.name);
+                const isTopStar = student.id === topStarId;
                 
-                if (isStarosta) {
-                    card.className = "bg-gradient-to-br from-violet-50 to-indigo-50 rounded-2xl p-5 shadow-md border-2 border-violet-300 hover:shadow-lg transition cursor-pointer flex flex-col items-center text-center group relative";
+                if (isStarosta || isTopStar) {
+                    card.className = "bg-gradient-to-br from-violet-50 to-amber-50 rounded-2xl p-5 shadow-md border-2 border-amber-300 hover:shadow-lg transition cursor-pointer flex flex-col items-center text-center group relative";
                 } else {
                     card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer flex flex-col items-center text-center group relative";
                 }
@@ -527,9 +623,17 @@
                 const starsCount = parseInt(localStorage.getItem(`stars_${student.id}`) || '5');
                 
                 let badgeHtml = `<div class="absolute top-3 right-3 bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 shadow-sm">⭐ ${starsCount}</div>`;
+                
+                let tagsContainer = `<div class="absolute top-3 left-3 flex flex-col gap-1 items-start">`;
                 if (isStarosta) {
-                    badgeHtml += `<div class="absolute top-3 left-3 bg-violet-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Староста</div>`;
+                    tagsContainer += `<span class="bg-violet-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Староста</span>`;
                 }
+                if (isTopStar) {
+                    tagsContainer += `<span class="bg-amber-400 text-amber-950 text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Лидер по звёздам</span>`;
+                }
+                tagsContainer += `</div>`;
+
+                badgeHtml += tagsContainer;
 
                 card.innerHTML = `
                     ${badgeHtml}
@@ -549,6 +653,7 @@
             currentStudentId = student.id;
             document.getElementById('modal-name').textContent = student.name;
             document.getElementById('modal-birth').textContent = currentUserRole === 'guest' ? "Дата рождения скрыта" : `Дата рождения: ${student.birth}`;
+            document.getElementById('modal-birthday-countdown').textContent = getBirthdayStatusText(student.birth);
             document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '5';
 
             const bioText = localStorage.getItem(`bio_${student.id}`) || "Пока ничего не написано...";
@@ -560,22 +665,32 @@
 
             // Управление отправкой звезд
             const giveStarContainer = document.getElementById('give-star-container');
+            const studentStarBox = document.getElementById('student-star-box');
             const starostaBox = document.getElementById('starosta-star-box');
             const adminBox = document.getElementById('admin-star-box');
 
-            if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
+            if (currentUserRole !== 'guest') {
                 giveStarContainer.classList.remove('hidden');
-                if (currentUserRole === 'starosta') {
-                    starostaBox.classList.remove('hidden');
-                    adminBox.classList.add('hidden');
-                } else if (currentUserRole === 'admin') {
+                studentStarBox.classList.add('hidden');
+                starostaBox.classList.add('hidden');
+                adminBox.classList.add('hidden');
+
+                if (currentUserRole === 'admin') {
                     adminBox.classList.remove('hidden');
-                    starostaBox.classList.add('hidden');
                     document.getElementById('admin-star-input').value = '1';
+                } else if (currentUserRole === 'starosta') {
+                    starostaBox.classList.remove('hidden');
+                } else if (currentUserRole === 'student') {
+                    const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+                    if (me && me.id !== student.id) {
+                        studentStarBox.classList.remove('hidden');
+                    }
                 }
             } else {
                 giveStarContainer.classList.add('hidden');
             }
+
+            renderGiftsList(student.id);
 
             const absenceContainer = document.getElementById('absence-container');
             const notesContainer = document.getElementById('notes-container');
@@ -614,6 +729,29 @@
             }
         }
 
+        function studentGiveStar() {
+            const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+            if (!me) return;
+            let myStars = parseInt(localStorage.getItem(`stars_${me.id}`) || '5');
+            if (myStars < 1) {
+                alert("У вас недостаточно звёзд для отправки!");
+                return;
+            }
+            // Списываем у себя
+            myStars -= 1;
+            localStorage.setItem(`stars_${me.id}`, myStars);
+            document.getElementById('my-wallet-stars').textContent = myStars;
+
+            // Добавляем получателю
+            let targetStars = parseInt(localStorage.getItem(`stars_${currentStudentId}`) || '5') + 1;
+            localStorage.setItem(`stars_${currentStudentId}`, targetStars);
+            document.getElementById('modal-stars-count').textContent = targetStars;
+
+            renderStudents(document.getElementById('search-input').value);
+            renderRating();
+            alert("⭐ Вы успешно подарили свою звезду!");
+        }
+
         function adminGiveStars() {
             const inputVal = parseInt(document.getElementById('admin-star-input').value);
             if (isNaN(inputVal) || inputVal <= 0) {
@@ -621,6 +759,60 @@
                 return;
             }
             giveStarToStudent(inputVal);
+        }
+
+        function sendGift(giftName, cost) {
+            const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+            if (!me && currentUserRole === 'student') {
+                alert("Авторизуйтесь как ученик, чтобы дарить подарки!");
+                return;
+            }
+
+            if (currentUserRole === 'student') {
+                let myStars = parseInt(localStorage.getItem(`stars_${me.id}`) || '5');
+                if (myStars < cost) {
+                    alert(`Недостаточно звёзд! Нужно ${cost} ⭐, а у вас ${myStars} ⭐.`);
+                    return;
+                }
+                myStars -= cost;
+                localStorage.setItem(`stars_${me.id}`, myStars);
+                document.getElementById('my-wallet-stars').textContent = myStars;
+            }
+
+            const comment = document.getElementById('gift-comment-input').value.trim() || "Без комментариев";
+            const senderName = currentUserName || "Аноним";
+
+            let gifts = JSON.parse(localStorage.getItem(`gifts_${currentStudentId}`) || '[]');
+            gifts.unshift({ sender: senderName, gift: giftName, comment: comment, date: new Date().toLocaleDateString('ru-RU') });
+            localStorage.setItem(`gifts_${currentStudentId}`, JSON.stringify(gifts));
+
+            document.getElementById('gift-comment-input').value = '';
+            renderGiftsList(currentStudentId);
+            renderStudents(document.getElementById('search-input').value);
+            renderRating();
+            alert(`🎁 Подарок "${giftName}" успешно отправлен!`);
+        }
+
+        function renderGiftsList(studentId) {
+            const listEl = document.getElementById('modal-gifts-list');
+            let gifts = JSON.parse(localStorage.getItem(`gifts_${studentId}`) || '[]');
+            if (gifts.length === 0) {
+                listEl.innerHTML = `<p class="italic text-slate-400">Пока никто ничего не отправил...</p>`;
+                return;
+            }
+            listEl.innerHTML = '';
+            gifts.forEach(g => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-2.5 rounded-lg border border-amber-100 shadow-sm";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-bold text-amber-900">${g.gift} от ${g.sender}</span>
+                        <span class="text-[10px] text-slate-400">${g.date}</span>
+                    </div>
+                    <p class="text-slate-600 italic">«${g.comment}»</p>
+                `;
+                listEl.appendChild(div);
+            });
         }
 
         function toggleEditBio() {
