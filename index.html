@@ -70,9 +70,9 @@
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
             <div id="current-user-badge" class="text-sm font-medium text-slate-600"></div>
             <div class="flex items-center gap-2">
-                <!-- Фишка 1: Кнопка быстрого отчета по отсутствующим -->
+                <!-- Кнопка отчета по отсутствующим -->
                 <button id="absent-report-btn" onclick="generateAbsentReport()" class="hidden bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-emerald-200">
-                    📊 Отчет по отсутствующим
+                    Отчет по отсутствующим
                 </button>
                 <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
                     Выйти
@@ -87,19 +87,16 @@
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
 
-        <!-- Фишка 2: Блок дней рождения (именинники недели) -->
-        <div id="birthdays-section" class="bg-gradient-to-r from-violet-500 to-indigo-500 text-white p-5 rounded-3xl shadow-md mb-8 flex items-center gap-4 hidden">
-            <div class="text-3xl">🎉</div>
-            <div>
-                <h4 class="font-bold text-sm mb-1">Именинники этого месяца / недели:</h4>
-                <p id="birthdays-list" class="text-xs text-violet-100"></p>
-            </div>
+        <!-- Блок именинников текущей недели -->
+        <div id="birthdays-section" class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 hidden">
+            <h4 class="font-bold text-sm text-indigo-900 mb-3 flex items-center gap-2">Именинники на этой неделе</h4>
+            <div id="birthdays-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
-        <!-- Фишка 3: Доска объявлений класса -->
+        <!-- Доска объявлений класса -->
         <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 relative">
             <div class="flex justify-between items-center mb-2">
-                <h4 class="font-bold text-sm text-indigo-900 flex items-center gap-2">📌 Важное объявление для класса</h4>
+                <h4 class="font-bold text-sm text-indigo-900">Важное объявление для класса</h4>
                 <button id="edit-announcement-btn" onclick="editAnnouncement()" class="hidden text-xs text-indigo-600 hover:underline font-semibold">Редактировать</button>
             </div>
             <p id="announcement-text" class="text-sm text-slate-600">Загрузка объявлений...</p>
@@ -168,7 +165,6 @@
 
     <!-- Скрипт -->
     <script>
-        // Фиксированный состав класса (без возможности добавления/удаления)
         const students = [
             { id: 1, name: "Афанасьев Марк Константинович", birth: "08.11.2013" },
             { id: 2, name: "Афонин Александр Андреевич", birth: "21.09.2013" },
@@ -222,7 +218,7 @@
                 showMainSite();
             }
             loadAnnouncement();
-            checkBirthdays();
+            checkBirthdaysThisWeek();
         };
 
         function loginAs(role) {
@@ -314,15 +310,26 @@
             return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.substring(0, 2);
         }
 
-        // Фишка: Автопроверка дней рождения в этом месяце
-        function checkBirthdays() {
-            const currentMonth = new Date().getMonth() + 1; // 1-12
-            const monthNames = ["", "январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе", "сентябре", "октябре", "ноябре", "декабре"];
-            
-            const upcoming = students.filter(s => {
+        // Проверка дней рождения на текущей неделе
+        function checkBirthdaysThisWeek() {
+            const now = new Date();
+            // Получаем начало и конец текущей недели (понедельник - воскресенье)
+            const currentDayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - currentDayOfWeek);
+            startOfWeek.setHours(0, 0, 0, 0);
+
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            endOfWeek.setHours(23, 59, 59, 999);
+
+            const thisWeekBirthdays = students.filter(s => {
                 const parts = s.birth.split('.');
                 if (parts.length === 3) {
-                    return parseInt(parts[1]) === currentMonth;
+                    const bDay = parseInt(parts[0]);
+                    const bMonth = parseInt(parts[1]) - 1;
+                    const bDateThisYear = new Date(now.getFullYear(), bMonth, bDay);
+                    return bDateThisYear >= startOfWeek && bDateThisYear <= endOfWeek;
                 }
                 return false;
             });
@@ -330,16 +337,32 @@
             const section = document.getElementById('birthdays-section');
             const listEl = document.getElementById('birthdays-list');
 
-            if (upcoming.length > 0) {
-                const names = upcoming.map(s => `${s.name.split(' ')[0]} ${s.birth.substring(0, 5)}`).join(', ');
-                listEl.textContent = `В ${monthNames[currentMonth]} празднуют день рождения: ${names}`;
+            if (thisWeekBirthdays.length > 0) {
+                listEl.innerHTML = '';
+                thisWeekBirthdays.forEach(s => {
+                    const shortName = s.birth.substring(0, 5);
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center gap-3";
+                    card.innerHTML = `
+                        <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">
+                            ${getInitials(s.name)}
+                        </div>
+                        <div>
+                            <div class="font-semibold text-xs text-slate-800 line-clamp-1">${s.name}</div>
+                            <div class="text-[11px] text-indigo-600 font-medium">Дата: ${shortName}</div>
+                        </div>
+                    `;
+                    listEl.appendChild(card);
+                });
                 section.classList.remove('hidden');
+            } else {
+                // Если на этой неделе нет, покажем ближайших за месяц для примера или скроем
+                section.classList.add('hidden');
             }
         }
 
-        // Фишка: Управление объявлением
         function loadAnnouncement() {
-            const saved = localStorage.getItem('class_announcement') || "Добро пожаловать на портал 7 «3» класса! Следите за расписанием и объявлениями.";
+            const saved = localStorage.getItem('class_announcement') || "Добро пожаловать на официальный портал 7 «3» класса.";
             document.getElementById('announcement-text').textContent = saved;
         }
 
@@ -352,25 +375,24 @@
             }
         }
 
-        // Фишка: Быстрый генератор отчета об отсутствующих
         function generateAbsentReport() {
             const absentList = [];
             students.forEach(s => {
                 if (localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true') {
-                    absentList.println ? null : absentList.push(s.name);
+                    absentList.push(s.name);
                 }
             });
 
             const dateStr = new Date().toLocaleDateString('ru-RU');
-            let report = `📋 Отчет об отсутствующих на ${dateStr} (7 «3» класс):\n`;
+            let report = `Отчет об отсутствующих на ${dateStr} (7 «3» класс):\n`;
             if (absentList.length === 0) {
-                report += "Все присутствуют! Никто не болеет и не прогуливает.";
+                report += "Все присутствуют. Пропусков нет.";
             } else {
                 report += absentList.map((name, idx) => `${idx + 1}. ${name}`).join('\n');
             }
 
             navigator.clipboard.writeText(report).then(() => {
-                alert("✅ Отчет скопирован в буфер обмена!\nМожешь вставлять в мессенджер:\n\n" + report);
+                alert("Отчет успешно скопирован в буфер обмена:\n\n" + report);
             }).catch(() => {
                 prompt("Скопируйте текст отчета:", report);
             });
