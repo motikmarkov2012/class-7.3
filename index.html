@@ -19,10 +19,10 @@
             <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-inner">
                 7.3
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Портал класса</h2>
-            <p class="text-slate-500 text-sm mb-6">Выберите вашу роль для входа.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Портал 7 «3» класса</h2>
+            <p class="text-slate-500 text-sm mb-6">Выберите вашу роль для авторизации.</p>
 
-            <div class="space-y-3 mb-6">
+            <div class="space-y-3">
                 <!-- Гость -->
                 <button onclick="loginAs('guest')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Гость</span>
@@ -31,35 +31,34 @@
                 <!-- Ученик -->
                 <button onclick="openPasswordPrompt('student')" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Ученик класса</span>
-                    <span class="text-xs text-indigo-500">Пароль: stud73</span>
+                    <span class="text-xs text-indigo-500">Пароль + ФИО</span>
                 </button>
                 <!-- Староста и помощник -->
                 <button onclick="openPasswordPrompt('starosta')" class="w-full bg-violet-50 hover:bg-violet-100 text-violet-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
-                    <span>Староста и помощник</span>
-                    <span class="text-xs text-violet-500">Пароль: starosta73</span>
+                    <span>Староста / Помощник</span>
+                    <span class="text-xs text-violet-500">Пароль + ФИО</span>
                 </button>
                 <!-- Классный руководитель -->
                 <button onclick="openPasswordPrompt('admin')" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold py-3 px-4 rounded-xl transition text-sm flex items-center justify-between">
                     <span>Классный руководитель</span>
-                    <span class="text-xs text-amber-500">Пароль: teacher73</span>
+                    <span class="text-xs text-amber-500">Пароль учителя</span>
                 </button>
             </div>
-            
-            <p class="text-xs text-slate-400">Марков мотик 2012</p>
         </div>
     </div>
 
-    <!-- ОКНО ВВОДА ПАРОЛЯ -->
+    <!-- ОКНО ВВОДА ПАРОЛЯ И ИМЕНИ -->
     <div id="password-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative text-center">
             <button onclick="closePasswordPrompt()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
             <h3 class="text-lg font-bold text-slate-800 mb-2">Авторизация</h3>
-            <p class="text-xs text-slate-500 mb-4" id="password-desc">Введите пароль.</p>
+            <p class="text-xs text-slate-500 mb-4" id="password-desc">Введите ваши данные для входа.</p>
             
+            <input type="text" id="auth-name-input" placeholder="Ваше ФИО (как в списке)..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-3">
             <input type="password" id="secret-pass-input" placeholder="Пароль..." class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm mb-4">
             
-            <button onclick="verifyPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Войти</button>
-            <p id="password-error" class="text-xs text-red-500 mt-2 hidden">Неверный пароль!</p>
+            <button onclick="verifyPassword()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-xl transition text-sm">Войти в систему</button>
+            <p id="password-error" class="text-xs text-red-500 mt-2 hidden">Неверное имя или пароль!</p>
         </div>
     </div>
 
@@ -75,7 +74,7 @@
                     Отчет по отсутствующим
                 </button>
                 <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
-                    Выйти
+                    Сменить аккаунт / Выйти
                 </button>
             </div>
         </div>
@@ -87,9 +86,34 @@
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
 
+        <!-- Статистика посещаемости за сегодня -->
+        <div id="attendance-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 hidden">
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Всего учеников</div>
+                    <div class="text-2xl font-bold text-slate-800" id="stat-total">33</div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">👥</div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Присутствуют</div>
+                    <div class="text-2xl font-bold text-emerald-600" id="stat-present">33</div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">✅</div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Отсутствуют</div>
+                    <div class="text-2xl font-bold text-red-600" id="stat-absent">0</div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold">❌</div>
+            </div>
+        </div>
+
         <!-- Блок именинников текущей недели -->
         <div id="birthdays-section" class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 hidden">
-            <h4 class="font-bold text-sm text-indigo-900 mb-3 flex items-center gap-2">Именинники на этой неделе</h4>
+            <h4 class="font-bold text-sm text-indigo-900 mb-3">Именинники на этой неделе</h4>
             <div id="birthdays-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
@@ -131,7 +155,7 @@
 
     <!-- Футер -->
     <footer class="w-full text-center py-6 text-slate-400 text-sm border-t border-slate-200 mt-12">
-        Марков мотик 2012
+        Портал 7 «3» класса
     </footer>
 
     <!-- Модальное окно ученика -->
@@ -202,6 +226,7 @@
         ];
 
         let currentUserRole = localStorage.getItem('user_role') || null;
+        let currentUserName = localStorage.getItem('user_name') || null;
         let pendingRoleType = null;
         let currentStudentId = null;
 
@@ -214,7 +239,7 @@
         const todayDateKey = new Date().toISOString().slice(0, 10);
 
         window.onload = function() {
-            if (currentUserRole) {
+            if (currentUserRole && currentUserName) {
                 showMainSite();
             }
             loadAnnouncement();
@@ -224,7 +249,9 @@
         function loginAs(role) {
             if (role === 'guest') {
                 currentUserRole = 'guest';
+                currentUserName = 'Гость';
                 localStorage.setItem('user_role', 'guest');
+                localStorage.setItem('user_name', 'Гость');
                 showMainSite();
             }
         }
@@ -233,8 +260,17 @@
             pendingRoleType = type;
             document.getElementById('password-modal').classList.remove('hidden');
             document.getElementById('password-modal').classList.add('flex');
+            document.getElementById('auth-name-input').value = '';
             document.getElementById('secret-pass-input').value = '';
             document.getElementById('password-error').classList.add('hidden');
+
+            if (type === 'admin') {
+                document.getElementById('auth-name-input').placeholder = "Имя учителя / отладка...";
+                document.getElementById('password-desc').textContent = "Введите пароль классного руководителя.";
+            } else {
+                document.getElementById('auth-name-input').placeholder = "Ваше ФИО полностью...";
+                document.getElementById('password-desc').textContent = "Введите ваши данные для подтверждения личности.";
+            }
         }
 
         function closePasswordPrompt() {
@@ -243,6 +279,7 @@
         }
 
         function verifyPassword() {
+            const nameInput = document.getElementById('auth-name-input').value.trim();
             const passInput = document.getElementById('secret-pass-input').value.trim();
             const errorElement = document.getElementById('password-error');
 
@@ -251,15 +288,35 @@
                 return;
             }
 
+            // Для администратора разрешаем отладку (если ввели пару символов)
+            if (pendingRoleType === 'admin') {
+                if (nameInput.length < 1) {
+                    errorElement.classList.remove('hidden');
+                    return;
+                }
+                currentUserName = nameInput;
+            } else {
+                // Для учеников и старост проверяем точное или частичное совпадение с базой класса
+                const found = students.find(s => s.name.toLowerCase() === nameInput.toLowerCase() || s.name.toLowerCase().includes(nameInput.toLowerCase()));
+                if (!found && nameInput.length < 5) {
+                    errorElement.classList.remove('hidden');
+                    return;
+                }
+                currentUserName = found ? found.name : nameInput;
+            }
+
             currentUserRole = pendingRoleType;
-            localStorage.setItem('user_role', pendingRoleType);
+            localStorage.setItem('user_role', currentUserRole);
+            localStorage.setItem('user_name', currentUserName);
             closePasswordPrompt();
             showMainSite();
         }
 
         function logout() {
             localStorage.removeItem('user_role');
+            localStorage.removeItem('user_name');
             currentUserRole = null;
+            currentUserName = null;
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('auth-screen').classList.add('flex');
@@ -272,29 +329,48 @@
             const badge = document.getElementById('current-user-badge');
             const absentReportBtn = document.getElementById('absent-report-btn');
             const editAnnBtn = document.getElementById('edit-announcement-btn');
+            const statsBlock = document.getElementById('attendance-stats');
             const dateBadge = document.getElementById('today-date-badge');
 
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             dateBadge.textContent = "Сегодня: " + new Date().toLocaleDateString('ru-RU', options);
 
             if (currentUserRole === 'guest') {
-                badge.innerHTML = "Режим: <b>Гость</b> (ограниченный просмотр)";
+                badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (Гость)`;
                 absentReportBtn.classList.add('hidden');
                 editAnnBtn.classList.add('hidden');
+                statsBlock.classList.add('hidden');
             } else if (currentUserRole === 'student') {
-                badge.innerHTML = "Режим: <b>Ученик класса</b>";
+                badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (Ученик)`;
                 absentReportBtn.classList.add('hidden');
                 editAnnBtn.classList.add('hidden');
+                statsBlock.classList.remove('hidden');
             } else if (currentUserRole === 'starosta') {
-                badge.innerHTML = "Режим: <b>Староста / Помощник</b>";
+                badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (Староста)`;
                 absentReportBtn.classList.remove('hidden');
                 editAnnBtn.classList.add('hidden');
+                statsBlock.classList.remove('hidden');
             } else if (currentUserRole === 'admin') {
-                badge.innerHTML = "Режим: <b>Классный руководитель</b>";
+                badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (Классный руководитель)`;
                 absentReportBtn.classList.remove('hidden');
                 editAnnBtn.classList.remove('hidden');
+                statsBlock.classList.remove('hidden');
             }
+
+            updateAttendanceStats();
             renderStudents();
+        }
+
+        function updateAttendanceStats() {
+            let absentCount = 0;
+            students.forEach(s => {
+                if (localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true') {
+                    absentCount++;
+                }
+            });
+            document.getElementById('stat-total').textContent = students.length;
+            document.getElementById('stat-present').textContent = students.length - absentCount;
+            document.getElementById('stat-absent').textContent = absentCount;
         }
 
         function formatName(fullName) {
@@ -310,10 +386,8 @@
             return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.substring(0, 2);
         }
 
-        // Проверка дней рождения на текущей неделе
         function checkBirthdaysThisWeek() {
             const now = new Date();
-            // Получаем начало и конец текущей недели (понедельник - воскресенье)
             const currentDayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
             const startOfWeek = new Date(now);
             startOfWeek.setDate(now.getDate() - currentDayOfWeek);
@@ -356,7 +430,6 @@
                 });
                 section.classList.remove('hidden');
             } else {
-                // Если на этой неделе нет, покажем ближайших за месяц для примера или скроем
                 section.classList.add('hidden');
             }
         }
@@ -500,6 +573,7 @@
                 const currentStatus = localStorage.getItem(key) === 'true';
                 localStorage.setItem(key, !currentStatus);
                 closeStudentModal();
+                updateAttendanceStats();
                 renderStudents(document.getElementById('search-input').value);
             }
         }
