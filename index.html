@@ -55,24 +55,26 @@
         </div>
     </div>
 
+    <!-- БОКОВАЯ КНОПКА ПРОФИЛЯ (УПРАВЛЕНИЕ ВСЕМ) -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button onclick="openProfileModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-2xl flex items-center gap-2 font-bold text-sm transition transform hover:scale-105 border-2 border-white">
+            <span class="text-xl">👤</span>
+            <span id="floating-profile-name" class="hidden sm:inline">Профиль</span>
+        </button>
+    </div>
+
     <!-- ОСНОВНОЙ САЙТ -->
     <div id="main-content" class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow hidden">
         
-        <!-- Верхняя панель -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+        <!-- Верхняя панель (минимализм) -->
+        <div class="flex justify-between items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
             <div class="flex items-center gap-3">
                 <div id="current-user-badge" class="text-sm font-medium text-slate-600"></div>
                 <div id="my-wallet" class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-amber-200 shadow-sm flex items-center gap-1 hidden">
                     ⭐ Мои звёзды: <span id="my-wallet-stars">5</span>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="openProfileModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-indigo-200">
-                    👤 Мой профиль
-                </button>
-                <button id="absent-report-btn" onclick="generateAbsentReport()" class="hidden bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-emerald-200">
-                    Отчет по отсутствующим
-                </button>
+            <div>
                 <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
                     Выйти
                 </button>
@@ -80,11 +82,29 @@
         </div>
 
         <!-- Шапка -->
-        <header class="text-center mb-10">
+        <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-extrabold text-indigo-900 mb-2">7 «3» Класс</h1>
             <p class="text-slate-500 text-lg">Официальная страница нашего дружного класса</p>
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
+
+        <!-- ТЕЛЕГРАМ-ИСТОРИИ (STORIES) -->
+        <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-sm text-indigo-900">📸 Истории класса</h3>
+                <span class="text-[11px] text-slate-400">Нажмите на историю для просмотра</span>
+            </div>
+            <div id="stories-container" class="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+                <!-- Кнопка добавления истории -->
+                <div onclick="openStoryModal()" class="flex flex-col items-center shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-indigo-400 flex items-center justify-center bg-indigo-50 group-hover:bg-indigo-100 transition shadow-inner">
+                        <span class="text-2xl text-indigo-600 font-bold">+</span>
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-600 mt-1">Ваша история</span>
+                </div>
+                <!-- Список историй рендерится через JS -->
+            </div>
+        </div>
 
         <!-- Сетка информационных виджетов (Исторический факт, Расписание, Цитаты) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -113,9 +133,7 @@
                             <button onclick="switchSchedTab('lessons')" id="sched-lessons-btn" class="px-2 py-1 text-slate-600 rounded">Уроки</button>
                         </div>
                     </div>
-                    <div id="sched-content" class="text-xs text-slate-600 space-y-1">
-                        <!-- Сюда динамически вставляется расписание -->
-                    </div>
+                    <div id="sched-content" class="text-xs text-slate-600 space-y-1"></div>
                 </div>
             </div>
 
@@ -127,7 +145,7 @@
                             <span class="text-lg">💬</span>
                             <h4 class="font-bold text-sm text-indigo-900">Любимые цитаты</h4>
                         </div>
-                        <button onclick="openQuotesModal()" class="text-[11px] text-indigo-600 hover:underline font-semibold">+ Добавить</button>
+                        <button onclick="openQuotesModal()" class="text-[11px] text-indigo-600 hover:underline font-semibold">+ Изменить</button>
                     </div>
                     <div id="quotes-preview-list" class="text-xs text-slate-600 space-y-2 max-h-32 overflow-y-auto">
                         <p class="italic text-slate-400">Пока никто не добавил цитаты...</p>
@@ -162,7 +180,7 @@
         <div class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm mb-8">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-lg text-indigo-900">🏆 Топ класса по звёздам</h3>
-                <span class="text-xs text-slate-400 font-medium">Лидер выделен короной</span>
+                <span class="text-xs text-slate-400 font-medium">Лидер класса выделен короной</span>
             </div>
             <div id="rating-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
@@ -198,24 +216,96 @@
         Портал 7 «3» класса
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО: ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ -->
+    <!-- МОДАЛЬНОЕ ОКНО: ПРОФИЛЬ И УПРАВЛЕНИЕ -->
     <div id="profile-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative my-8 border border-slate-100">
             <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-xl font-bold text-slate-800 mb-4">👤 Настройки профиля</h3>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">⚙️ Управление профилем</h3>
             
             <div class="space-y-4">
+                <!-- Выбор аватарки с галереей и плюсиком -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ссылка на вашу аватарку (URL изображения)</label>
-                    <input type="text" id="profile-avatar-input" placeholder="https://example.com/photo.jpg" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <p class="text-[10px] text-slate-400 mt-1">Вы можете вставить ссылку на картинку из интернета.</p>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Аватарка профиля</label>
+                    <div class="flex items-center gap-4 mb-3">
+                        <div id="profile-preview-avatar" class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg overflow-hidden border-2 border-indigo-200 shadow-inner">
+                            👤
+                        </div>
+                        <div class="flex-grow">
+                            <input type="text" id="profile-avatar-input" placeholder="Вставьте URL картинки..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <button onclick="toggleGallery()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 p-2.5 rounded-xl font-bold text-sm transition" title="Открыть галерею аватарок">
+                            ➕
+                        </button>
+                    </div>
+                    
+                    <!-- Галерея аватарок -->
+                    <div id="avatar-gallery" class="bg-slate-50 p-3 rounded-2xl border border-slate-200 hidden mb-3">
+                        <div class="text-[11px] font-semibold text-slate-500 mb-2">Выберите из галереи:</div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" onclick="selectGalleryAvatar(this.src)" class="w-12 h-12 rounded-full object-cover cursor-pointer hover:opacity-80 border-2 border-white shadow">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" onclick="selectGalleryAvatar(this.src)" class="w-12 h-12 rounded-full object-cover cursor-pointer hover:opacity-80 border-2 border-white shadow">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200" onclick="selectGalleryAvatar(this.src)" class="w-12 h-12 rounded-full object-cover cursor-pointer hover:opacity-80 border-2 border-white shadow">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200" onclick="selectGalleryAvatar(this.src)" class="w-12 h-12 rounded-full object-cover cursor-pointer hover:opacity-80 border-2 border-white shadow">
+                        </div>
+                    </div>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">О себе / Интересы</label>
                     <textarea id="profile-bio-input" placeholder="Напишите пару слов о себе..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-20 resize-none"></textarea>
                 </div>
+
                 <button onclick="saveMyProfile()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
                     Сохранить изменения
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО: ДОБАВИТЬ ИСТОРИЮ (STORY) -->
+    <div id="story-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative my-8">
+            <button onclick="closeStoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">📸 Новая история</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ссылка на фото/картинку истории</label>
+                    <input type="text" id="story-img-input" placeholder="https://example.com/story.jpg" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Текст / Подпись</label>
+                    <textarea id="story-text-input" placeholder="Пара слов о моменте..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-20 resize-none"></textarea>
+                </div>
+                <button onclick="publishStory()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
+                    Опубликовать историю
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПРОСМОТР ИСТОРИИ С ЛАЙКАМИ -->
+    <div id="view-story-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-5 relative flex flex-col items-center shadow-2xl border border-slate-800">
+            <button onclick="closeViewStoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+            
+            <div class="flex items-center gap-3 w-full mb-3">
+                <div id="viewer-avatar" class="w-10 h-10 rounded-full bg-indigo-600 overflow-hidden flex items-center justify-center font-bold text-xs"></div>
+                <div>
+                    <div id="viewer-author" class="font-bold text-xs"></div>
+                    <div id="viewer-date" class="text-[10px] text-slate-400"></div>
+                </div>
+            </div>
+
+            <div class="w-full rounded-2xl overflow-hidden bg-slate-800 max-h-80 flex items-center justify-center mb-3">
+                <img id="viewer-img" src="" class="w-full object-cover max-h-80">
+            </div>
+
+            <p id="viewer-text" class="text-xs text-slate-200 text-center mb-4 w-full"></p>
+
+            <div class="flex items-center gap-3 w-full justify-center">
+                <button onclick="likeCurrentStory()" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-6 rounded-xl transition text-xs flex items-center gap-2 shadow">
+                    ❤️ <span id="viewer-likes-count">0</span> Лайк
                 </button>
             </div>
         </div>
@@ -230,7 +320,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Текст публикации</label>
-                    <textarea id="new-post-text" placeholder="Что нового в нашем классе? Поделитесь мыслью или новостью..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-32 resize-none"></textarea>
+                    <textarea id="new-post-text" placeholder="Что нового в нашем классе?..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-32 resize-none"></textarea>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ссылка на картинку (необязательно)</label>
@@ -306,12 +396,11 @@
                 </div>
 
                 <p id="modal-birth" class="text-sm text-slate-500 mt-2">Дата рождения</p>
-                <p id="modal-birthday-countdown" class="text-xs font-semibold text-indigo-600 mt-1"></p>
             </div>
             
             <!-- МАГАЗИН ПОДАРКОВ И ПОЖЕЛАНИЙ -->
             <div id="gifts-section" class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200 mb-4">
-                <h4 class="text-xs font-bold text-amber-900 uppercase mb-2">🎁 Подарить классный подарок и комментарий</h4>
+                <h4 class="text-xs font-bold text-amber-900 uppercase mb-2">🎁 Подарить подарок и комментарий</h4>
                 <div class="grid grid-cols-3 gap-2 mb-3">
                     <button onclick="sendGift('🍕 Пицца в столовой', 10)" class="bg-white p-2 rounded-lg border border-amber-200 hover:bg-amber-100 text-center transition shadow-sm">
                         <div class="text-lg">🍕</div>
@@ -391,9 +480,9 @@
         let currentUserRole = localStorage.getItem('user_role') || null;
         let currentUserName = localStorage.getItem('user_name') || null;
         let currentStudentId = null;
+        let activeStoryIndex = null;
         
         const todayDateObj = new Date();
-        const todayDateKey = todayDateObj.toISOString().slice(0, 10);
 
         window.onload = function() {
             if (currentUserRole && currentUserName) {
@@ -406,6 +495,7 @@
             loadSchedule('bells');
             renderQuotesPreview();
             renderTelegramPosts();
+            renderStories();
         };
 
         function displayTodayDate() {
@@ -413,7 +503,6 @@
             document.getElementById('today-date-badge').textContent = `📅 Сегодня: ${todayDateObj.toLocaleDateString('ru-RU', options)}`;
         }
 
-        // Исторический факт на каждый день года
         function loadHistoryFact() {
             const facts = {
                 "09-23": "23 сентября 1846 года немецкий астроном Иоганн Готфрид Галле открыл планету Нептун на основе расчетов Урвена Леверье.",
@@ -421,11 +510,9 @@
                 "09-25": "25 сентября 1513 года испанский конкистадор Васко Нуньес де Бальбоа первым из европейцев вышел к берегам Тихого океана."
             };
             const monthDay = String(todayDateObj.getMonth() + 1).padStart(2, '0') + '-' + String(todayDateObj.getDate()).padStart(2, '0');
-            const fact = facts[monthDay] || "23 сентября 1999 года NASA потеряло космический аппарат Mars Climate Orbiter из-за путаницы между метрической и британской системами мер!";
-            document.getElementById('history-fact-text').textContent = fact;
+            document.getElementById('history-fact-text').textContent = facts[monthDay] || "23 сентября 1999 года NASA потеряло космический аппарат Mars Climate Orbiter из-за ошибки в расчетах!";
         }
 
-        // Расписание звонков и уроков
         function switchSchedTab(type) {
             const bellsBtn = document.getElementById('sched-bells-btn');
             const lessonsBtn = document.getElementById('sched-lessons-btn');
@@ -495,16 +582,13 @@
 
         function renderQuotesPreview() {
             const listEl = document.getElementById('quotes-preview-list');
-            // Собираем цитаты всех пользователей из localStorage
             let allQuotes = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key.startsWith('quotes_')) {
                     const author = key.replace('quotes_', '');
                     const quotes = JSON.parse(localStorage.getItem(key) || '[]');
-                    quotes.forEach(q => {
-                        if (q) allQuotes.push({ author, quote: q });
-                    });
+                    quotes.forEach(q => { if (q) allQuotes.push({ author, quote: q }); });
                 }
             }
 
@@ -525,14 +609,17 @@
             });
         }
 
-        // Профиль пользователя
+        // Профиль и Галерея аватарок
         function openProfileModal() {
             if (!currentUserName || currentUserRole === 'guest') {
                 alert("Гостевой профиль нельзя редактировать.");
                 return;
             }
-            document.getElementById('profile-avatar-input').value = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            const currentAvatar = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            document.getElementById('profile-avatar-input').value = currentAvatar;
             document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
+            updateProfilePreview(currentAvatar);
+            document.getElementById('avatar-gallery').classList.add('hidden');
             document.getElementById('profile-modal').classList.remove('hidden');
             document.getElementById('profile-modal').classList.add('flex');
         }
@@ -542,19 +629,150 @@
             document.getElementById('profile-modal').classList.remove('flex');
         }
 
+        function toggleGallery() {
+            const gallery = document.getElementById('avatar-gallery');
+            gallery.classList.toggle('hidden');
+        }
+
+        function selectGalleryAvatar(url) {
+            document.getElementById('profile-avatar-input').value = url;
+            updateProfilePreview(url);
+            document.getElementById('avatar-gallery').classList.add('hidden');
+        }
+
+        function updateProfilePreview(url) {
+            const preview = document.getElementById('profile-preview-avatar');
+            if (url) {
+                preview.innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
+            } else {
+                preview.innerHTML = `👤`;
+            }
+        }
+
+        document.getElementById('profile-avatar-input').oninput = function() {
+            updateProfilePreview(this.value.trim());
+        };
+
         function saveMyProfile() {
             const avatar = document.getElementById('profile-avatar-input').value.trim();
             const bio = document.getElementById('profile-bio-input').value.trim();
             if (avatar) localStorage.setItem(`avatar_${currentUserName}`, avatar);
             if (bio) {
                 localStorage.setItem(`bio_${currentUserName}`, bio);
-                // также обновим у студента в списке, если он есть
                 const found = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
                 if (found) localStorage.setItem(`bio_${found.id}`, bio);
             }
             closeProfileModal();
             renderStudents(document.getElementById('search-input').value);
             alert("Профиль успешно обновлен!");
+        }
+
+        // Телеграм-истории (Stories) с лайками
+        function openStoryModal() {
+            if (!currentUserName || currentUserRole === 'guest') {
+                alert("Авторизуйтесь, чтобы публиковать истории!");
+                return;
+            }
+            document.getElementById('story-img-input').value = '';
+            document.getElementById('story-text-input').value = '';
+            document.getElementById('story-modal').classList.remove('hidden');
+            document.getElementById('story-modal').classList.add('flex');
+        }
+
+        function closeStoryModal() {
+            document.getElementById('story-modal').classList.add('hidden');
+            document.getElementById('story-modal').classList.remove('flex');
+        }
+
+        function publishStory() {
+            const img = document.getElementById('story-img-input').value.trim();
+            const text = document.getElementById('story-text-input').value.trim();
+            if (!img) {
+                alert("Введите ссылку на фото для истории!");
+                return;
+            }
+
+            const avatar = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+
+            stories.unshift({
+                author: currentUserName,
+                avatar: avatar,
+                image: img,
+                text: text,
+                likes: 0,
+                date: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+            });
+
+            localStorage.setItem('class_stories', JSON.stringify(stories));
+            closeStoryModal();
+            renderStories();
+            alert("История опубликована!");
+        }
+
+        function renderStories() {
+            const container = document.getElementById('stories-container');
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+
+            // Сохраняем кнопку добавления первой
+            let html = `
+                <div onclick="openStoryModal()" class="flex flex-col items-center shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-indigo-400 flex items-center justify-center bg-indigo-50 group-hover:bg-indigo-100 transition shadow-inner">
+                        <span class="text-2xl text-indigo-600 font-bold">+</span>
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-600 mt-1">Ваша история</span>
+                </div>
+            `;
+
+            stories.forEach((s, index) => {
+                let av = s.avatar ? `<img src="${s.avatar}" class="w-full h-full object-cover">` : s.author[0];
+                html += `
+                    <div onclick="viewStory(${index})" class="flex flex-col items-center shrink-0 cursor-pointer group">
+                        <div class="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-indigo-600 shadow-md group-hover:scale-105 transition">
+                            <div class="w-full h-full rounded-full bg-white overflow-hidden flex items-center justify-center font-bold text-indigo-700">
+                                ${av}
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-700 mt-1 max-w-[64px] truncate">${s.author.split(' ')[0]}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function viewStory(index) {
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            const s = stories[index];
+            if (!s) return;
+            activeStoryIndex = index;
+
+            document.getElementById('viewer-author').textContent = s.author;
+            document.getElementById('viewer-date').textContent = s.date;
+            document.getElementById('viewer-text').textContent = s.text || '';
+            document.getElementById('viewer-img').src = s.image;
+            document.getElementById('viewer-likes-count').textContent = s.likes || 0;
+
+            const avEl = document.getElementById('viewer-avatar');
+            avEl.innerHTML = s.avatar ? `<img src="${s.avatar}" class="w-full h-full object-cover">` : s.author[0];
+
+            document.getElementById('view-story-modal').classList.remove('hidden');
+            document.getElementById('view-story-modal').classList.add('flex');
+        }
+
+        function closeViewStoryModal() {
+            document.getElementById('view-story-modal').classList.add('hidden');
+            document.getElementById('view-story-modal').classList.remove('flex');
+        }
+
+        function likeCurrentStory() {
+            if (activeStoryIndex === null) return;
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            if (stories[activeStoryIndex]) {
+                stories[activeStoryIndex].likes = (stories[activeStoryIndex].likes || 0) + 1;
+                localStorage.setItem('class_stories', JSON.stringify(stories));
+                document.getElementById('viewer-likes-count').textContent = stories[activeStoryIndex].likes;
+            }
         }
 
         // Телеграм-лента публикаций
@@ -612,7 +830,6 @@
             posts.forEach(p => {
                 const card = document.createElement('div');
                 card.className = "bg-slate-50 border border-slate-100 p-4 rounded-2xl shadow-sm";
-                
                 let imgHtml = p.image ? `<img src="${p.image}" class="mt-3 rounded-xl max-h-64 w-full object-cover" onerror="this.style.display='none'">` : '';
                 
                 card.innerHTML = `
@@ -715,7 +932,7 @@
 
             const badge = document.getElementById('current-user-badge');
             const wallet = document.getElementById('my-wallet');
-            const absentReportBtn = document.getElementById('absent-report-btn');
+            const floatingName = document.getElementById('floating-profile-name');
             
             let roleTitle = 'Ученик';
             if (currentUserRole === 'admin') roleTitle = 'Учитель';
@@ -725,6 +942,7 @@
             } else if (currentUserRole === 'guest') roleTitle = 'Гость';
 
             badge.innerHTML = `Пользователь: <b>${currentUserName}</b> (${roleTitle})`;
+            floatingName.textContent = currentUserName.split(' ')[0];
 
             if (currentUserRole === 'student' || currentUserRole === 'starosta') {
                 const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
@@ -735,8 +953,6 @@
             } else {
                 wallet.classList.add('hidden');
             }
-
-            absentReportBtn.classList.toggle('hidden', currentUserRole === 'student' || currentUserRole === 'guest');
 
             renderStudents();
             renderRating();
@@ -797,10 +1013,6 @@
             }
         }
 
-        function generateAbsentReport() {
-            alert("Отчет сгенерирован.");
-        }
-
         function renderRating() {
             const listEl = document.getElementById('rating-list');
             listEl.innerHTML = '';
@@ -812,12 +1024,13 @@
             });
 
             const topStarId = getTopStarStudentId();
+            const isGuest = currentUserRole === 'guest';
 
             sorted.slice(0, 6).forEach((s, idx) => {
                 const card = document.createElement('div');
                 card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between";
-                let badgeVal = `⭐ ${parseInt(localStorage.getItem(`stars_${s.id}`) || '5')}`;
-                let extraTag = s.id === topStarId ? `<span class="text-[9px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">🏆 Лидер</span>` : '';
+                let badgeVal = !isGuest ? `⭐ ${parseInt(localStorage.getItem(`stars_${s.id}`) || '5')}` : '';
+                let extraTag = (s.id === topStarId && !isGuest) ? `<span class="text-[9px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">🏆 Лидер</span>` : '';
 
                 card.innerHTML = `
                     <div class="flex items-center gap-3">
@@ -861,7 +1074,7 @@
                     tagsContainer += `<span class="bg-violet-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Староста</span>`;
                 }
                 if (isTopStar && !isGuest) {
-                    tagsContainer += `<span class="bg-amber-400 text-amber-950 text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Лидер по звёздам</span>`;
+                    tagsContainer += `<span class="bg-amber-400 text-amber-950 text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Лидер</span>`;
                 }
                 tagsContainer += `</div>`;
                 badgeHtml += tagsContainer;
@@ -888,9 +1101,7 @@
 
             document.getElementById('modal-name').textContent = student.name;
             document.getElementById('modal-birth').textContent = isGuest ? "" : `Дата рождения: ${student.birth}`;
-            document.getElementById('modal-birthday-countdown').textContent = isGuest ? "" : "Участник 7 «3» класса";
             document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '5';
-            
             document.getElementById('modal-stars-box').style.display = isGuest ? 'none' : 'inline-flex';
 
             const modalImgContainer = document.getElementById('modal-img-container');
@@ -903,7 +1114,6 @@
             const bioText = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Пока ничего не написано...";
             document.getElementById('modal-bio-text').textContent = bioText;
 
-            // Управление отправкой звезд
             const giveStarContainer = document.getElementById('give-star-container');
             const studentStarBox = document.getElementById('student-star-box');
             const starostaBox = document.getElementById('starosta-star-box');
