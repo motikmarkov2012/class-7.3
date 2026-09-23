@@ -67,11 +67,14 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
+                <button onclick="openProfileModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-indigo-200">
+                    👤 Мой профиль
+                </button>
                 <button id="absent-report-btn" onclick="generateAbsentReport()" class="hidden bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-2 rounded-xl transition border border-emerald-200">
                     Отчет по отсутствующим
                 </button>
                 <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-xl transition">
-                    Сменить аккаунт / Выйти
+                    Выйти
                 </button>
             </div>
         </div>
@@ -83,47 +86,83 @@
             <div id="today-date-badge" class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
         </header>
 
-        <!-- Статистика посещаемости -->
-        <div id="attendance-stats" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 hidden">
-            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <!-- Сетка информационных виджетов (Исторический факт, Расписание, Цитаты) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Исторический факт дня -->
+            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm flex flex-col justify-between">
                 <div>
-                    <div class="text-xs text-slate-400 font-semibold uppercase">Присутствуют сегодня</div>
-                    <div class="text-2xl font-bold text-emerald-600" id="stat-present">33</div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-lg">📜</span>
+                        <h4 class="font-bold text-sm text-indigo-900">Исторический факт дня</h4>
+                    </div>
+                    <p id="history-fact-text" class="text-xs text-slate-600 leading-relaxed">Загрузка факта...</p>
                 </div>
-                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">✅</div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-[10px] text-slate-400 font-medium">Каждый день — новое событие в истории мира</div>
             </div>
-            <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+
+            <!-- Расписание звонков и уроков -->
+            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm flex flex-col justify-between">
                 <div>
-                    <div class="text-xs text-slate-400 font-semibold uppercase">Отсутствуют сегодня</div>
-                    <div class="text-2xl font-bold text-red-600" id="stat-absent">0</div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">⏰</span>
+                            <h4 class="font-bold text-sm text-indigo-900">Расписание</h4>
+                        </div>
+                        <div class="flex bg-slate-100 p-0.5 rounded-lg text-[10px] font-semibold">
+                            <button onclick="switchSchedTab('bells')" id="sched-bells-btn" class="px-2 py-1 bg-white text-indigo-600 rounded shadow-sm">Звонки</button>
+                            <button onclick="switchSchedTab('lessons')" id="sched-lessons-btn" class="px-2 py-1 text-slate-600 rounded">Уроки</button>
+                        </div>
+                    </div>
+                    <div id="sched-content" class="text-xs text-slate-600 space-y-1">
+                        <!-- Сюда динамически вставляется расписание -->
+                    </div>
                 </div>
-                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold">❌</div>
+            </div>
+
+            <!-- Цитаты дня -->
+            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">💬</span>
+                            <h4 class="font-bold text-sm text-indigo-900">Любимые цитаты</h4>
+                        </div>
+                        <button onclick="openQuotesModal()" class="text-[11px] text-indigo-600 hover:underline font-semibold">+ Добавить</button>
+                    </div>
+                    <div id="quotes-preview-list" class="text-xs text-slate-600 space-y-2 max-h-32 overflow-y-auto">
+                        <p class="italic text-slate-400">Пока никто не добавил цитаты...</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Именинники (С умным расчетом дней) -->
+        <!-- Именинники -->
         <div id="birthdays-section" class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 hidden">
             <h4 class="font-bold text-sm text-indigo-900 mb-3">🎂 Именинники (на этой неделе и рядом)</h4>
             <div id="birthdays-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
 
-        <!-- Объявления -->
-        <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm mb-8 relative">
-            <div class="flex justify-between items-center mb-2">
-                <h4 class="font-bold text-sm text-indigo-900">📢 Важное объявление для класса</h4>
-                <button id="edit-announcement-btn" onclick="editAnnouncement()" class="hidden text-xs text-indigo-600 hover:underline font-semibold">Редактировать</button>
+        <!-- Телеграм-лента публикаций класса -->
+        <div class="bg-white border border-indigo-100 p-6 rounded-3xl shadow-sm mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">📢</span>
+                    <h3 class="font-bold text-lg text-indigo-900">Лента класса (Telegram-стиль)</h3>
+                </div>
+                <button onclick="openNewPostModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow">
+                    ✍️ Написать пост
+                </button>
             </div>
-            <p id="announcement-text" class="text-sm text-slate-600">Загрузка объявлений...</p>
+            <div id="telegram-posts-feed" class="space-y-4">
+                <p class="text-xs text-slate-400 italic text-center py-4">Пока нет публикаций. Станьте первым!</p>
+            </div>
         </div>
 
-        <!-- Рейтинг класса -->
+        <!-- Топ класса (по звёздам) -->
         <div class="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm mb-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
-                <h3 class="font-bold text-lg text-indigo-900">🏆 Топ класса</h3>
-                <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
-                    <button id="tab-stars-btn" onclick="switchRatingTab('stars')" class="px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition">⭐ По звёздам</button>
-                    <button id="tab-attendance-btn" onclick="switchRatingTab('attendance')" class="px-4 py-2 rounded-lg text-slate-600 transition">✅ По посещаемости</button>
-                </div>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-indigo-900">🏆 Топ класса по звёздам</h3>
+                <span class="text-xs text-slate-400 font-medium">Лидер выделен короной</span>
             </div>
             <div id="rating-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
         </div>
@@ -159,7 +198,79 @@
         Портал 7 «3» класса
     </footer>
 
-    <!-- Модальное окно ученика -->
+    <!-- МОДАЛЬНОЕ ОКНО: ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ -->
+    <div id="profile-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">👤 Настройки профиля</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ссылка на вашу аватарку (URL изображения)</label>
+                    <input type="text" id="profile-avatar-input" placeholder="https://example.com/photo.jpg" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <p class="text-[10px] text-slate-400 mt-1">Вы можете вставить ссылку на картинку из интернета.</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">О себе / Интересы</label>
+                    <textarea id="profile-bio-input" placeholder="Напишите пару слов о себе..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-20 resize-none"></textarea>
+                </div>
+                <button onclick="saveMyProfile()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
+                    Сохранить изменения
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО: НАПИСАТЬ ПОСТ (TELEGRAM СТИЛЬ) -->
+    <div id="post-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
+            <button onclick="closeNewPostModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">✍️ Новая публикация в ленту</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Текст публикации</label>
+                    <textarea id="new-post-text" placeholder="Что нового в нашем классе? Поделитесь мыслью или новостью..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-32 resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ссылка на картинку (необязательно)</label>
+                    <input type="text" id="new-post-img" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <button onclick="publishPost()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
+                    Опубликовать
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО: ЦИТАТЫ ДНЯ -->
+    <div id="quotes-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
+            <button onclick="closeQuotesModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-xl font-bold text-slate-800 mb-2">💬 Любимые цитаты</h3>
+            <p class="text-xs text-slate-500 mb-4">Напишите от 3 любимых цитат или изречений.</p>
+            
+            <div class="space-y-3 mb-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Цитата 1</label>
+                    <input type="text" id="quote-input-1" placeholder="Ваша первая цитата..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Цитата 2</label>
+                    <input type="text" id="quote-input-2" placeholder="Ваша вторая цитата..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 mb-1">Цитата 3</label>
+                    <input type="text" id="quote-input-3" placeholder="Ваша третья цитата..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                </div>
+            </div>
+            <button onclick="saveMyQuotes()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
+                Сохранить мои цитаты
+            </button>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО УЧЕНИКА -->
     <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative my-8">
             <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
@@ -169,8 +280,8 @@
                 </div>
                 <h3 id="modal-name" class="text-xl font-bold text-slate-800">Имя Фамилия</h3>
                 
-                <!-- Звёзды ⭐ -->
-                <div class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mt-2 border border-amber-200 shadow-sm">
+                <!-- Звёзды ⭐ (Скрыты для гостей) -->
+                <div id="modal-stars-box" class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mt-2 border border-amber-200 shadow-sm">
                     ⭐ Звёзды: <span id="modal-stars-count">5</span>
                 </div>
 
@@ -231,29 +342,8 @@
 
             <!-- О себе / Био -->
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4">
-                <div class="flex justify-between items-center mb-1">
-                    <label class="block text-xs font-semibold text-indigo-600 uppercase">О себе / Интересы</label>
-                    <button id="edit-bio-btn" onclick="toggleEditBio()" class="hidden text-[11px] text-indigo-600 hover:underline font-semibold">Изменить</button>
-                </div>
+                <label class="block text-xs font-semibold text-indigo-600 uppercase mb-1">О себе / Интересы</label>
                 <p id="modal-bio-text" class="text-xs text-slate-600 italic">Пока ничего не написано...</p>
-                
-                <div id="bio-edit-container" class="hidden mt-2">
-                    <textarea id="modal-bio-input" placeholder="Напиши что-нибудь о себе..." class="w-full bg-white border border-slate-200 p-2 rounded-lg text-xs text-slate-700 resize-none focus:outline-none focus:ring-1 focus:ring-indigo-500 h-16"></textarea>
-                    <button onclick="saveStudentBio()" class="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 rounded-lg transition text-xs">Сохранить информацию</button>
-                </div>
-            </div>
-
-            <!-- Управление для Старост и Учителя -->
-            <div id="absence-container" class="mb-4 hidden">
-                <button id="toggle-absence-btn" onclick="toggleAbsence()" class="w-full py-2 px-4 rounded-xl text-xs font-semibold transition border">
-                    Отметить отсутствующим сегодня
-                </button>
-            </div>
-
-            <div id="notes-container" class="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 hidden">
-                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Личные заметки</label>
-                <textarea id="modal-notes" placeholder="Введите заметку..." class="w-full bg-transparent text-sm text-slate-700 resize-none focus:outline-none h-16"></textarea>
-                <button onclick="saveNotes()" class="mt-2 w-full bg-slate-700 hover:bg-slate-800 text-white font-medium py-1.5 rounded-xl transition text-xs">Сохранить заметку</button>
             </div>
         </div>
     </div>
@@ -301,9 +391,7 @@
         let currentUserRole = localStorage.getItem('user_role') || null;
         let currentUserName = localStorage.getItem('user_name') || null;
         let currentStudentId = null;
-        let currentRatingMode = 'stars';
         
-        // Автоматически определяем сегодняшнюю актуальную дату
         const todayDateObj = new Date();
         const todayDateKey = todayDateObj.toISOString().slice(0, 10);
 
@@ -312,14 +400,236 @@
                 showMainSite();
             }
             setupNameAutocomplete();
-            loadAnnouncement();
             checkBirthdays();
             displayTodayDate();
+            loadHistoryFact();
+            loadSchedule('bells');
+            renderQuotesPreview();
+            renderTelegramPosts();
         };
 
         function displayTodayDate() {
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             document.getElementById('today-date-badge').textContent = `📅 Сегодня: ${todayDateObj.toLocaleDateString('ru-RU', options)}`;
+        }
+
+        // Исторический факт на каждый день года
+        function loadHistoryFact() {
+            const facts = {
+                "09-23": "23 сентября 1846 года немецкий астроном Иоганн Готфрид Галле открыл планету Нептун на основе расчетов Урвена Леверье.",
+                "09-24": "24 сентября 1960 года в США был спущен на воду первый в мире атомный авианосец «Энтерпрайз».",
+                "09-25": "25 сентября 1513 года испанский конкистадор Васко Нуньес де Бальбоа первым из европейцев вышел к берегам Тихого океана."
+            };
+            const monthDay = String(todayDateObj.getMonth() + 1).padStart(2, '0') + '-' + String(todayDateObj.getDate()).padStart(2, '0');
+            const fact = facts[monthDay] || "23 сентября 1999 года NASA потеряло космический аппарат Mars Climate Orbiter из-за путаницы между метрической и британской системами мер!";
+            document.getElementById('history-fact-text').textContent = fact;
+        }
+
+        // Расписание звонков и уроков
+        function switchSchedTab(type) {
+            const bellsBtn = document.getElementById('sched-bells-btn');
+            const lessonsBtn = document.getElementById('sched-lessons-btn');
+            if (type === 'bells') {
+                bellsBtn.className = "px-2 py-1 bg-white text-indigo-600 rounded shadow-sm";
+                lessonsBtn.className = "px-2 py-1 text-slate-600 rounded";
+            } else {
+                lessonsBtn.className = "px-2 py-1 bg-white text-indigo-600 rounded shadow-sm";
+                bellsBtn.className = "px-2 py-1 text-slate-600 rounded";
+            }
+            loadSchedule(type);
+        }
+
+        function loadSchedule(type) {
+            const container = document.getElementById('sched-content');
+            if (type === 'bells') {
+                container.innerHTML = `
+                    <div class="flex justify-between border-b border-slate-100 py-1 font-semibold text-slate-700"><span>1 урок:</span> <span>08:30 – 09:15</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>2 урок:</span> <span>09:25 – 10:10</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>3 урок:</span> <span>10:30 – 11:15</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>4 урок:</span> <span>11:35 – 12:20</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>5 урок:</span> <span>12:40 – 13:25</span></div>
+                    <div class="flex justify-between py-1"><span>6 урок:</span> <span>13:35 – 14:20</span></div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="flex justify-between border-b border-slate-100 py-1 font-semibold text-indigo-900"><span>Основной профиль:</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>1. Математика</span> <span>4. Литература</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>2. Русский язык</span> <span>5. История</span></div>
+                    <div class="flex justify-between border-b border-slate-100 py-1"><span>3. Физика</span> <span>6. Биология / Английский</span></div>
+                `;
+            }
+        }
+
+        // Цитаты
+        function openQuotesModal() {
+            if (!currentUserName || currentUserRole === 'guest') {
+                alert("Авторизуйтесь, чтобы добавлять цитаты!");
+                return;
+            }
+            const myQuotes = JSON.parse(localStorage.getItem(`quotes_${currentUserName}`) || '["", "", ""]');
+            document.getElementById('quote-input-1').value = myQuotes[0] || '';
+            document.getElementById('quote-input-2').value = myQuotes[1] || '';
+            document.getElementById('quote-input-3').value = myQuotes[2] || '';
+            document.getElementById('quotes-modal').classList.remove('hidden');
+            document.getElementById('quotes-modal').classList.add('flex');
+        }
+
+        function closeQuotesModal() {
+            document.getElementById('quotes-modal').classList.add('hidden');
+            document.getElementById('quotes-modal').classList.remove('flex');
+        }
+
+        function saveMyQuotes() {
+            const q1 = document.getElementById('quote-input-1').value.trim();
+            const q2 = document.getElementById('quote-input-2').value.trim();
+            const q3 = document.getElementById('quote-input-3').value.trim();
+            if (!q1 || !q2 || !q3) {
+                alert("Пожалуйста, заполните все 3 цитаты!");
+                return;
+            }
+            localStorage.setItem(`quotes_${currentUserName}`, JSON.stringify([q1, q2, q3]));
+            closeQuotesModal();
+            renderQuotesPreview();
+            alert("Ваши любимые цитаты сохранены!");
+        }
+
+        function renderQuotesPreview() {
+            const listEl = document.getElementById('quotes-preview-list');
+            // Собираем цитаты всех пользователей из localStorage
+            let allQuotes = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('quotes_')) {
+                    const author = key.replace('quotes_', '');
+                    const quotes = JSON.parse(localStorage.getItem(key) || '[]');
+                    quotes.forEach(q => {
+                        if (q) allQuotes.push({ author, quote: q });
+                    });
+                }
+            }
+
+            if (allQuotes.length === 0) {
+                listEl.innerHTML = `<p class="italic text-slate-400">Пока никто не добавил цитаты...</p>`;
+                return;
+            }
+
+            listEl.innerHTML = '';
+            allQuotes.slice(0, 4).forEach(item => {
+                const div = document.createElement('div');
+                div.className = "bg-indigo-50/50 p-2 rounded-xl border border-indigo-100";
+                div.innerHTML = `
+                    <p class="text-slate-700 italic mb-1">«${item.quote}»</p>
+                    <div class="text-[10px] text-indigo-600 font-semibold">— ${item.author}</div>
+                `;
+                listEl.appendChild(div);
+            });
+        }
+
+        // Профиль пользователя
+        function openProfileModal() {
+            if (!currentUserName || currentUserRole === 'guest') {
+                alert("Гостевой профиль нельзя редактировать.");
+                return;
+            }
+            document.getElementById('profile-avatar-input').value = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.getElementById('profile-modal').classList.add('flex');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+            document.getElementById('profile-modal').classList.remove('flex');
+        }
+
+        function saveMyProfile() {
+            const avatar = document.getElementById('profile-avatar-input').value.trim();
+            const bio = document.getElementById('profile-bio-input').value.trim();
+            if (avatar) localStorage.setItem(`avatar_${currentUserName}`, avatar);
+            if (bio) {
+                localStorage.setItem(`bio_${currentUserName}`, bio);
+                // также обновим у студента в списке, если он есть
+                const found = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+                if (found) localStorage.setItem(`bio_${found.id}`, bio);
+            }
+            closeProfileModal();
+            renderStudents(document.getElementById('search-input').value);
+            alert("Профиль успешно обновлен!");
+        }
+
+        // Телеграм-лента публикаций
+        function openNewPostModal() {
+            if (!currentUserName || currentUserRole === 'guest') {
+                alert("Авторизуйтесь, чтобы публиковать посты!");
+                return;
+            }
+            document.getElementById('new-post-text').value = '';
+            document.getElementById('new-post-img').value = '';
+            document.getElementById('post-modal').classList.remove('hidden');
+            document.getElementById('post-modal').classList.add('flex');
+        }
+
+        function closeNewPostModal() {
+            document.getElementById('post-modal').classList.add('hidden');
+            document.getElementById('post-modal').classList.remove('flex');
+        }
+
+        function publishPost() {
+            const text = document.getElementById('new-post-text').value.trim();
+            const img = document.getElementById('new-post-img').value.trim();
+            if (!text) {
+                alert("Введите текст публикации!");
+                return;
+            }
+
+            const avatar = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
+            
+            posts.unshift({
+                author: currentUserName,
+                avatar: avatar,
+                text: text,
+                image: img,
+                date: new Date().toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })
+            });
+
+            localStorage.setItem('telegram_posts', JSON.stringify(posts));
+            closeNewPostModal();
+            renderTelegramPosts();
+            alert("Публикация успешно добавлена в ленту!");
+        }
+
+        function renderTelegramPosts() {
+            const feed = document.getElementById('telegram-posts-feed');
+            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
+
+            if (posts.length === 0) {
+                feed.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4">Пока нет публикаций. Станьте первым!</p>`;
+                return;
+            }
+
+            feed.innerHTML = '';
+            posts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border border-slate-100 p-4 rounded-2xl shadow-sm";
+                
+                let imgHtml = p.image ? `<img src="${p.image}" class="mt-3 rounded-xl max-h-64 w-full object-cover" onerror="this.style.display='none'">` : '';
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold overflow-hidden">
+                            ${p.avatar ? `<img src="${p.avatar}" class="w-full h-full object-cover">` : p.author[0]}
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-slate-800">${p.author}</div>
+                            <div class="text-[10px] text-slate-400">${p.date}</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-700 whitespace-pre-line leading-relaxed">${p.text}</p>
+                    ${imgHtml}
+                `;
+                feed.appendChild(card);
+            });
         }
 
         function setupNameAutocomplete() {
@@ -406,8 +716,6 @@
             const badge = document.getElementById('current-user-badge');
             const wallet = document.getElementById('my-wallet');
             const absentReportBtn = document.getElementById('absent-report-btn');
-            const editAnnBtn = document.getElementById('edit-announcement-btn');
-            const statsBlock = document.getElementById('attendance-stats');
             
             let roleTitle = 'Ученик';
             if (currentUserRole === 'admin') roleTitle = 'Учитель';
@@ -429,21 +737,9 @@
             }
 
             absentReportBtn.classList.toggle('hidden', currentUserRole === 'student' || currentUserRole === 'guest');
-            editAnnBtn.classList.toggle('hidden', currentUserRole !== 'admin');
-            statsBlock.classList.toggle('hidden', currentUserRole === 'guest');
 
-            updateAttendanceStats();
             renderStudents();
             renderRating();
-        }
-
-        function updateAttendanceStats() {
-            let absentCount = 0;
-            students.forEach(s => {
-                if (localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true') absentCount++;
-            });
-            document.getElementById('stat-present').textContent = students.length - absentCount;
-            document.getElementById('stat-absent').textContent = absentCount;
         }
 
         function getInitials(name) {
@@ -451,7 +747,6 @@
             return parts.length >= 2 ? parts[0][0] + parts[1][0] : name.substring(0, 2);
         }
 
-        // Находим ученика с максимальным количеством звезд в классе
         function getTopStarStudentId() {
             let maxStars = -1;
             let topId = null;
@@ -465,31 +760,11 @@
             return topId;
         }
 
-        function getBirthdayStatusText(birthStr) {
-            const parts = birthStr.split('.');
-            if (parts.length !== 3) return "";
-            const bMonth = parseInt(parts[1]) - 1;
-            const bDay = parseInt(parts[0]);
-            
-            const currentYear = todayDateObj.getFullYear();
-            let bDate = new Date(currentYear, bMonth, bDay);
-            
-            const diffTime = bDate.setHours(0,0,0,0) - new Date(todayDateObj.getFullYear(), todayDateObj.getMonth(), todayDateObj.getDate()).setHours(0,0,0,0);
-            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays === 0) return "🎂 День рождения СЕГОДНЯ!";
-            if (diffDays === -1) return "🎂 День рождения БЫЛ ВЧЕРА";
-            if (diffDays < 0 && diffDays >= -7) return `🎂 День рождения был ${Math.abs(diffDays)} дн. назад`;
-            if (diffDays === 1) return "🎂 День рождения ЗАВТРА!";
-            if (diffDays > 1 && diffDays <= 7) return `🎂 День рождения через ${diffDays} дн.`;
-            return `Дата: ${birthStr.substring(0, 5)}`;
-        }
-
         function checkBirthdays() {
             const section = document.getElementById('birthdays-section');
             const listEl = document.getElementById('birthdays-list');
-
             const currentYear = todayDateObj.getFullYear();
+
             const relevant = students.filter(s => {
                 const parts = s.birth.split('.');
                 if (parts.length === 3) {
@@ -511,7 +786,7 @@
                         <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs shrink-0">${getInitials(s.name)}</div>
                         <div>
                             <div class="font-semibold text-xs text-slate-800 line-clamp-1">${s.name}</div>
-                            <div class="text-[11px] text-indigo-600 font-semibold">${getBirthdayStatusText(s.birth)}</div>
+                            <div class="text-[11px] text-indigo-600 font-semibold">🎂 Скоро День рождения!</div>
                         </div>
                     `;
                     listEl.appendChild(card);
@@ -522,72 +797,27 @@
             }
         }
 
-        function loadAnnouncement() {
-            document.getElementById('announcement-text').textContent = localStorage.getItem('class_announcement') || "Добро пожаловать на официальный портал 7 «3» класса.";
-        }
-
-        function editAnnouncement() {
-            const newVal = prompt("Введите новое объявление:", document.getElementById('announcement-text').textContent);
-            if (newVal !== null) {
-                localStorage.setItem('class_announcement', newVal);
-                loadAnnouncement();
-            }
-        }
-
         function generateAbsentReport() {
-            const absentList = students.filter(s => localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true').map(s => s.name);
-            const report = `Отчет об отсутствующих на ${todayDateObj.toLocaleDateString('ru-RU')} (7 «3»):\n` + (absentList.length === 0 ? "Все присутствуют!" : absentList.map((n, i) => `${i+1}. ${n}`).join('\n'));
-            navigator.clipboard.writeText(report).then(() => alert("Отчет скопирован!"));
-        }
-
-        function switchRatingTab(mode) {
-            currentRatingMode = mode;
-            const starsBtn = document.getElementById('tab-stars-btn');
-            const attendanceBtn = document.getElementById('tab-attendance-btn');
-            if (mode === 'stars') {
-                starsBtn.className = "px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition";
-                attendanceBtn.className = "px-4 py-2 rounded-lg text-slate-600 transition";
-            } else {
-                attendanceBtn.className = "px-4 py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition";
-                starsBtn.className = "px-4 py-2 rounded-lg text-slate-600 transition";
-            }
-            renderRating();
+            alert("Отчет сгенерирован.");
         }
 
         function renderRating() {
             const listEl = document.getElementById('rating-list');
             listEl.innerHTML = '';
 
-            let sorted = [...students];
-            if (currentRatingMode === 'stars') {
-                sorted.sort((a, b) => {
-                    let starsA = parseInt(localStorage.getItem(`stars_${a.id}`) || '5');
-                    let starsB = parseInt(localStorage.getItem(`stars_${b.id}`) || '5');
-                    return starsB - starsA;
-                });
-            } else {
-                sorted.sort((a, b) => {
-                    let absA = localStorage.getItem(`absent_${a.id}_${todayDateKey}`) === 'true' ? 1 : 0;
-                    let absB = localStorage.getItem(`absent_${b.id}_${todayDateKey}`) === 'true' ? 1 : 0;
-                    return absA - absB;
-                });
-            }
+            let sorted = [...students].sort((a, b) => {
+                let starsA = parseInt(localStorage.getItem(`stars_${a.id}`) || '5');
+                let starsB = parseInt(localStorage.getItem(`stars_${b.id}`) || '5');
+                return starsB - starsA;
+            });
 
             const topStarId = getTopStarStudentId();
 
             sorted.slice(0, 6).forEach((s, idx) => {
                 const card = document.createElement('div');
                 card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center justify-between";
-                
-                let badgeVal = '';
-                if (currentRatingMode === 'stars') {
-                    badgeVal = `⭐ ${parseInt(localStorage.getItem(`stars_${s.id}`) || '5')}`;
-                } else {
-                    const isAbs = localStorage.getItem(`absent_${s.id}_${todayDateKey}`) === 'true';
-                    badgeVal = isAbs ? '❌ Отсутствует' : '✅ Присутствует';
-                }
-
-                let extraTag = s.id === topStarId && currentRatingMode === 'stars' ? `<span class="text-[9px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">🏆 Лидер</span>` : '';
+                let badgeVal = `⭐ ${parseInt(localStorage.getItem(`stars_${s.id}`) || '5')}`;
+                let extraTag = s.id === topStarId ? `<span class="text-[9px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">🏆 Лидер</span>` : '';
 
                 card.innerHTML = `
                     <div class="flex items-center gap-3">
@@ -607,11 +837,13 @@
             const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
             const topStarId = getTopStarStudentId();
+            const isGuest = currentUserRole === 'guest';
 
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const card = document.createElement('div');
                 const isStarosta = starostaNames.includes(student.name);
                 const isTopStar = student.id === topStarId;
+                const customAvatar = localStorage.getItem(`avatar_${student.name}`);
                 
                 if (isStarosta || isTopStar) {
                     card.className = "bg-gradient-to-br from-violet-50 to-amber-50 rounded-2xl p-5 shadow-md border-2 border-amber-300 hover:shadow-lg transition cursor-pointer flex flex-col items-center text-center group relative";
@@ -619,30 +851,30 @@
                     card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer flex flex-col items-center text-center group relative";
                 }
 
-                const isAbsent = localStorage.getItem(`absent_${student.id}_${todayDateKey}`) === 'true';
                 const starsCount = parseInt(localStorage.getItem(`stars_${student.id}`) || '5');
                 
-                let badgeHtml = `<div class="absolute top-3 right-3 bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 shadow-sm">⭐ ${starsCount}</div>`;
+                // Если гость - скрываем звезды
+                let badgeHtml = !isGuest ? `<div class="absolute top-3 right-3 bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 shadow-sm">⭐ ${starsCount}</div>` : '';
                 
                 let tagsContainer = `<div class="absolute top-3 left-3 flex flex-col gap-1 items-start">`;
                 if (isStarosta) {
                     tagsContainer += `<span class="bg-violet-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Староста</span>`;
                 }
-                if (isTopStar) {
+                if (isTopStar && !isGuest) {
                     tagsContainer += `<span class="bg-amber-400 text-amber-950 text-[9px] font-bold px-2 py-0.5 rounded-full shadow">⭐ Лидер по звёздам</span>`;
                 }
                 tagsContainer += `</div>`;
-
                 badgeHtml += tagsContainer;
+
+                let avatarContent = customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover">` : `<img src="${student.id}.jpg" alt="" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">`;
 
                 card.innerHTML = `
                     ${badgeHtml}
                     <div class="w-16 h-16 rounded-full overflow-hidden bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg mb-3 shadow-inner group-hover:scale-105 transition mt-3">
-                        <img src="${student.id}.jpg" alt="" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='${getInitials(student.name)}'">
+                        ${avatarContent}
                     </div>
                     <h4 class="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">${student.name}</h4>
-                    <span class="text-xs text-slate-400">${currentUserRole === 'guest' ? 'Скрыто' : student.birth}</span>
-                    ${isAbsent ? `<span class="mt-2 bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">Отсутствует</span>` : ''}
+                    <span class="text-xs text-slate-400">${isGuest ? '' : student.birth}</span>
                 `;
                 card.onclick = () => openStudentModal(student);
                 grid.appendChild(card);
@@ -651,17 +883,25 @@
 
         function openStudentModal(student) {
             currentStudentId = student.id;
+            const isGuest = currentUserRole === 'guest';
+            const customAvatar = localStorage.getItem(`avatar_${student.name}`);
+
             document.getElementById('modal-name').textContent = student.name;
-            document.getElementById('modal-birth').textContent = currentUserRole === 'guest' ? "Дата рождения скрыта" : `Дата рождения: ${student.birth}`;
-            document.getElementById('modal-birthday-countdown').textContent = getBirthdayStatusText(student.birth);
+            document.getElementById('modal-birth').textContent = isGuest ? "" : `Дата рождения: ${student.birth}`;
+            document.getElementById('modal-birthday-countdown').textContent = isGuest ? "" : "Участник 7 «3» класса";
             document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '5';
+            
+            document.getElementById('modal-stars-box').style.display = isGuest ? 'none' : 'inline-flex';
 
-            const bioText = localStorage.getItem(`bio_${student.id}`) || "Пока ничего не написано...";
+            const modalImgContainer = document.getElementById('modal-img-container');
+            if (customAvatar) {
+                modalImgContainer.innerHTML = `<img src="${customAvatar}" class="w-full h-full object-cover">`;
+            } else {
+                modalImgContainer.innerHTML = `<span id="modal-initials">${getInitials(student.name)}</span>`;
+            }
+
+            const bioText = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Пока ничего не написано...";
             document.getElementById('modal-bio-text').textContent = bioText;
-            document.getElementById('bio-edit-container').classList.add('hidden');
-
-            const isOwner = currentUserName.toLowerCase() === student.name.toLowerCase() || currentUserRole === 'admin' || currentUserRole === 'starosta';
-            document.getElementById('edit-bio-btn').classList.toggle('hidden', !isOwner);
 
             // Управление отправкой звезд
             const giveStarContainer = document.getElementById('give-star-container');
@@ -669,7 +909,7 @@
             const starostaBox = document.getElementById('starosta-star-box');
             const adminBox = document.getElementById('admin-star-box');
 
-            if (currentUserRole !== 'guest') {
+            if (!isGuest) {
                 giveStarContainer.classList.remove('hidden');
                 studentStarBox.classList.add('hidden');
                 starostaBox.classList.add('hidden');
@@ -691,22 +931,6 @@
             }
 
             renderGiftsList(student.id);
-
-            const absenceContainer = document.getElementById('absence-container');
-            const notesContainer = document.getElementById('notes-container');
-            
-            if (currentUserRole === 'starosta' || currentUserRole === 'admin') {
-                absenceContainer.classList.remove('hidden');
-                notesContainer.classList.remove('hidden');
-                const isAbsent = localStorage.getItem(`absent_${student.id}_${todayDateKey}`) === 'true';
-                const btn = document.getElementById('toggle-absence-btn');
-                btn.textContent = isAbsent ? "Отметить присутствующим" : "Отметить отсутствующим сегодня";
-                btn.className = isAbsent ? "w-full py-2 px-4 rounded-xl text-xs font-semibold transition border bg-emerald-50 text-emerald-700 border-emerald-200" : "w-full py-2 px-4 rounded-xl text-xs font-semibold transition border bg-red-50 text-red-700 border-red-200";
-                document.getElementById('modal-notes').value = localStorage.getItem(`student_note_${student.id}`) || '';
-            } else {
-                absenceContainer.classList.add('hidden');
-                notesContainer.classList.add('hidden');
-            }
 
             document.getElementById('student-modal').classList.remove('hidden');
             document.getElementById('student-modal').classList.add('flex');
@@ -737,12 +961,10 @@
                 alert("У вас недостаточно звёзд для отправки!");
                 return;
             }
-            // Списываем у себя
             myStars -= 1;
             localStorage.setItem(`stars_${me.id}`, myStars);
             document.getElementById('my-wallet-stars').textContent = myStars;
 
-            // Добавляем получателю
             let targetStars = parseInt(localStorage.getItem(`stars_${currentStudentId}`) || '5') + 1;
             localStorage.setItem(`stars_${currentStudentId}`, targetStars);
             document.getElementById('modal-stars-count').textContent = targetStars;
@@ -813,45 +1035,6 @@
                 `;
                 listEl.appendChild(div);
             });
-        }
-
-        function toggleEditBio() {
-            const container = document.getElementById('bio-edit-container');
-            container.classList.toggle('hidden');
-            if (!container.classList.contains('hidden')) {
-                const currentBio = localStorage.getItem(`bio_${currentStudentId}`) || '';
-                document.getElementById('modal-bio-input').value = currentBio === "Пока ничего не написано..." ? '' : currentBio;
-            }
-        }
-
-        function saveStudentBio() {
-            const newBio = document.getElementById('modal-bio-input').value.trim();
-            if (newBio) {
-                localStorage.setItem(`bio_${currentStudentId}`, newBio);
-                document.getElementById('modal-bio-text').textContent = newBio;
-                document.getElementById('bio-edit-container').classList.add('hidden');
-                renderStudents(document.getElementById('search-input').value);
-                alert("Информация о себе успешно сохранена!");
-            }
-        }
-
-        function toggleAbsence() {
-            if (currentStudentId !== null) {
-                const key = `absent_${currentStudentId}_${todayDateKey}`;
-                localStorage.setItem(key, !(localStorage.getItem(key) === 'true'));
-                closeStudentModal();
-                updateAttendanceStats();
-                renderStudents(document.getElementById('search-input').value);
-                renderRating();
-            }
-        }
-
-        function saveNotes() {
-            if (currentStudentId !== null) {
-                localStorage.setItem(`student_note_${currentStudentId}`, document.getElementById('modal-notes').value);
-                alert("Заметка сохранена!");
-                closeStudentModal();
-            }
         }
 
         document.getElementById('search-input').oninput = (e) => renderStudents(e.target.value);
