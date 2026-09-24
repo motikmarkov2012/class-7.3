@@ -22,14 +22,14 @@
 </head>
 <body class="bg-[#f2f2f7] text-[#1c1c1e] min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
 
-    <!-- ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ (ТОСТЫ) -->
+    <!-- ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ -->
     <div id="toast-container" class="fixed top-5 left-0 right-0 z-50 flex flex-col items-center pointer-events-none px-4"></div>
 
-    <!-- ОКНО АВТОРИЗАЦИИ (iOS СТИЛЬ) -->
+    <!-- ОКНО АВТОРИЗАЦИИ -->
     <div id="auth-screen" class="fixed inset-0 w-screen h-screen bg-black/40 backdrop-blur-2xl flex items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[36px] max-w-sm w-full p-8 shadow-2xl border border-white/60 relative text-center">
             <div class="w-16 h-16 bg-[#0071e3] text-white rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-5 shadow-lg shadow-blue-500/25">
-                7.3
+                🎓 7.3
             </div>
             <h2 class="text-2xl font-bold text-[#1d1d1f] tracking-tight mb-1">7 «3» Класс</h2>
             <p class="text-[#86868b] text-xs mb-6">Войдите под своим именем</p>
@@ -48,10 +48,10 @@
 
             <div class="space-y-3">
                 <button onclick="handleLogin()" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.98] text-white font-semibold py-3.5 px-4 rounded-2xl transition text-sm shadow-md shadow-blue-500/20">
-                    Войти
+                    Войти ✨
                 </button>
                 <button onclick="loginAsGuest()" class="w-full bg-black/5 hover:bg-black/10 active:scale-[0.98] text-[#1d1d1f] font-medium py-3 px-4 rounded-2xl transition text-xs">
-                    Войти как гость
+                    Войти как гость 👁️
                 </button>
             </div>
         </div>
@@ -71,10 +71,10 @@
             </div>
             <div class="flex items-center gap-2">
                 <div id="my-wallet" class="bg-amber-500/10 text-amber-700 text-xs font-semibold px-3 py-2 rounded-2xl border border-amber-500/20 hidden flex items-center gap-1">
-                    <span>Звёзды:</span> <span id="my-wallet-stars">0</span>
+                    <span>⭐ Звёзды:</span> <span id="my-wallet-stars">0</span>
                 </div>
                 <button onclick="logout()" class="p-2.5 rounded-2xl bg-black/5 hover:bg-black/10 text-[#1d1d1f] transition text-xs font-semibold" title="Выйти">
-                    Выйти
+                    🚪 Выйти
                 </button>
             </div>
         </div>
@@ -89,24 +89,24 @@
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
-                        <span class="text-[11px] font-semibold text-blue-400 uppercase tracking-widest">Сообщение учителя</span>
+                        <span class="text-[11px] font-semibold text-blue-400 uppercase tracking-widest">📢 Сообщение учителя</span>
                     </div>
                     <span id="teacher-msg-date" class="text-[10px] text-gray-400">Сегодня</span>
                 </div>
-                <h3 class="text-lg font-bold tracking-tight mb-2">Анастасия Евгеньевна</h3>
+                <h3 class="text-lg font-bold tracking-tight mb-2">Анастасия Евгеньевна 👩‍🏫</h3>
                 <p id="teacher-announcement-text" class="text-xs text-gray-300 leading-relaxed bg-white/5 p-4 rounded-2xl border border-white/5 font-normal">
-                    Загрузка актуального объявления...
+                    Объявление пока не опубликовано. Ожидайте информацию от классного руководителя.
                 </p>
                 <div id="teacher-edit-box" class="mt-4 hidden">
-                    <input type="text" id="teacher-input-announcement" placeholder="Написать новое объявление для класса..." class="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white placeholder-gray-400 focus:outline-none mb-2">
-                    <button onclick="saveTeacherAnnouncement()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Обновить объявление</button>
+                    <textarea id="teacher-input-announcement" placeholder="Написать важное объявление для класса..." class="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white placeholder-gray-400 focus:outline-none mb-2 h-20 resize-none"></textarea>
+                    <button onclick="saveTeacherAnnouncement()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">💾 Опубликовать объявление</button>
                 </div>
             </div>
 
             <!-- Исторический факт дня -->
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-semibold text-[#86868b] uppercase tracking-wider">Исторический факт дня</span>
+                    <span class="text-[11px] font-semibold text-[#86868b] uppercase tracking-wider">📜 Исторический факт дня</span>
                     <span class="text-xs font-bold text-[#0071e3]">🏛️</span>
                 </div>
                 <p id="history-fact-text" class="text-xs text-[#1d1d1f] leading-relaxed font-medium">Загрузка исторического факта...</p>
@@ -115,8 +115,8 @@
             <!-- Истории -->
             <div class="glass-panel p-5 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold text-sm text-[#1d1d1f] tracking-tight">Истории класса</h3>
-                    <button onclick="openAddStoryModal()" class="text-xs font-semibold text-[#0071e3] hover:bg-blue-50 px-3 py-1.5 rounded-xl transition">+ Добавить (+2 звезды)</button>
+                    <h3 class="font-semibold text-sm text-[#1d1d1f] tracking-tight">📸 Истории класса</h3>
+                    <button onclick="openAddStoryModal()" class="text-xs font-semibold text-[#0071e3] hover:bg-blue-50 px-3 py-1.5 rounded-xl transition">+ Добавить историю (+2 ⭐)</button>
                 </div>
                 <div id="stories-tray" class="flex gap-3 overflow-x-auto no-scrollbar py-1"></div>
             </div>
@@ -124,13 +124,13 @@
             <!-- Лента публикаций -->
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">Лента</h3>
+                    <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">💬 Лента класса</h3>
                     <button onclick="openNewPostModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
-                        Опубликовать (+3 звезды)
+                        ✍️ Написать пост (+3 ⭐)
                     </button>
                 </div>
                 <div id="telegram-posts-feed" class="space-y-4">
-                    <p class="text-xs text-[#86868b] text-center py-6">Лента пока пуста.</p>
+                    <p class="text-xs text-[#86868b] text-center py-6">Лента пока пуста. Будьте первыми! ✨</p>
                 </div>
             </div>
         </div>
@@ -140,10 +140,10 @@
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
                     <div>
-                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">Посещаемость</h3>
-                        <p class="text-xs text-[#86868b] mt-0.5">Учёт присутствия</p>
+                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">📋 Посещаемость</h3>
+                        <p class="text-xs text-[#86868b] mt-0.5">Учёт присутствия класса</p>
                     </div>
-                    <input type="text" id="attendance-search" placeholder="Поиск ученика..." class="w-full sm:w-60 px-4 py-2.5 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                    <input type="text" id="attendance-search" placeholder="🔍 Поиск ученика..." class="w-full sm:w-60 px-4 py-2.5 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
                 </div>
                 <div id="attendance-list" class="space-y-2.5"></div>
             </div>
@@ -154,15 +154,15 @@
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex justify-between items-center mb-5">
                     <div>
-                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">Галерея</h3>
-                        <p class="text-xs text-[#86868b] mt-0.5">Фотографии класса</p>
+                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">🖼️ Галерея</h3>
+                        <p class="text-xs text-[#86868b] mt-0.5">Фотографии и воспоминания</p>
                     </div>
                     <button onclick="openAddPhotoModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
-                        Загрузить (+5 звёзд)
+                        📷 Загрузить фото (+5 ⭐)
                     </button>
                 </div>
                 <div id="class-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <p class="text-xs text-[#86868b] col-span-full text-center py-10">В галерее пока нет снимков.</p>
+                    <p class="text-xs text-[#86868b] col-span-full text-center py-10">В галерее пока нет снимков. 🌅</p>
                 </div>
             </div>
         </div>
@@ -176,15 +176,21 @@
                 
                 <div class="max-w-md mx-auto space-y-4 text-left border-t border-black/5 pt-6">
                     <div>
-                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">Аватарка (ссылка на изображение)</label>
-                        <input type="text" id="profile-avatar-input" placeholder="https://..." class="w-full px-4 py-3 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">🖼️ Аватарка (выберите из галереи или вставьте ссылку)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="profile-avatar-input" placeholder="https://... или загрузите файл" class="w-full px-4 py-3 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                            <label class="bg-black/5 hover:bg-black/10 px-4 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center shrink-0 transition">
+                                📂 Файл
+                                <input type="file" accept="image/*" class="hidden" onchange="uploadFileAsAvatar(this)">
+                            </label>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">О себе / Статус (+2 звезды)</label>
+                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">💬 О себе / Статус (+2 ⭐)</label>
                         <textarea id="profile-bio-input" placeholder="Пару слов о себе..." class="w-full px-4 py-3 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] h-24 resize-none bg-white/50"></textarea>
                     </div>
                     <button onclick="saveMyProfile()" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.98] text-white font-semibold py-3.5 rounded-2xl transition text-xs shadow-sm">
-                        Сохранить изменения
+                        💾 Сохранить изменения
                     </button>
                 </div>
             </div>
@@ -192,8 +198,8 @@
             <!-- Список учеников -->
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mb-5">
-                    <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">Ученики класса</h3>
-                    <input type="text" id="students-search" placeholder="Поиск ученика..." class="w-full sm:w-60 px-4 py-2 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                    <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">👥 Ученики класса</h3>
+                    <input type="text" id="students-search" placeholder="🔍 Поиск ученика..." class="w-full sm:w-60 px-4 py-2 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
                 </div>
                 <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
             </div>
@@ -204,19 +210,19 @@
     <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
     <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-2.5 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
         <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-[#0071e3] transition p-1">
-            <span class="text-lg font-bold">✦</span>
+            <span class="text-lg">🏠</span>
             <span class="text-[10px] font-semibold mt-0.5">Главная</span>
         </button>
         <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-lg font-bold">❖</span>
+            <span class="text-lg">📊</span>
             <span class="text-[10px] font-medium mt-0.5">Ученики</span>
         </button>
         <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-lg font-bold">▣</span>
+            <span class="text-lg">🖼️</span>
             <span class="text-[10px] font-medium mt-0.5">Галерея</span>
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-lg font-bold">⚙</span>
+            <span class="text-lg">⚙️</span>
             <span class="text-[10px] font-medium mt-0.5">Настройки</span>
         </button>
     </nav>
@@ -225,11 +231,20 @@
     <div id="story-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative border border-white/60">
             <button onclick="closeAddStoryModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
-            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">Новая история</h3>
+            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">📸 Новая история</h3>
             <div class="space-y-3.5">
-                <input type="text" id="story-img-input" placeholder="Ссылка на фото..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
-                <input type="text" id="story-caption-input" placeholder="Подпись..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
-                <button onclick="publishStory()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">Опубликовать</button>
+                <div>
+                    <label class="block text-[10px] font-semibold text-[#86868b] mb-1">Выберите фото из галереи устройства или введите ссылку</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="story-img-input" placeholder="https://..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                        <label class="bg-black/5 hover:bg-black/10 px-4 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center shrink-0 transition">
+                            📂 Файл
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadFileForInput(this, 'story-img-input')">
+                        </label>
+                    </div>
+                </div>
+                <input type="text" id="story-caption-input" placeholder="💬 Подпись к истории..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                <button onclick="publishStory()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">🚀 Опубликовать</button>
             </div>
         </div>
     </div>
@@ -249,7 +264,7 @@
             </div>
             <p id="view-story-caption" class="text-xs text-gray-200 mb-4 text-center"></p>
             <button onclick="likeCurrentStory()" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-3 rounded-2xl transition">
-                Нравится (<span id="view-story-likes">0</span>)
+                ❤️ Нравится (<span id="view-story-likes">0</span>)
             </button>
         </div>
     </div>
@@ -257,11 +272,17 @@
     <div id="post-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-md w-full p-6 shadow-2xl relative border border-white/60">
             <button onclick="closeNewPostModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
-            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">Новая публикация</h3>
+            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">✍️ Новая публикация</h3>
             <div class="space-y-3.5">
-                <textarea id="new-post-text" placeholder="Текст публикации..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs h-32 resize-none focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50"></textarea>
-                <input type="text" id="new-post-img" placeholder="Ссылка на фото (необязательно)" class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
-                <button onclick="publishPost()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">Опубликовать</button>
+                <textarea id="new-post-text" placeholder="📝 Текст публикации..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs h-32 resize-none focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50"></textarea>
+                <div class="flex gap-2">
+                    <input type="text" id="new-post-img" placeholder="📷 Ссылка на фото (необязательно)" class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                    <label class="bg-black/5 hover:bg-black/10 px-4 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center shrink-0 transition">
+                        📂 Файл
+                        <input type="file" accept="image/*" class="hidden" onchange="uploadFileForInput(this, 'new-post-img')">
+                    </label>
+                </div>
+                <button onclick="publishPost()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">🚀 Опубликовать</button>
             </div>
         </div>
     </div>
@@ -269,30 +290,40 @@
     <div id="photo-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-md w-full p-6 shadow-2xl relative border border-white/60">
             <button onclick="closeAddPhotoModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
-            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">Загрузить фото</h3>
+            <h3 class="text-lg font-bold text-[#1d1d1f] mb-4">🖼️ Загрузить фото в галерею</h3>
             <div class="space-y-3.5">
-                <input type="text" id="class-photo-url" placeholder="Ссылка на фото..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
-                <input type="text" id="class-photo-caption" placeholder="Описание..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
-                <button onclick="publishClassPhoto()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">Загрузить</button>
+                <div class="flex gap-2">
+                    <input type="text" id="class-photo-url" placeholder="https:// или файл с устройства" class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                    <label class="bg-black/5 hover:bg-black/10 px-4 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center shrink-0 transition">
+                        📂 Файл
+                        <input type="file" accept="image/*" class="hidden" onchange="uploadFileForInput(this, 'class-photo-url')">
+                    </label>
+                </div>
+                <input type="text" id="class-photo-caption" placeholder="💬 Описание фото..." class="w-full px-4 py-3 border border-black/10 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
+                <button onclick="publishClassPhoto()" class="w-full bg-[#0071e3] text-white font-semibold py-3 rounded-2xl text-xs shadow-sm">📥 Загрузить</button>
             </div>
         </div>
     </div>
 
+    <!-- Модальное окно профиля ученика -->
     <div id="student-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative text-center border border-white/60">
             <button onclick="closeStudentModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
             <div id="modal-img-container" class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-blue-50 flex items-center justify-center text-[#0071e3] font-bold text-xl shadow-inner"></div>
             <h3 id="modal-name" class="font-bold text-[#1d1d1f] text-base mb-1">Имя</h3>
             <div class="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-700 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-4 border border-amber-500/20">
-                Звёзды: <span id="modal-stars-count">0</span>
+                ⭐ Звёзды: <span id="modal-stars-count">0</span>
             </div>
             <p id="modal-bio-text" class="text-xs text-[#86868b] italic bg-white/50 p-4 rounded-2xl border border-black/5">Нет описания</p>
             
-            <!-- Кнопка выдачи звёзд учителем или старостой -->
-            <div id="teacher-award-box" class="mt-4 pt-4 border-t border-black/5 hidden">
-                <button onclick="awardStudentStar()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-sm">
-                    ⭐ Выдать звезду ученику
-                </button>
+            <!-- Панель разработчика (Марков Матвей) / Учителя / Старосты -->
+            <div id="developer-controls" class="mt-4 pt-4 border-t border-black/5 hidden space-y-2">
+                <div class="text-[10px] font-bold text-purple-600 uppercase tracking-widest mb-1">⚡ Панель управления звёздами</div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="modStar(1)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs transition">+1 Звезда</button>
+                    <button onclick="modStar(-1)" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-xl text-xs transition">-1 Звезда</button>
+                </div>
+                <button onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition">🔄 Обнулить звёзды всего класса</button>
             </div>
         </div>
     </div>
@@ -342,11 +373,11 @@
         let activeModalStudentId = null;
 
         const historyFacts = [
-            "В этот день в 1703 году был основан город Санкт-Петербург, где учится наш 7 «3» класс.",
-            "Антонио Вивальди написал свой знаменитый цикл концертов «Времена года» в начале XVIII века.",
-            "Первая в мире программистка Ада Лавлейс создала алгоритм для вычисления чисел Бернулли ещё в XIX веке.",
-            "Санкт-Петербург известен своими разводными мостами, соединяющими центральные острова города.",
-            "Эпоха Просвещения подарила миру важнейшие научные открытия и философские концепции."
+            "В этот день в 1703 году был основан город Санкт-Петербург, где учится наш 7 «3» класс. 🌆",
+            "Антонио Вивальди написал свой знаменитый цикл концертов «Времена года» в начале XVIII века. 🎻",
+            "Первая в мире программистка Ада Лавлейс создала алгоритм для вычисления чисел Бернулли ещё в XIX веке. 💻",
+            "Санкт-Петербург известен своими разводными мостами, соединяющими центральные острова города. 🌉",
+            "Эпоха Просвещения подарила миру важнейшие научные открытия и философские концепции. 📚"
         ];
 
         window.onload = function() {
@@ -362,6 +393,30 @@
             renderAttendanceList();
         };
 
+        // Универсальная загрузка файла с телефона (iPhone / Android) в инпут
+        function uploadFileForInput(inputElement, targetInputId) {
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetInputId).value = e.target.result;
+                    showToast("Файл загружен! 📂", "Изображение успешно добавлено из устройства");
+                };
+                reader.readAsDataURL(inputElement.files[0]);
+            }
+        }
+
+        // Загрузка аватарки из файла
+        function uploadFileAsAvatar(inputElement) {
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-avatar-input').value = e.target.result;
+                    showToast("Аватарка загружена! 🖼️", "Нажмите «Сохранить изменения»");
+                };
+                reader.readAsDataURL(inputElement.files[0]);
+            }
+        }
+
         function showToast(title, text) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -374,6 +429,23 @@
                 </div>
             `;
             container.appendChild(toast);
+            
+            // Звуковой сигнал при получении звезды (Web Audio API)
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // нота Ре 5
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // нота Ля 5
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-10px)';
@@ -390,7 +462,7 @@
             current += amount;
             localStorage.setItem(key, current);
             
-            if (currentUserRole === 'student' || currentUserRole === 'starosta') {
+            if (currentUserRole === 'student' || currentUserRole === 'starosta' || currentUserRole === 'admin') {
                 document.getElementById('my-wallet-stars').textContent = current;
             }
             showToast(`Получено +${amount} звёзд!`, reason);
@@ -403,9 +475,10 @@
         }
 
         function loadTeacherAnnouncement() {
-            const defaultText = "Всем ученикам 7 «3» класса подготовиться к сдаче проектных работ и проверить расписание кабинетов.";
-            const savedText = localStorage.getItem('teacher_announcement') || defaultText;
-            document.getElementById('teacher-announcement-text').textContent = savedText;
+            const savedText = localStorage.getItem('teacher_announcement') || "";
+            if (savedText) {
+                document.getElementById('teacher-announcement-text').textContent = savedText;
+            }
         }
 
         function saveTeacherAnnouncement() {
@@ -414,7 +487,7 @@
             localStorage.setItem('teacher_announcement', text);
             document.getElementById('teacher-announcement-text').textContent = text;
             document.getElementById('teacher-input-announcement').value = '';
-            alert("Объявление обновлено!");
+            alert("Объявление успешно опубликовано! 📢");
         }
 
         function setupNameAutocomplete() {
@@ -443,19 +516,28 @@
             const passInput = document.getElementById('login-pass-input').value.trim();
             if (!nameInput) { alert("Введите ФИО!"); return; }
 
+            // Проверка пароля Маркова Матвея (Разработчик)
             if (nameInput.toLowerCase().includes("марков матвей")) {
-                if (passInput !== "2134") { alert("Неверный пароль!"); return; }
-                loginUserAndSet('student', "Марков Матвей Сергеевич");
+                if (passInput !== "2134") { alert("Неверный пароль разработчика!"); return; }
+                loginUserAndSet('developer', "Марков Матвей Сергеевич");
                 return;
             }
+            // Проверка пароля Учителя
             if (nameInput.toLowerCase().includes("анастасия евгеньевна")) {
-                if (passInput !== "teacher73") { alert("Неверный пароль!"); return; }
+                if (passInput !== "teacher73") { alert("Неверный пароль учителя!"); return; }
                 loginUserAndSet('admin', "Анастасия Евгеньевна");
                 return;
             }
+            // Проверка пароля Старост
             if (starostaNames.some(s => s.toLowerCase() === nameInput.toLowerCase())) {
-                if (passInput !== "starosta73") { alert("Неверный пароль!"); return; }
+                if (passInput !== "starosta73") { alert("Неверный пароль старосты!"); return; }
                 loginUserAndSet('starosta', nameInput);
+                return;
+            }
+
+            // Обычные одноклассники
+            if (passInput !== "class73") {
+                alert("Неверный пароль! (Для одноклассников пароль: class73)");
                 return;
             }
 
@@ -490,11 +572,11 @@
             document.getElementById('bottom-nav').classList.remove('hidden');
             document.getElementById('bottom-nav').classList.add('flex');
 
-            let roleTitle = currentUserRole === 'admin' ? 'Классный руководитель' : currentUserRole === 'starosta' ? 'Староста класса' : currentUserRole === 'guest' ? 'Гость портала' : 'Ученик класса';
+            let roleTitle = currentUserRole === 'developer' ? '👑 Разработчик (Матвей)' : currentUserRole === 'admin' ? '👩‍🏫 Классный руководитель' : currentUserRole === 'starosta' ? '⭐ Староста класса' : currentUserRole === 'guest' ? '👁️ Гость портала' : '🎓 Ученик класса';
             document.getElementById('current-user-name-badge').textContent = currentUserName;
             document.getElementById('current-user-role-badge').textContent = roleTitle;
 
-            if (currentUserRole === 'admin') {
+            if (currentUserRole === 'admin' || currentUserRole === 'developer') {
                 document.getElementById('teacher-edit-box').classList.remove('hidden');
             } else {
                 document.getElementById('teacher-edit-box').classList.add('hidden');
@@ -514,13 +596,14 @@
             document.getElementById('my-profile-name').textContent = currentUserName;
             document.getElementById('my-profile-role').textContent = roleTitle;
 
-            if (currentUserRole === 'student' || currentUserRole === 'starosta') {
-                const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
-                if (me) {
-                    document.getElementById('my-wallet').classList.remove('hidden');
-                    document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '0';
-                }
+            document.getElementById('my-wallet').classList.remove('hidden');
+            const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+            if (me) {
+                document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '0';
+            } else {
+                document.getElementById('my-wallet-stars').textContent = '999';
             }
+
             renderStudents();
         }
 
@@ -542,11 +625,11 @@
                 localStorage.setItem(`bio_${currentUserName}`, bio); 
                 const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
                 if (me) localStorage.setItem(`bio_${me.id}`, bio);
-                addStarsToCurrentStudent(2, "За заполнение статуса в профиле");
+                addStarsToCurrentStudent(2, "За заполнение статуса в профиле 💬");
                 updated = true;
             }
             showMainSite();
-            if (updated) alert("Изменения сохранены!");
+            if (updated) alert("Изменения успешно сохранены! ✨");
         }
 
         function renderAttendanceList(filter = '') {
@@ -588,12 +671,12 @@
         function publishClassPhoto() {
             const url = document.getElementById('class-photo-url').value.trim();
             const caption = document.getElementById('class-photo-caption').value.trim();
-            if (!url) { alert("Введите ссылку!"); return; }
+            if (!url) { alert("Выберите или введите фото!"); return; }
             const photos = JSON.parse(localStorage.getItem('class_photos') || '[]');
             photos.unshift({ author: currentUserName, url, caption, date: new Date().toLocaleDateString() });
             localStorage.setItem('class_photos', JSON.stringify(photos));
             closeAddPhotoModal();
-            addStarsToCurrentStudent(5, "За загрузку фотографии в галерею класса");
+            addStarsToCurrentStudent(5, "За загрузку фотографии в галерею класса 🖼️");
             renderClassPhotos();
         }
 
@@ -625,12 +708,12 @@
         function publishStory() {
             const img = document.getElementById('story-img-input').value.trim();
             const caption = document.getElementById('story-caption-input').value.trim();
-            if (!img) return;
+            if (!img) { alert("Выберите фото!"); return; }
             const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
             stories.unshift({ id: Date.now(), author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', image: img, caption, likes: 0, likedBy: [] });
             localStorage.setItem('class_stories', JSON.stringify(stories));
             closeAddStoryModal();
-            addStarsToCurrentStudent(2, "За публикацию новой истории");
+            addStarsToCurrentStudent(2, "За публикацию новой истории 📸");
             renderStoriesTray();
         }
 
@@ -679,7 +762,7 @@
                 s.likedBy.push(currentUserName); s.likes = (s.likes || 0) + 1;
                 localStorage.setItem('class_stories', JSON.stringify(stories));
                 document.getElementById('view-story-likes').textContent = s.likes;
-            } else { alert("Вы уже оценили."); }
+            } else { alert("Вы уже оценили эту историю! ❤️"); }
         }
 
         function openNewPostModal() { document.getElementById('post-modal').classList.remove('hidden'); document.getElementById('post-modal').classList.add('flex'); }
@@ -688,12 +771,12 @@
         function publishPost() {
             const text = document.getElementById('new-post-text').value.trim();
             const img = document.getElementById('new-post-img').value.trim();
-            if (!text) return;
+            if (!text) { alert("Введите текст публикации!"); return; }
             const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
             posts.unshift({ author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', text, image: img, date: new Date().toLocaleDateString() });
             localStorage.setItem('telegram_posts', JSON.stringify(posts));
             closeNewPostModal();
-            addStarsToCurrentStudent(3, "За полезную публикацию в ленту класса");
+            addStarsToCurrentStudent(3, "За полезную публикацию в ленту класса 💬");
             renderTelegramPosts();
         }
 
@@ -732,7 +815,7 @@
                     </div>
                     <div class="overflow-hidden">
                         <div class="font-semibold text-xs text-[#1d1d1f] truncate">${student.name}</div>
-                        <div class="text-[10px] text-amber-700 font-medium mt-0.5">Звёзды: ${localStorage.getItem(`stars_${student.id}`) || '0'}</div>
+                        <div class="text-[10px] text-amber-700 font-medium mt-0.5">⭐ Звёзды: ${localStorage.getItem(`stars_${student.id}`) || '0'}</div>
                     </div>
                 `;
                 card.onclick = () => {
@@ -741,10 +824,10 @@
                     document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
                     document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
                     
-                    if (currentUserRole === 'admin' || currentUserRole === 'starosta') {
-                        document.getElementById('teacher-award-box').classList.remove('hidden');
+                    if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
+                        document.getElementById('developer-controls').classList.remove('hidden');
                     } else {
-                        document.getElementById('teacher-award-box').classList.add('hidden');
+                        document.getElementById('developer-controls').classList.add('hidden');
                     }
 
                     document.getElementById('student-modal').classList.remove('hidden');
@@ -754,15 +837,30 @@
             });
         }
 
-        function awardStudentStar() {
+        function modStar(val) {
             if (!activeModalStudentId) return;
             const key = `stars_${activeModalStudentId}`;
             let current = parseInt(localStorage.getItem(key) || '0');
-            current += 1;
+            current += val;
+            if (current < 0) current = 0;
             localStorage.setItem(key, current);
             document.getElementById('modal-stars-count').textContent = current;
             renderStudents();
-            alert("Звезда успешно выдана ученику!");
+            alert(val > 0 ? "Звезда начислена ученику! ⭐" : "Звезда вычитана у ученика! ⚡");
+        }
+
+        function resetAllClassStars() {
+            if (!confirm("Вы уверены, что хотите обнулить звёзды ВСЕГО класса? 🔄")) return;
+            students.forEach(s => {
+                localStorage.setItem(`stars_${s.id}`, '0');
+            });
+            document.getElementById('modal-stars-count').textContent = '0';
+            if (currentUserRole === 'student' || currentUserRole === 'starosta' || currentUserRole === 'developer') {
+                const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
+                if (me) document.getElementById('my-wallet-stars').textContent = '0';
+            }
+            renderStudents();
+            alert("Звёзды всего класса успешно обнулены! 🔄✨");
         }
 
         function closeStudentModal() { document.getElementById('student-modal').classList.remove('flex'); document.getElementById('student-modal').classList.add('hidden'); }
