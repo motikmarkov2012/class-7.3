@@ -83,6 +83,18 @@
         <!-- 1. ГЛАВНАЯ -->
         <div id="tab-home" class="space-y-5">
             
+            <!-- Плашка Анастасии Евгеньевны -->
+            <div class="glass-panel p-5 rounded-[32px] shadow-sm border border-white/60 flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-inner border border-black/10 bg-blue-50">
+                    <img src="Teacher" alt="Анастасия Евгеньевна" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">
+                </div>
+                <div>
+                    <span class="text-[10px] font-semibold text-[#0071e3] uppercase tracking-wider">Наш классный руководитель</span>
+                    <h3 class="text-base font-bold text-[#1d1d1f] leading-tight mt-0.5">Анастасия Евгеньевна</h3>
+                    <p class="text-xs text-[#86868b] mt-1 leading-relaxed">Вдохновляет, поддерживает и ведёт наш 7 «3» класс к новым победам!</p>
+                </div>
+            </div>
+
             <!-- Объявление учителя -->
             <div class="bg-gradient-to-br from-[#1c1c1e] to-[#2c2c2e] text-white p-6 rounded-[32px] shadow-xl relative overflow-hidden border border-white/10">
                 <div class="flex items-center justify-between mb-3">
@@ -210,19 +222,23 @@
 
     </div>
 
-    <!-- НАВИГАЦИЯ (Без лишних иконки/эмодзи, только чистый текст) -->
-    <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-3 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
-        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-[#0071e3] transition p-1">
-            <span class="text-xs font-bold tracking-tight">Главная</span>
+    <!-- НАВИГАЦИЯ С КРАСИВЫМИ МИНИ-ИКОНКАМИ -->
+    <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-2.5 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-[#0071e3] transition p-1 group">
+            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">🏠</div>
+            <span class="text-[10px] font-bold tracking-tight">Главная</span>
         </button>
-        <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-xs font-medium tracking-tight">Ученики</span>
+        <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
+            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">📋</div>
+            <span class="text-[10px] font-medium tracking-tight">Ученики</span>
         </button>
-        <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-xs font-medium tracking-tight">Галерея</span>
+        <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
+            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">🖼️</div>
+            <span class="text-[10px] font-medium tracking-tight">Галерея</span>
         </button>
-        <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-xs font-medium tracking-tight">Настройки</span>
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
+            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">⚙️</div>
+            <span class="text-[10px] font-medium tracking-tight">Настройки</span>
         </button>
     </nav>
 
@@ -300,7 +316,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно ученика с ультра-правами разработчика -->
+    <!-- Модальное окно ученика с разделением прав (вычитать может ТОЛЬКО Марков Матвей) -->
     <div id="student-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative text-center border border-white/60">
             <button onclick="closeStudentModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
@@ -311,14 +327,17 @@
             </div>
             <p id="modal-bio-text" class="text-xs text-[#86868b] italic bg-white/50 p-4 rounded-2xl border border-black/5">Нет описания</p>
             
-            <!-- Панель управления звёздами (Ультра-права Маркова Матвея, Учителя и Старост) -->
+            <!-- Панель управления звёздами -->
             <div id="developer-controls" class="mt-4 pt-4 border-t border-black/5 hidden space-y-2">
                 <div id="dev-panel-title" class="text-[10px] font-bold text-purple-600 uppercase tracking-widest mb-1">Управление звёздами</div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="modStar(1)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs transition">+1 Звезда</button>
-                    <button onclick="modStar(-1)" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-xl text-xs transition">-1 Звезда</button>
+                <div id="add-star-btn-container">
+                    <button onclick="modStar(1)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">+1 Звезда</button>
                 </div>
-                <button onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition">Сбросить звёзды всего класса</button>
+                <!-- Кнопка вычитания доступна ИСКЛЮЧИТЕЛЬНО Маркову Матвею -->
+                <div id="minus-star-container" class="hidden">
+                    <button onclick="modStar(-1)" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">-1 Звезда (Только для Матвея)</button>
+                </div>
+                <button id="reset-class-stars-btn" onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition hidden">Сбросить звёзды всего класса</button>
             </div>
         </div>
     </div>
@@ -377,7 +396,6 @@
         ];
 
         window.onload = function() {
-            // Инициализация описания и фото учителя по умолчанию, если не задано
             if (!localStorage.getItem("bio_Анастасия Евгеньевна")) {
                 localStorage.setItem("bio_Анастасия Евгеньевна", "Любимый классный руководитель 7 «3» класса. Всегда поддержит, поможет разобраться в учебе и направит класс к новым победам!");
             }
@@ -516,7 +534,7 @@
             const passInput = document.getElementById('login-pass-input').value.trim();
             if (!nameInput) { alert("Введите ФИО!"); return; }
 
-            // УЛЬТРА-ПРАВА РАЗРАБОТЧИКА (МАРКОВ МАТВЕЙ)
+            // МАРКОВ МАТВЕЙ (УЛЬТРА-ПРАВА С ВЫЧИТАНИЕМ ЗВЁЗД)
             if (nameInput.toLowerCase().includes("марков матвей")) {
                 if (passInput !== "1234") { alert("Неверный пароль разработчика! (Пароль: 1234)"); return; }
                 loginUserAndSet('developer', "Марков Матвей Сергеевич");
@@ -528,14 +546,13 @@
                 loginUserAndSet('admin', "Анастасия Евгеньевна");
                 return;
             }
-            // Старосты
+            // Старосты (могут только начислять звёзды, но НЕ вычитать)
             if (starostaNames.some(s => s.toLowerCase() === nameInput.toLowerCase())) {
                 if (passInput !== "starosta73") { alert("Неверный пароль старосты!"); return; }
                 loginUserAndSet('starosta', nameInput);
                 return;
             }
 
-            // Обычные одноклассники
             if (passInput !== "1234") {
                 alert("Неверный пароль! (Для учеников пароль: 1234)");
                 return;
@@ -609,10 +626,12 @@
         function switchTab(tabName) {
             ['home', 'attendance', 'photos', 'profile'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`nav-${t}`).className = "flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1";
+                const navBtn = document.getElementById(`nav-${t}`);
+                navBtn.className = "flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group";
             });
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabName}`).className = "flex flex-col items-center text-[#0071e3] transition p-1 font-semibold";
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            activeNav.className = "flex flex-col items-center text-[#0071e3] transition p-1 group";
         }
 
         function saveMyProfile() {
@@ -821,11 +840,22 @@
                     document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
                     document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
                     
-                    // УЛЬТРА ПРАВА МАТВЕЯ, УЧИТЕЛЯ И СТАРОСТ
+                    // ПРАВА УПРАВЛЕНИЯ ЗВЁЗДАМИ
                     if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
                         document.getElementById('developer-controls').classList.remove('hidden');
+                        
                         if (currentUserRole === 'developer') {
                             document.getElementById('dev-panel-title').textContent = "Панель Ультра-Разработчика (Матвей)";
+                            document.getElementById('minus-star-container').classList.remove('hidden'); // Вычитать может ТОЛЬКО Матвей
+                            document.getElementById('reset-class-stars-btn').classList.remove('hidden');
+                        } else if (currentUserRole === 'admin') {
+                            document.getElementById('dev-panel-title').textContent = "Панель Учителя";
+                            document.getElementById('minus-star-container').classList.add('hidden'); // Учитель не вычитает, только Матвей
+                            document.getElementById('reset-class-stars-btn').classList.remove('hidden');
+                        } else {
+                            document.getElementById('dev-panel-title').textContent = "Панель Старосты";
+                            document.getElementById('minus-star-container').classList.add('hidden'); // Старостам запрещено вычитать
+                            document.getElementById('reset-class-stars-btn').classList.add('hidden');
                         }
                     } else {
                         document.getElementById('developer-controls').classList.add('hidden');
@@ -840,6 +870,12 @@
 
         function modStar(val) {
             if (activeModalStudentId === null) return;
+            // Проверка безопасности: если кто-то попытается вычесть звезды (val < 0), но он не Матвей (developer)
+            if (val < 0 && currentUserRole !== 'developer') {
+                alert("Ошибка доступа: вычитать звёзды может только Марков Матвей!");
+                return;
+            }
+
             const key = `stars_${activeModalStudentId}`;
             let current = parseInt(localStorage.getItem(key) || '0');
             current += val;
@@ -851,6 +887,10 @@
         }
 
         function resetAllClassStars() {
+            if (currentUserRole !== 'developer' && currentUserRole !== 'admin') {
+                alert("Недостаточно прав!");
+                return;
+            }
             if (!confirm("Обнулить звёзды ВСЕГО класса?")) return;
             students.forEach(s => {
                 localStorage.setItem(`stars_${s.id}`, '0');
