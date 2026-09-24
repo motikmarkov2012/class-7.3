@@ -3,389 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7 «3» Класс — Портал класса</title>
+    <title>7 «3» Класс — Портал</title>
     <!-- Подключаем Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; padding-bottom: 70px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 80px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ / ВХОДА -->
-    <div id="auth-screen" class="fixed inset-0 w-screen h-screen bg-slate-900/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center border border-slate-100">
-            <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center text-2xl font-black mx-auto mb-4 shadow-inner">
+    <!-- ЭКРАН АВТОРИЗАЦИИ (ЧИСТЫЙ И СТРОГИЙ) -->
+    <div id="auth-screen" class="fixed inset-0 w-screen h-screen bg-slate-950/40 backdrop-blur-xl flex items-center justify-center p-4 z-50">
+        <div class="glass-panel rounded-[32px] max-w-sm w-full p-8 shadow-2xl shadow-indigo-950/10 text-center border border-white/80 relative">
+            <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center text-xl font-black mx-auto mb-5 shadow-lg shadow-indigo-600/30">
                 7.3
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Портал 7 «3» класса</h2>
-            <p class="text-slate-500 text-sm mb-6">Введите ваши данные для входа или выберите гостевой режим.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight mb-1">7 «3» Класс</h2>
+            <p class="text-slate-500 text-xs mb-6">Введите ваши данные для входа в систему</p>
 
-            <div class="space-y-4 text-left mb-6">
+            <div class="space-y-4 text-left mb-6 relative">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ваше ФИО</label>
-                    <input type="text" id="login-name-input" placeholder="Например: Марков Матвей" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-slate-50">
-                    <div id="name-suggestions" class="absolute left-0 right-0 bg-white border border-slate-200 rounded-xl mt-1 max-h-40 overflow-y-auto hidden shadow-xl z-20 text-xs"></div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">ФИО ученика</label>
+                    <input type="text" id="login-name-input" placeholder="Введите фамилию и имя..." class="w-full px-4 py-3.5 rounded-2xl border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm bg-white/50 transition">
+                    <div id="name-suggestions" class="absolute left-0 right-0 bg-white border border-slate-100 rounded-2xl mt-1.5 max-h-48 overflow-y-auto hidden shadow-2xl z-20 text-xs divide-y divide-slate-50"></div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Пароль</label>
-                    <input type="password" id="login-pass-input" placeholder="Введите ваш пароль..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-slate-50">
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Пароль доступа</label>
+                    <input type="password" id="login-pass-input" placeholder="••••••••" class="w-full px-4 py-3.5 rounded-2xl border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm bg-white/50 transition">
                 </div>
             </div>
 
-            <div class="space-y-3 mb-6">
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition text-sm shadow-md">
-                    Войти в систему
+            <div class="space-y-3">
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-2xl transition text-sm shadow-lg shadow-indigo-600/25">
+                    Войти
                 </button>
-                <button onclick="loginAsGuest()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl transition text-xs">
-                    Войти как Гость (просмотр)
+                <button onclick="loginAsGuest()" class="w-full bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-600 font-semibold py-3 px-4 rounded-2xl transition text-xs">
+                    Войти как гость
                 </button>
-            </div>
-
-            <div class="border-t border-slate-100 pt-4 text-[11px] text-slate-400">
-                💡 <b>Марков Матвей</b> пароль: <code class="bg-slate-100 px-1 py-0.5 rounded text-indigo-600 font-bold">2134</code><br>
-                Старосты и учитель имеют персональные пароли доступа.
             </div>
         </div>
     </div>
 
-    <!-- ОСНОВНОЙ САЙТ -->
-    <div id="main-content" class="max-w-4xl mx-auto px-4 py-6 w-full flex-grow hidden">
+    <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+    <div id="main-content" class="max-w-3xl mx-auto px-4 py-8 w-full flex-grow hidden">
         
-        <!-- Верхняя мини-плашка пользователя -->
-        <div class="flex justify-between items-center gap-4 mb-6 bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100">
-            <div class="flex items-center gap-3">
-                <div id="current-user-badge" class="text-xs sm:text-sm font-medium text-slate-600"></div>
-                <div id="my-wallet" class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-amber-200 shadow-sm flex items-center gap-1 hidden">
-                    ⭐ <span id="my-wallet-stars">5</span>
+        <!-- Верхняя шапка профиля и статуса -->
+        <div class="flex justify-between items-center gap-4 mb-8 bg-white/80 backdrop-blur-md p-4 rounded-3xl shadow-sm border border-slate-100">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <div id="header-user-avatar" class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-sm shrink-0 overflow-hidden shadow-inner">👤</div>
+                <div class="overflow-hidden">
+                    <div id="current-user-name-badge" class="font-bold text-sm text-slate-800 truncate">Пользователь</div>
+                    <div id="current-user-role-badge" class="text-[11px] text-indigo-600 font-semibold">Роль</div>
                 </div>
             </div>
-            <button onclick="logout()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-2 rounded-xl transition">
-                Выйти
-            </button>
+            <div class="flex items-center gap-2">
+                <div id="my-wallet" class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-2 rounded-2xl border border-amber-200/60 shadow-sm flex items-center gap-1.5 hidden">
+                    ⭐ <span id="my-wallet-stars">0</span>
+                </div>
+                <button onclick="logout()" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition text-xs font-bold" title="Выйти">
+                    🚪
+                </button>
+            </div>
         </div>
 
-        <!-- ================= ВСЕ ВКЛАДКИ ================= -->
+        <!-- ================= 4 ВКЛАДКИ ================= -->
 
-        <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
+        <!-- 1. ГЛАВНАЯ -->
         <div id="tab-home" class="space-y-6">
-            <header class="text-center mb-6">
-                <h1 class="text-3xl font-extrabold text-indigo-900 mb-1">7 «3» Класс</h1>
-                <div id="today-date-badge" class="text-xs font-semibold text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block"></div>
-            </header>
+            <div class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white p-7 rounded-[32px] shadow-xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-indigo-500/30 text-indigo-200 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Официальный портал</span>
+                    <h1 class="text-3xl font-black mt-2 mb-1 tracking-tight">7 «3» Класс</h1>
+                    <p id="today-date-badge" class="text-xs text-indigo-200 font-medium"></p>
+                </div>
+                <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-indigo-500/20 rounded-full blur-2xl"></div>
+            </div>
 
-            <!-- TELEGRAM ИСТОРИИ -->
-            <div class="bg-white border border-indigo-100 p-4 rounded-3xl shadow-sm">
-                <div class="flex justify-between items-center mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg">📸</span>
-                        <h3 class="font-bold text-sm text-indigo-900">Истории класса</h3>
-                    </div>
-                    <button onclick="openAddStoryModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-                        + История
-                    </button>
+            <!-- Истории -->
+            <div class="bg-white p-5 rounded-[32px] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm text-slate-800 tracking-tight">Истории</h3>
+                    <button onclick="openAddStoryModal()" class="text-xs font-bold text-indigo-600 hover:bg-indigo-50 px-3 py-1.5 rounded-xl transition">+ Добавить</button>
                 </div>
                 <div id="stories-tray" class="flex gap-3 overflow-x-auto no-scrollbar py-1"></div>
             </div>
 
-            <!-- Виджеты: Факт и Цитаты -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-white border border-indigo-100 p-4 rounded-3xl shadow-sm">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-base">📜</span>
-                        <h4 class="font-bold text-xs text-indigo-900">Исторический факт дня</h4>
-                    </div>
-                    <p id="history-fact-text" class="text-xs text-slate-600 leading-relaxed">Загрузка...</p>
-                </div>
-                <div class="bg-white border border-indigo-100 p-4 rounded-3xl shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                        <div class="flex items-center gap-2">
-                            <span class="text-base">💬</span>
-                            <h4 class="font-bold text-xs text-indigo-900">Цитаты</h4>
-                        </div>
-                        <button onclick="openQuotesModal()" class="text-[11px] text-indigo-600 hover:underline font-semibold">+ Добавить</button>
-                    </div>
-                    <div id="quotes-preview-list" class="text-xs text-slate-600 space-y-1.5 max-h-24 overflow-y-auto"></div>
-                </div>
-            </div>
-
-            <!-- Лента класса -->
-            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg">📢</span>
-                        <h3 class="font-bold text-base text-indigo-900">Лента класса</h3>
-                    </div>
-                    <button onclick="openNewPostModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition shadow">
-                        ✍️ Написать
+            <!-- Лента публикаций -->
+            <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="font-bold text-base text-slate-800 tracking-tight">Лента новостей</h3>
+                    <button onclick="openNewPostModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition shadow-md shadow-indigo-600/20">
+                        Опубликовать
                     </button>
                 </div>
                 <div id="telegram-posts-feed" class="space-y-4">
-                    <p class="text-xs text-slate-400 italic text-center py-4">Пока нет публикаций.</p>
+                    <p class="text-xs text-slate-400 italic text-center py-6">Лента пока пуста.</p>
                 </div>
-            </div>
-
-            <!-- Топ класса -->
-            <div class="bg-white border border-slate-100 p-5 rounded-3xl shadow-sm">
-                <h3 class="font-bold text-base text-indigo-900 mb-3">🏆 Топ класса по звёздам</h3>
-                <div id="rating-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
             </div>
         </div>
 
-        <!-- ВКЛАДКА 2: ПОСЕЩАЕМОСТЬ (ПРИСУТСТВУЮЩИЕ / ОТСУТСТВУЮЩИЕ) -->
+        <!-- 2. ПОСЕЩАЕМОСТЬ -->
         <div id="tab-attendance" class="space-y-6 hidden">
-            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm">
-                <div class="flex justify-between items-center mb-4">
+            <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
                     <div>
-                        <h3 class="text-xl font-bold text-indigo-900">📋 Посещаемость класса</h3>
-                        <p class="text-xs text-slate-500">Отмечайте присутствующих и отсутствующих учеников</p>
+                        <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Посещаемость</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Учёт присутствия учащихся</p>
                     </div>
-                    <div class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-xl">
-                        Сегодня
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <input type="text" id="attendance-search" placeholder="Поиск ученика для отметки..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="attendance-search" placeholder="Поиск ученика..." class="w-full sm:w-60 px-4 py-2.5 rounded-2xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                 </div>
                 <div id="attendance-list" class="space-y-2.5"></div>
             </div>
         </div>
 
-        <!-- ВКЛАДКА 3: ФОТО / ГАЛЕРЕЯ КЛАССА -->
+        <!-- 3. ФОТО / ГАЛЕРЕЯ -->
         <div id="tab-photos" class="space-y-6 hidden">
-            <div class="bg-white border border-indigo-100 p-5 rounded-3xl shadow-sm">
-                <div class="flex justify-between items-center mb-4">
+            <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-5">
                     <div>
-                        <h3 class="text-xl font-bold text-indigo-900">📷 Галерея фото класса</h3>
-                        <p class="text-xs text-slate-500">Загружайте и делитесь классными моментами</p>
+                        <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Галерея</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Фотографии класса</p>
                     </div>
-                    <button onclick="openAddPhotoModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition shadow">
-                        + Загрузить фото
+                    <button onclick="openAddPhotoModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition shadow-md shadow-indigo-600/20">
+                        Загрузить фото
                     </button>
                 </div>
                 <div id="class-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <p class="text-xs text-slate-400 italic col-span-full text-center py-8">Пока нет загруженных фото. Станьте первыми!</p>
+                    <p class="text-xs text-slate-400 italic col-span-full text-center py-10">В галерее пока нет снимков.</p>
                 </div>
             </div>
         </div>
 
-        <!-- ВКЛАДКА 4: ПРОФИЛЬ И УЧЕНИКИ -->
+        <!-- 4. ПРОФИЛЬ И НАСТРОЙКИ -->
         <div id="tab-profile" class="space-y-6 hidden">
-            <!-- Блок управления своим профилем -->
-            <div class="bg-white border border-indigo-100 p-6 rounded-3xl shadow-sm text-center">
-                <div id="my-profile-avatar-box" class="w-24 h-24 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-2xl mx-auto mb-3 overflow-hidden border-4 border-indigo-50 shadow-inner">
+            <!-- Карточка профиля -->
+            <div class="bg-white p-7 rounded-[32px] shadow-sm border border-slate-100 text-center">
+                <div id="my-profile-avatar-box" class="w-24 h-24 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-3xl mx-auto mb-4 overflow-hidden border-4 border-indigo-50/80 shadow-inner">
                     👤
                 </div>
-                <h3 id="my-profile-name" class="text-xl font-bold text-slate-800 mb-1">Имя Фамилия</h3>
-                <p id="my-profile-role" class="text-xs text-indigo-600 font-semibold mb-4">Роль</p>
+                <h3 id="my-profile-name" class="text-xl font-extrabold text-slate-900 mb-1">Имя Фамилия</h3>
+                <p id="my-profile-role" class="text-xs text-indigo-600 font-bold mb-6">Роль</p>
                 
-                <div class="max-w-md mx-auto space-y-3 text-left">
+                <div class="max-w-md mx-auto space-y-4 text-left border-t border-slate-100 pt-6">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Аватарка (ссылка или из галереи)</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="profile-avatar-input" placeholder="https://..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Аватарка (ссылка на изображение)</label>
+                        <input type="text" id="profile-avatar-input" placeholder="https://example.com/photo.jpg" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                     </div>
-                    
-                    <!-- Галерея аватарок -->
                     <div>
-                        <p class="text-[11px] font-semibold text-indigo-600 mb-1">🖼️ Выберите аватарку из галереи:</p>
-                        <div class="grid grid-cols-6 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                            <div onclick="selectAvatarGallery('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200')" class="w-10 h-10 rounded-full overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500 mx-auto"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover"></div>
-                        </div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Статус / О себе</label>
+                        <textarea id="profile-bio-input" placeholder="Напишите пару слов о себе..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 h-24 resize-none bg-slate-50/50"></textarea>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">О себе / Интересы</label>
-                        <textarea id="profile-bio-input" placeholder="Расскажите о себе..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 h-20 resize-none"></textarea>
-                    </div>
-                    <button onclick="saveMyProfile()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition text-xs shadow">
-                        Сохранить профиль
+                    <button onclick="saveMyProfile()" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold py-3.5 rounded-2xl transition text-xs shadow-md shadow-indigo-600/20">
+                        Сохранить изменения
                     </button>
                 </div>
             </div>
 
-            <!-- Список всех учеников класса -->
-            <div class="bg-white border border-slate-100 p-5 rounded-3xl shadow-sm">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mb-4">
-                    <h3 class="font-bold text-base text-indigo-900">👥 Ученики класса</h3>
-                    <input type="text" id="students-search" placeholder="Поиск ученика..." class="w-full sm:w-64 px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <!-- Список учеников -->
+            <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 mb-5">
+                    <h3 class="font-bold text-base text-slate-900 tracking-tight">Ученики класса</h3>
+                    <input type="text" id="students-search" placeholder="Поиск ученика..." class="w-full sm:w-60 px-4 py-2 rounded-2xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
                 </div>
-                <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+                <div id="students-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
             </div>
 
-            <!-- Учитель -->
-            <section class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-3xl shadow-xl text-white p-6 flex flex-col sm:flex-row items-center gap-4">
-                <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-24 h-24 rounded-2xl object-cover shadow-lg border-2 border-white/30 bg-purple-900" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
-                <div class="text-center sm:text-left">
-                    <h2 class="text-xl font-bold mb-1">Анастасия Евгеньевна</h2>
-                    <p class="text-purple-100 text-xs leading-relaxed">Наш замечательный классный руководитель и наставник.</p>
+            <!-- Классный руководитель -->
+            <div class="bg-gradient-to-r from-violet-600 to-indigo-700 rounded-[32px] shadow-lg text-white p-6 flex items-center gap-5">
+                <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-20 h-20 rounded-2xl object-cover shadow-md border-2 border-white/20 bg-purple-900" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400'">
+                <div>
+                    <h4 class="text-lg font-bold">Анастасия Евгеньевна</h4>
+                    <p class="text-purple-100 text-xs mt-0.5 leading-relaxed">Классный руководитель</p>
                 </div>
-            </section>
+            </div>
         </div>
 
     </div>
 
-    <!-- ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (4 ВКЛАДКИ КАК НА ТВОЕМ ЭСКИЗЕ) -->
-    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2 z-40 hidden">
+    <!-- ФИКСИРОВАННАЯ НИЖНЯЯ ПАНЕЛЬ (4 ВКЛАДКИ) -->
+    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-slate-100 px-4 py-2 z-40 hidden shadow-lg shadow-slate-900/5">
         <div class="max-w-md mx-auto flex justify-around items-center">
-            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-indigo-600 transition p-1">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-indigo-600 transition p-2">
                 <span class="text-xl">🏠</span>
-                <span class="text-[10px] font-bold mt-0.5">Главная</span>
+                <span class="text-[10px] font-bold mt-1">Главная</span>
             </button>
-            <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-1">
+            <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-2">
                 <span class="text-xl">📋</span>
-                <span class="text-[10px] font-medium mt-0.5">Ученики</span>
+                <span class="text-[10px] font-semibold mt-1">Ученики</span>
             </button>
-            <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-1">
+            <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-2">
                 <span class="text-xl">📷</span>
-                <span class="text-[10px] font-medium mt-0.5">Фото</span>
+                <span class="text-[10px] font-semibold mt-1">Галерея</span>
             </button>
-            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-1">
-                <span class="text-xl">👤</span>
-                <span class="text-[10px] font-medium mt-0.5">Профиль</span>
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-2">
+                <span class="text-xl">⚙️</span>
+                <span class="text-[10px] font-semibold mt-1">Профиль</span>
             </button>
         </div>
     </nav>
 
-    <!-- Футер -->
-    <footer class="w-full text-center py-6 text-slate-400 text-xs border-t border-slate-200 mt-12 hidden md:block">
-        Портал 7 «3» класса
-    </footer>
-
     <!-- МОДАЛЬНЫЕ ОКНА -->
 
     <!-- Добавить историю -->
-    <div id="story-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeAddStoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-slate-800 mb-4">📸 Добавить историю</h3>
-            <div class="space-y-3">
-                <input type="text" id="story-img-input" placeholder="Ссылка на фото (https://...)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <input type="text" id="story-caption-input" placeholder="Подпись..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <button onclick="publishStory()" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl text-xs">Опубликовать</button>
+    <div id="story-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="closeAddStoryModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Новая история</h3>
+            <div class="space-y-3.5">
+                <input type="text" id="story-img-input" placeholder="Ссылка на фото..." class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
+                <input type="text" id="story-caption-input" placeholder="Подпись..." class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
+                <button onclick="publishStory()" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-xs shadow-md shadow-indigo-600/20">Опубликовать</button>
             </div>
         </div>
     </div>
 
-    <!-- Просмотр истории с лайками -->
-    <div id="view-story-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative flex flex-col items-center">
-            <button onclick="closeViewStoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">&times;</button>
-            <div class="flex items-center gap-3 w-full mb-3">
-                <div id="view-story-avatar" class="w-9 h-9 rounded-full bg-indigo-600 overflow-hidden flex items-center justify-center font-bold text-xs">👤</div>
+    <!-- Просмотр истории -->
+    <div id="view-story-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xl hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 text-white rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative flex flex-col items-center border border-white/10">
+            <button onclick="closeViewStoryModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+            <div class="flex items-center gap-3 w-full mb-4">
+                <div id="view-story-avatar" class="w-10 h-10 rounded-full bg-indigo-600 overflow-hidden flex items-center justify-center font-bold text-xs shadow-inner">👤</div>
                 <div>
                     <div id="view-story-author" class="font-bold text-xs">Автор</div>
-                    <div id="view-story-date" class="text-[9px] text-slate-400">Сегодня</div>
+                    <div id="view-story-date" class="text-[10px] text-slate-400">Сегодня</div>
                 </div>
             </div>
-            <div class="w-full h-72 bg-slate-950 rounded-2xl overflow-hidden mb-3 flex items-center justify-center">
+            <div class="w-full h-72 bg-slate-950 rounded-2xl overflow-hidden mb-4 flex items-center justify-center border border-white/5">
                 <img id="view-story-img" src="" class="w-full h-full object-contain">
             </div>
-            <p id="view-story-caption" class="text-xs text-slate-200 mb-3 text-center"></p>
-            <button onclick="likeCurrentStory()" class="w-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 border border-rose-500/40 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center gap-1">
+            <p id="view-story-caption" class="text-xs text-slate-200 mb-4 text-center"></p>
+            <button onclick="likeCurrentStory()" class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-bold py-3 rounded-2xl transition flex items-center justify-center gap-1.5 shadow-sm">
                 ❤️ Нравится (<span id="view-story-likes">0</span>)
             </button>
         </div>
     </div>
 
     <!-- Написать пост -->
-    <div id="post-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeNewPostModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-slate-800 mb-4">✍️ Новый пост в ленту</h3>
-            <div class="space-y-3">
-                <textarea id="new-post-text" placeholder="Что нового в классе?..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs h-28 resize-none"></textarea>
-                <input type="text" id="new-post-img" placeholder="Ссылка на фото (необязательно)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <button onclick="publishPost()" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl text-xs">Опубликовать</button>
+    <div id="post-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[32px] max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeNewPostModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Новая публикация</h3>
+            <div class="space-y-3.5">
+                <textarea id="new-post-text" placeholder="Что нового в классе?..." class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs h-32 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50"></textarea>
+                <input type="text" id="new-post-img" placeholder="Ссылка на фото (необязательно)" class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
+                <button onclick="publishPost()" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-xs shadow-md shadow-indigo-600/20">Опубликовать</button>
             </div>
         </div>
     </div>
 
     <!-- Загрузить фото в галерею -->
-    <div id="photo-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeAddPhotoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-slate-800 mb-4">📷 Загрузить фото</h3>
-            <div class="space-y-3">
-                <input type="text" id="class-photo-url" placeholder="Ссылка на фото (https://...)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <input type="text" id="class-photo-caption" placeholder="Описание фото..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <button onclick="publishClassPhoto()" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl text-xs">Загрузить в галерею</button>
+    <div id="photo-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[32px] max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeAddPhotoModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Загрузить фото</h3>
+            <div class="space-y-3.5">
+                <input type="text" id="class-photo-url" placeholder="Ссылка на фото..." class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
+                <input type="text" id="class-photo-caption" placeholder="Описание..." class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50/50">
+                <button onclick="publishClassPhoto()" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-2xl text-xs shadow-md shadow-indigo-600/20">Загрузить</button>
             </div>
         </div>
     </div>
 
-    <!-- Цитаты -->
-    <div id="quotes-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeQuotesModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-slate-800 mb-2">💬 Цитаты</h3>
-            <div class="space-y-2 mb-4">
-                <input type="text" id="quote-input-1" placeholder="Цитата 1..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <input type="text" id="quote-input-2" placeholder="Цитата 2..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
-                <input type="text" id="quote-input-3" placeholder="Цитата 3..." class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs">
+    <!-- Просмотр ученика -->
+    <div id="student-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative text-center">
+            <button onclick="closeStudentModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <div id="modal-img-container" class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xl shadow-inner">👤</div>
+            <h3 id="modal-name" class="font-bold text-slate-900 text-base mb-1">Имя</h3>
+            <div class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-3.5 py-1.5 rounded-full mb-4 border border-amber-200/60 shadow-sm">
+                ⭐ Звёзды: <span id="modal-stars-count">0</span>
             </div>
-            <button onclick="saveMyQuotes()" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl text-xs">Сохранить</button>
-        </div>
-    </div>
-
-    <!-- Модальное окно ученика -->
-    <div id="student-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-center">
-            <button onclick="closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            <div id="modal-img-container" class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xl">АМ</div>
-            <h3 id="modal-name" class="font-bold text-slate-800 text-base mb-1">Имя</h3>
-            <div class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mb-3 border border-amber-200">
-                ⭐ Звёзды: <span id="modal-stars-count">5</span>
-            </div>
-            <p id="modal-bio-text" class="text-xs text-slate-600 italic bg-slate-50 p-3 rounded-2xl">Ничего не написано</p>
+            <p id="modal-bio-text" class="text-xs text-slate-500 italic bg-slate-50 p-4 rounded-2xl border border-slate-100">Нет описания</p>
         </div>
     </div>
 
     <!-- Скрипт -->
     <script>
         const students = [
-            { id: 1, name: "Афанасьев Марк Константинович", birth: "08.11.2013" },
-            { id: 2, name: "Афонин Александр Андреевич", birth: "21.09.2013" },
-            { id: 3, name: "Батовский Иван Игоревич", birth: "07.09.2013" },
-            { id: 4, name: "Васильева Катерина Дмитриевна", birth: "19.06.2013" },
-            { id: 5, name: "Волчкова Алина Андреевна", birth: "02.02.2013" },
-            { id: 6, name: "Глазачев Дмитрий Алексеевич", birth: "06.12.2012" },
-            { id: 7, name: "Зуева Альбина Яновна", birth: "17.09.2013" },
-            { id: 8, name: "Ивченко Степан Дмитриевич", birth: "07.09.2013" },
-            { id: 9, name: "Казимиренок Елизавета Алексеевна", birth: "23.11.2013" },
-            { id: 10, name: "Кашина Анастасия Александровна", birth: "17.06.2013" },
-            { id: 11, name: "Кокарев Роман Игоревич", birth: "30.10.2012" },
-            { id: 12, name: "Кузнецова Анастасия Александровна", birth: "27.06.2013" },
-            { id: 13, name: "Кузнецова София Дмитриевна", birth: "07.03.2013" },
-            { id: 14, name: "Кучеров Андрей Алексеевич", birth: "07.02.2013" },
-            { id: 15, name: "Локтионов Алексей Павлович", birth: "26.06.2013" },
-            { id: 16, name: "Макарова Мария Денисовна", birth: "09.11.2013" },
-            { id: 17, name: "Марков Матвей Сергеевич", birth: "22.12.2012" },
-            { id: 18, name: "Махнач Вадим Сергеевич", birth: "17.05.2013" },
-            { id: 19, name: "Мурашов Иван Алексеевич", birth: "11.06.2013" },
-            { id: 20, name: "Панов Андрей Павлович", birth: "10.08.2013" },
-            { id: 21, name: "Патров Даниэль Михайлович", birth: "12.05.2013" },
-            { id: 22, name: "Пятина Елизавета Максимовна", birth: "26.10.2012" },
-            { id: 23, name: "Рощупкина Елизавета Кирилловна", birth: "09.12.2013" },
-            { id: 24, name: "Рутштейн Марк Сергеевич", birth: "27.06.2013" },
-            { id: 25, name: "Сергеев Михаил Владиславович", birth: "13.09.2013" },
-            { id: 26, name: "Сергеев Тимофей Владиславович", birth: "13.09.2013" },
-            { id: 27, name: "Смекалов Максим Евгеньевич", birth: "04.08.2013" },
-            { id: 28, name: "Смирнов Владимир Александрович", birth: "14.12.2012" },
-            { id: 29, name: "Смирнов Иван Юрьевич", birth: "13.06.2013" },
-            { id: 30, name: "Филиппова Кристина Алексеевна", birth: "01.10.2013" },
-            { id: 31, name: "Ходаков Михаил Сергеевич", birth: "20.07.2013" },
-            { id: 32, name: "Шутов Егор Юрьевич", birth: "10.04.2013" },
-            { id: 33, name: "Япарова Екатерина Дмитриевна", birth: "11.01.2013" }
+            { id: 1, name: "Афанасьев Марк Константинович" },
+            { id: 2, name: "Афонин Александр Андреевич" },
+            { id: 3, name: "Батовский Иван Игоревич" },
+            { id: 4, name: "Васильева Катерина Дмитриевна" },
+            { id: 5, name: "Волчкова Алина Андреевна" },
+            { id: 6, name: "Глазачев Дмитрий Алексеевич" },
+            { id: 7, name: "Зуева Альбина Яновна" },
+            { id: 8, name: "Ивченко Степан Дмитриевич" },
+            { id: 9, name: "Казимиренок Елизавета Алексеевна" },
+            { id: 10, name: "Кашина Анастасия Александровна" },
+            { id: 11, name: "Кокарев Роман Игоревич" },
+            { id: 12, name: "Кузнецова Анастасия Александровна" },
+            { id: 13, name: "Кузнецова София Дмитриевна" },
+            { id: 14, name: "Кучеров Андрей Алексеевич" },
+            { id: 15, name: "Локтионов Алексей Павлович" },
+            { id: 16, name: "Макарова Мария Денисовна" },
+            { id: 17, name: "Марков Матвей Сергеевич" },
+            { id: 18, name: "Махнач Вадим Сергеевич" },
+            { id: 19, name: "Мурашов Иван Алексеевич" },
+            { id: 20, name: "Панов Андрей Павлович" },
+            { id: 21, name: "Патров Даниэль Михайлович" },
+            { id: 22, name: "Пятина Елизавета Максимовна" },
+            { id: 23, name: "Рощупкина Елизавета Кирилловна" },
+            { id: 24, name: "Рутштейн Марк Сергеевич" },
+            { id: 25, name: "Сергеев Михаил Владиславович" },
+            { id: 26, name: "Сергеев Тимофей Владиславович" },
+            { id: 27, name: "Смекалов Максим Евгеньевич" },
+            { id: 28, name: "Смирнов Владимир Александрович" },
+            { id: 29, name: "Смирнов Иван Юрьевич" },
+            { id: 30, name: "Филиппова Кристина Алексеевна" },
+            { id: 31, name: "Ходаков Михаил Сергеевич" },
+            { id: 32, name: "Шутов Егор Юрьевич" },
+            { id: 33, name: "Япарова Екатерина Дмитриевна" }
         ];
 
         const starostaNames = ["Волчкова Алина Андреевна", "Васильева Катерина Дмитриевна"];
@@ -398,9 +329,7 @@
                 showMainSite();
             }
             setupNameAutocomplete();
-            document.getElementById('today-date-badge').textContent = `📅 ${new Date().toLocaleDateString('ru-RU', {dateStyle: 'full'})}`;
-            document.getElementById('history-fact-text').textContent = "23 сентября 1846 года был открыт Нептун на основе расчетов Урвена Леверье.";
-            renderQuotesPreview();
+            document.getElementById('today-date-badge').textContent = new Date().toLocaleDateString('ru-RU', {dateStyle: 'full'});
             renderTelegramPosts();
             renderStoriesTray();
             renderClassPhotos();
@@ -418,7 +347,7 @@
                     suggestions.innerHTML = '';
                     matches.forEach(m => {
                         const div = document.createElement('div');
-                        div.className = "px-3 py-2 hover:bg-indigo-50 cursor-pointer border-b border-slate-100 font-medium text-slate-700";
+                        div.className = "px-4 py-2.5 hover:bg-slate-50 cursor-pointer font-medium text-slate-700 text-xs";
                         div.textContent = m.name;
                         div.onclick = () => { input.value = m.name; suggestions.classList.add('hidden'); };
                         suggestions.appendChild(div);
@@ -434,17 +363,17 @@
             if (!nameInput) { alert("Введите ФИО!"); return; }
 
             if (nameInput.toLowerCase().includes("марков матвей")) {
-                if (passInput !== "2134") { alert("Неверный пароль! Нужен 2134"); return; }
+                if (passInput !== "2134") { alert("Неверный пароль!"); return; }
                 loginUserAndSet('student', "Марков Матвей Сергеевич");
                 return;
             }
             if (nameInput.toLowerCase().includes("анастасия евгеньевна")) {
-                if (passInput !== "teacher73") { alert("Неверный пароль учителя!"); return; }
+                if (passInput !== "teacher73") { alert("Неверный пароль!"); return; }
                 loginUserAndSet('admin', "Анастасия Евгеньевна");
                 return;
             }
             if (starostaNames.some(s => s.toLowerCase() === nameInput.toLowerCase())) {
-                if (passInput !== "starosta73") { alert("Неверный пароль старосты!"); return; }
+                if (passInput !== "starosta73") { alert("Неверный пароль!"); return; }
                 loginUserAndSet('starosta', nameInput);
                 return;
             }
@@ -481,43 +410,40 @@
             document.getElementById('bottom-nav').classList.add('flex');
 
             let roleTitle = currentUserRole === 'admin' ? 'Учитель' : currentUserRole === 'starosta' ? 'Староста' : currentUserRole === 'guest' ? 'Гость' : 'Ученик';
-            document.getElementById('current-user-badge').innerHTML = `Вы: <b>${currentUserName}</b> (${roleTitle})`;
+            document.getElementById('current-user-name-badge').textContent = currentUserName;
+            document.getElementById('current-user-role-badge').textContent = roleTitle;
 
-            // Настройка вкладки профиля
-            document.getElementById('my-profile-name').textContent = currentUserName;
-            document.getElementById('my-profile-role').textContent = roleTitle;
             const currentAvatar = localStorage.getItem(`avatar_${currentUserName}`) || '';
             document.getElementById('profile-avatar-input').value = currentAvatar;
             document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
             
-            const myAvatarBox = document.getElementById('my-profile-avatar-box');
-            myAvatarBox.innerHTML = currentAvatar ? `<img src="${currentAvatar}" class="w-full h-full object-cover">` : currentUserName[0];
+            const headerAvatar = document.getElementById('header-user-avatar');
+            const profileAvatar = document.getElementById('my-profile-avatar-box');
+            
+            const avatarHtml = currentAvatar ? `<img src="${currentAvatar}" class="w-full h-full object-cover">` : currentUserName[0];
+            headerAvatar.innerHTML = avatarHtml;
+            profileAvatar.innerHTML = avatarHtml;
+
+            document.getElementById('my-profile-name').textContent = currentUserName;
+            document.getElementById('my-profile-role').textContent = roleTitle;
 
             if (currentUserRole === 'student' || currentUserRole === 'starosta') {
                 const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
                 if (me) {
                     document.getElementById('my-wallet').classList.remove('hidden');
-                    document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '5';
+                    document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '0';
                 }
             }
             renderStudents();
-            renderRating();
         }
 
-        // Переключение 4 вкладок
         function switchTab(tabName) {
             ['home', 'attendance', 'photos', 'profile'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`nav-${t}`).className = "flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-1";
+                document.getElementById(`nav-${t}`).className = "flex flex-col items-center text-slate-400 hover:text-indigo-600 transition p-2";
             });
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabName}`).className = "flex flex-col items-center text-indigo-600 transition p-1 font-bold";
-        }
-
-        // Профиль и галерея аватарок
-        function selectAvatarGallery(url) {
-            document.getElementById('profile-avatar-input').value = url;
-            document.getElementById('my-profile-avatar-box').innerHTML = `<img src="${url}" class="w-full h-full object-cover">`;
+            document.getElementById(`nav-${tabName}`).className = "flex flex-col items-center text-indigo-600 transition p-2 font-bold";
         }
 
         function saveMyProfile() {
@@ -526,10 +452,10 @@
             if (avatar) localStorage.setItem(`avatar_${currentUserName}`, avatar);
             if (bio) localStorage.setItem(`bio_${currentUserName}`, bio);
             showMainSite();
-            alert("Профиль сохранен!");
+            alert("Профиль успешно обновлен!");
         }
 
-        // Посещаемость (Присутствует / Отсутствует)
+        // Посещаемость
         function renderAttendanceList(filter = '') {
             const container = document.getElementById('attendance-list');
             container.innerHTML = '';
@@ -537,15 +463,15 @@
             
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const statusKey = `att_${student.id}_${todayKey}`;
-                const status = localStorage.getItem(statusKey) || 'present'; // по умолчанию присутствует
+                const status = localStorage.getItem(statusKey) || 'present';
 
                 const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl";
+                div.className = "flex items-center justify-between p-3.5 bg-slate-50/60 border border-slate-100 rounded-2xl";
                 div.innerHTML = `
-                    <div class="font-medium text-xs text-slate-800">${student.name}</div>
+                    <div class="font-semibold text-xs text-slate-800">${student.name}</div>
                     <div class="flex gap-1.5">
-                        <button onclick="setAttendance(${student.id}, 'present')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${status === 'present' ? 'bg-emerald-500 text-white shadow' : 'bg-slate-200 text-slate-600'}">Присутствует</button>
-                        <button onclick="setAttendance(${student.id}, 'absent')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${status === 'absent' ? 'bg-rose-500 text-white shadow' : 'bg-slate-200 text-slate-600'}">Отсутствует</button>
+                        <button onclick="setAttendance(${student.id}, 'present')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${status === 'present' ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-200/70 text-slate-600'}">Присутствует</button>
+                        <button onclick="setAttendance(${student.id}, 'absent')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${status === 'absent' ? 'bg-rose-500 text-white shadow-sm' : 'bg-slate-200/70 text-slate-600'}">Отсутствует</button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -559,13 +485,13 @@
         }
         document.getElementById('attendance-search').oninput = (e) => renderAttendanceList(e.target.value);
 
-        // Фото галерея
+        // Галерея фото
         function openAddPhotoModal() {
-            if (!currentUserName || currentUserRole === 'guest') { alert("Авторизуйтесь!"); return; }
+            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
             document.getElementById('photo-modal').classList.remove('hidden');
             document.getElementById('photo-modal').classList.add('flex');
         }
-        function closeAddPhotoModal() { document.getElementById('photo-modal').classList.remove('hidden'); document.getElementById('photo-modal').classList.add('hidden'); }
+        function closeAddPhotoModal() { document.getElementById('photo-modal').classList.remove('flex'); document.getElementById('photo-modal').classList.add('hidden'); }
 
         function publishClassPhoto() {
             const url = document.getElementById('class-photo-url').value.trim();
@@ -588,9 +514,9 @@
                 card.className = "bg-slate-50 border border-slate-100 rounded-2xl overflow-hidden shadow-sm flex flex-col";
                 card.innerHTML = `
                     <div class="h-32 bg-slate-900 overflow-hidden"><img src="${p.url}" class="w-full h-full object-cover"></div>
-                    <div class="p-2.5 text-[11px] text-slate-700">
-                        <p class="font-semibold truncate">${p.caption || 'Фото класса'}</p>
-                        <span class="text-[9px] text-slate-400">От: ${p.author}</span>
+                    <div class="p-3 text-[11px] text-slate-700">
+                        <p class="font-bold truncate">${p.caption || 'Фото'}</p>
+                        <span class="text-[10px] text-slate-400">От: ${p.author}</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -599,7 +525,7 @@
 
         // Истории
         function openAddStoryModal() {
-            if (!currentUserName || currentUserRole === 'guest') { alert("Авторизуйтесь!"); return; }
+            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
             document.getElementById('story-modal').classList.remove('hidden'); document.getElementById('story-modal').classList.add('flex');
         }
         function closeAddStoryModal() { document.getElementById('story-modal').classList.remove('flex'); document.getElementById('story-modal').classList.add('hidden'); }
@@ -618,8 +544,8 @@
             const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
             tray.innerHTML = `
                 <div onclick="openAddStoryModal()" class="flex flex-col items-center cursor-pointer shrink-0">
-                    <div class="w-14 h-14 rounded-full border-2 border-dashed border-indigo-400 flex items-center justify-center bg-indigo-50 text-indigo-600 text-lg font-bold">+</div>
-                    <span class="text-[10px] text-slate-600 mt-1">История</span>
+                    <div class="w-14 h-14 rounded-full border-2 border-dashed border-indigo-300 flex items-center justify-center bg-indigo-50/50 text-indigo-600 text-lg font-bold">+</div>
+                    <span class="text-[10px] text-slate-600 font-semibold mt-1">Добавить</span>
                 </div>
             `;
             stories.forEach(s => {
@@ -627,12 +553,12 @@
                 div.className = "flex flex-col items-center cursor-pointer shrink-0";
                 div.onclick = () => viewStory(s.id);
                 div.innerHTML = `
-                    <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-indigo-600">
+                    <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-indigo-500 to-violet-500">
                         <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center font-bold text-xs">
                             ${s.avatar ? `<img src="${s.avatar}" class="w-full h-full object-cover">` : s.author[0]}
                         </div>
                     </div>
-                    <span class="text-[10px] text-slate-700 mt-1 truncate w-14 text-center">${s.author.split(' ')[0]}</span>
+                    <span class="text-[10px] text-slate-700 font-medium mt-1 truncate w-14 text-center">${s.author.split(' ')[0]}</span>
                 `;
                 tray.appendChild(div);
             });
@@ -658,10 +584,10 @@
                 s.likedBy.push(currentUserName); s.likes = (s.likes || 0) + 1;
                 localStorage.setItem('class_stories', JSON.stringify(stories));
                 document.getElementById('view-story-likes').textContent = s.likes;
-            } else { alert("Вы уже лайкнули!"); }
+            } else { alert("Вы уже оценили эту историю!"); }
         }
 
-        // Посты и Цитаты
+        // Посты
         function openNewPostModal() { document.getElementById('post-modal').classList.remove('hidden'); document.getElementById('post-modal').classList.add('flex'); }
         function closeNewPostModal() { document.getElementById('post-modal').classList.remove('flex'); document.getElementById('post-modal').classList.add('hidden'); }
         function publishPost() {
@@ -681,68 +607,42 @@
             feed.innerHTML = '';
             posts.forEach(p => {
                 const div = document.createElement('div');
-                div.className = "bg-slate-50 border border-slate-100 p-4 rounded-2xl";
+                div.className = "bg-slate-50/70 border border-slate-100 p-4 rounded-2xl";
                 div.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-8 h-8 rounded-full bg-indigo-100 overflow-hidden font-bold flex items-center justify-center text-xs">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-full bg-indigo-100 overflow-hidden font-bold flex items-center justify-center text-xs text-indigo-700">
                             ${p.avatar ? `<img src="${p.avatar}" class="w-full h-full object-cover">` : p.author[0]}
                         </div>
-                        <div><div class="font-bold text-xs">${p.author}</div><div class="text-[9px] text-slate-400">${p.date}</div></div>
+                        <div><div class="font-bold text-xs text-slate-800">${p.author}</div><div class="text-[10px] text-slate-400">${p.date}</div></div>
                     </div>
-                    <p class="text-xs text-slate-700">${p.text}</p>
-                    ${p.image ? `<img src="${p.image}" class="mt-2 rounded-xl max-h-48 w-full object-cover">` : ''}
+                    <p class="text-xs text-slate-700 leading-relaxed">${p.text}</p>
+                    ${p.image ? `<img src="${p.image}" class="mt-3 rounded-2xl max-h-60 w-full object-cover shadow-sm">` : ''}
                 `;
                 feed.appendChild(div);
             });
         }
 
-        function openQuotesModal() { document.getElementById('quotes-modal').classList.remove('hidden'); document.getElementById('quotes-modal').classList.add('flex'); }
-        function closeQuotesModal() { document.getElementById('quotes-modal').classList.remove('flex'); document.getElementById('quotes-modal').classList.add('hidden'); }
-        function saveMyQuotes() {
-            const q1 = document.getElementById('quote-input-1').value.trim();
-            const q2 = document.getElementById('quote-input-2').value.trim();
-            const q3 = document.getElementById('quote-input-3').value.trim();
-            if (q1 && q2 && q3) localStorage.setItem(`quotes_${currentUserName}`, JSON.stringify([q1, q2, q3]));
-            closeQuotesModal();
-            renderQuotesPreview();
-        }
-        function renderQuotesPreview() {
-            const list = document.getElementById('quotes-preview-list');
-            let all = [];
-            for(let i=0; i<localStorage.length; i++){
-                const k = localStorage.key(i);
-                if(k.startsWith('quotes_')) JSON.parse(localStorage.getItem(k)||'[]').forEach(q => all.push({author: k.replace('quotes_',''), q}));
-            }
-            if(all.length === 0) { list.innerHTML = `<p class="italic text-slate-400">Нет цитат</p>`; return; }
-            list.innerHTML = '';
-            all.slice(0, 2).forEach(item => {
-                const div = document.createElement('div');
-                div.className = "bg-indigo-50/50 p-2 rounded-xl";
-                div.innerHTML = `<p class="italic text-[11px] text-slate-700">«${item.q}»</p><span class="text-[9px] text-indigo-600">— ${item.author}</span>`;
-                list.appendChild(div);
-            });
-        }
-
+        // Ученики
         function renderStudents(filter='') {
             const grid = document.getElementById('students-grid');
             grid.innerHTML = '';
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition";
+                card.className = "bg-slate-50/60 border border-slate-100 p-3.5 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-slate-100/80 transition";
                 const customAvatar = localStorage.getItem(`avatar_${student.name}`);
                 card.innerHTML = `
                     <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 overflow-hidden font-bold flex items-center justify-center shrink-0">
                         ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover">` : student.name[0]}
                     </div>
                     <div class="overflow-hidden">
-                        <div class="font-semibold text-xs text-slate-800 truncate">${student.name}</div>
-                        <div class="text-[10px] text-slate-400">⭐ ${localStorage.getItem(`stars_${student.id}`) || '5'}</div>
+                        <div class="font-bold text-xs text-slate-800 truncate">${student.name}</div>
+                        <div class="text-[10px] text-amber-600 font-semibold mt-0.5">⭐ Звёзды: ${localStorage.getItem(`stars_${student.id}`) || '0'}</div>
                     </div>
                 `;
                 card.onclick = () => {
                     document.getElementById('modal-name').textContent = student.name;
-                    document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '5';
-                    document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Нет описания";
+                    document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
+                    document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
                     document.getElementById('student-modal').classList.remove('hidden');
                     document.getElementById('student-modal').classList.add('flex');
                 };
@@ -750,18 +650,6 @@
             });
         }
         function closeStudentModal() { document.getElementById('student-modal').classList.remove('flex'); document.getElementById('student-modal').classList.add('hidden'); }
-
-        function renderRating() {
-            const list = document.getElementById('rating-list');
-            list.innerHTML = '';
-            let sorted = [...students].sort((a,b) => parseInt(localStorage.getItem(`stars_${b.id}`)||'5') - parseInt(localStorage.getItem(`stars_${a.id}`)||'5'));
-            sorted.slice(0, 4).forEach((s, idx) => {
-                const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100";
-                div.innerHTML = `<div class="flex items-center gap-2"><span class="font-bold text-xs text-indigo-600">#${idx+1}</span><span class="text-xs font-semibold text-slate-700 truncate max-w-[180px]">${s.name}</span></div><span class="text-xs font-bold text-amber-600">⭐ ${localStorage.getItem(`stars_${s.id}`)||'5'}</span>`;
-                list.appendChild(div);
-            });
-        }
         document.getElementById('students-search').oninput = (e) => renderStudents(e.target.value);
     </script>
 </body>
