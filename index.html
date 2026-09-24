@@ -3,28 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Школьный Портал</title>
+    <title>Школьный Портал 7 «3»</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: #334155;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
             --danger: #ef4444;
-        }
-
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --text-muted: #64748b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --border: #cbd5e1;
-            --danger: #dc2626;
         }
 
         * {
@@ -32,622 +21,481 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        button {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        button:hover {
-            background-color: var(--accent-hover);
-        }
-
-        button.danger {
-            background-color: var(--danger);
-        }
-        button.danger:hover {
-            opacity: 0.9;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
             width: 100%;
-            flex: 1;
+            max-width: 480px;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 850px;
+        }
+
+        /* Экраны */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
         }
 
         /* Авторизация */
-        .auth-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 2rem;
-            max-width: 400px;
-            margin: 4rem auto;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .auth-card h2 {
-            margin-bottom: 1.5rem;
+        .auth-screen {
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
-        .form-group {
-            margin-bottom: 1rem;
+        .auth-screen h1 {
+            margin-bottom: 8px;
+            color: var(--primary);
         }
 
-        label {
+        .auth-screen p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .input-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.875rem;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 0.75rem;
+            padding: 12px 16px;
             border: 1px solid var(--border);
-            border-radius: 0.375rem;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
         input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent);
+            border-color: var(--primary);
         }
 
-        .w-full {
+        button {
             width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        /* Главная панель */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 2rem;
+        button:hover {
+            background: var(--primary-hover);
         }
 
-        @media(max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .sidebar {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            height: fit-content;
+        /* Шапка портала */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 10px;
         }
 
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            object-fit: cover;
-            background-color: var(--border);
+            background: #e0e7ff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            color: var(--primary);
+            overflow: hidden;
         }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .nav-links li a {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--text-color);
-            text-decoration: none;
-            border-radius: 0.375rem;
+        .user-details h3 {
+            font-size: 14px;
         }
 
-        .nav-links li a:hover, .nav-links li a.active {
-            background-color: var(--bg-color);
-            color: var(--accent);
+        .user-details span {
+            font-size: 12px;
+            color: var(--text-secondary);
         }
 
-        .content-area {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 2rem;
+        .logout-btn {
+            background: transparent;
+            color: var(--danger);
+            width: auto;
+            padding: 6px 12px;
+            font-size: 13px;
         }
 
-        .hidden {
-            display: none !important;
+        .logout-btn:hover {
+            background: #fee2e2;
         }
 
         /* Лента и Истории */
         .stories-container {
             display: flex;
-            gap: 1rem;
+            gap: 10px;
             overflow-x: auto;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
         }
 
         .story-card {
-            min-width: 120px;
-            height: 180px;
-            border-radius: 0.5rem;
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-            color: white;
-            padding: 0.75rem;
+            min-width: 80px;
+            height: 120px;
+            border-radius: 10px;
+            background: #e2e8f0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
+            padding: 8px;
             position: relative;
             cursor: pointer;
-            overflow: hidden;
-            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
 
-        .story-header {
+        .story-author-badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            z-index: 2;
+            gap: 4px;
+            font-size: 10px;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 6px;
+            border-radius: 10px;
+            width: fit-content;
+            margin-bottom: 2px;
         }
 
-        .story-avatar {
-            width: 24px;
-            height: 24px;
+        .story-author-badge img {
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid white;
-        }
-
-        .story-author {
-            font-size: 0.75rem;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .story-content {
-            font-size: 0.875rem;
-            z-index: 2;
-            word-break: break-word;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
         }
 
         .delete-story-btn {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(0, 0, 0, 0.5);
+            top: 4px;
+            right: 4px;
+            background: rgba(239, 68, 68, 0.8);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
-            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 3;
+            cursor: pointer;
         }
-        .delete-story-btn:hover {
-            background: var(--danger);
+
+        .feed {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .post {
-            background-color: var(--bg-color);
+            background: white;
             border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            padding: 12px;
         }
 
         .post-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
-        .post-meta {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .post-content {
+            font-size: 14px;
+            margin-bottom: 8px;
         }
 
-        .stars-display {
-            font-size: 1.2rem;
+        /* Навигация внизу */
+        .nav-tabs {
+            display: flex;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 6px;
+            cursor: pointer;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
             font-weight: bold;
-            color: #fbbf24;
-            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Школьный Портал</div>
-        <div class="header-controls">
-            <button id="theme-toggle">Сменить тему</button>
-            <button id="logout-btn" class="hidden danger">Выйти</button>
-        </div>
-    </header>
-
     <div class="container">
-        <!-- Форма авторизации -->
-        <div id="auth-section" class="auth-card">
-            <h2>Вход в систему</h2>
-            <div class="form-group">
-                <label for="username-input">Ваше имя / Логин:</label>
-                <input type="text" id="username-input" placeholder="Введите имя или пароль роли">
+        <!-- Экран авторизации -->
+        <div id="authScreen" class="screen auth-screen active">
+            <h1>Школьный Портал</h1>
+<p>Введите пароль для входа (учитель, староста, ученик или разработчик)</p>
+            <div class="input-group">
+                <label for="usernameInput">Ваше имя / Логин</label>
+                <input type="text" id="usernameInput" placeholder="Например: Иван или teacher73">
             </div>
-            <button id="login-btn" class="w-full">Войти</button>
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
-                Подсказка: введите пароли <b>teacher73</b>, <b>starosta73</b>, <b>2134</b> или обычный пароль <b>1234</b>.
-            </p>
+            <div class="input-group">
+                <label for="passwordInput">Пароль</label>
+                <input type="password" id="passwordInput" placeholder="Введите пароль">
+            </div>
+            <button onclick="login()">Войти</button>
         </div>
 
-        <!-- Основной кабинет -->
-        <div id="dashboard-section" class="dashboard hidden">
-            <div class="sidebar">
+        <!-- Основной экран портала -->
+        <div id="portalScreen" class="screen">
+            <div class="header">
                 <div class="user-info">
-                    <img id="user-avatar-img" class="avatar" src="" alt="Avatar">
-                    <div>
-                        <h4 id="user-display-name">Имя</h4>
-                        <span id="user-role-badge" style="font-size: 0.75rem; color: var(--accent);">Ученик</span>
+                    <div class="avatar" id="headerAvatar">У</div>
+                    <div class="user-details">
+                        <h3 id="headerName">Имя</h3>
+                        <span id="headerRole">Ученик</span>
                     </div>
                 </div>
-                <ul class="nav-links">
-                    <li><a href="#" class="active" data-tab="feed">Лента и Чат</a></li>
-                    <li><a href="#" data-tab="stars">Звезды</a></li>
-                    <li id="admin-tab-link" class="hidden"><a href="#" data-tab="admin">Управление</a></li>
-                </ul>
+                <button class="logout-btn" onclick="logout()">Выйти</button>
             </div>
 
-            <div class="content-area">
-                <!-- Вкладка Лента и Чат -->
-                <div id="tab-feed" class="tab-content">
-                    <h3>Истории</h3>
-                    <div style="margin: 1rem 0;">
-                        <input type="text" id="story-input" placeholder="Опубликовать историю..." style="margin-bottom: 0.5rem;">
-                        <button id="add-story-btn">Добавить историю</button>
-                    </div>
-                    <div class="stories-container" id="stories-list">
-                        <!-- Истории добавляются динамически -->
-                    </div>
-
-                    <h3 style="margin-top: 2rem;">Чат / Объявления</h3>
-                    <div style="margin: 1rem 0;">
-                        <textarea id="post-input" placeholder="Написать сообщение..."></textarea>
-                        <button id="add-post-btn" style="margin-top: 0.5rem;">Отправить</button>
-                    </div>
-                    <div id="posts-list">
-                        <!-- Посты добавляются динамически -->
-                    </div>
+            <!-- Лента / Истории -->
+            <div id="mainContent" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+                <!-- Блок историй -->
+                <div style="margin-bottom: 8px; display:flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 14px; color: var(--text-secondary);">Истории</h4>
+                    <button onclick="addStory()" style="width: auto; padding: 4px 8px; font-size: 12px;">+ История</button>
+                </div>
+                <div class="stories-container" id="storiesContainer">
+                    <!-- Истории добавляются динамически -->
                 </div>
 
-                <!-- Вкладка Звезды -->
-                <div id="tab-stars" class="tab-content hidden">
-                    <h3>Ваш баланс звезд</h3>
-                    <div class="stars-display" id="my-stars-count">⭐ 0</div>
-                    <div id="star-request-container">
-                        <button id="request-stars-btn">Запросить звезды у старосты</button>
-                    </div>
-                </div>
+                <hr style="border:0; border-top:1px solid var(--border); margin: 8px 0;">
 
-                <!-- Вкладка Управление (для учителя/старосты/разработчика) -->
-                <div id="tab-admin" class="tab-content hidden">
-                    <h3>Панель управления</h3>
-                    <div style="margin-top: 1rem;" id="admin-controls-content">
-                        <!-- Динамический контент управления -->
-                    </div>
+                <!-- Лента публикаций -->
+                <div style="margin-bottom: 8px; display:flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 14px; color: var(--text-secondary);">Лента класса</h4>
+                    <button onclick="addPost()" style="width: auto; padding: 4px 8px; font-size: 12px;">+ Пост</button>
                 </div>
+                <div class="feed" id="feedContainer">
+                    <!-- Посты -->
+                </div>
+            </div>
+
+            <!-- Вкладки навигации -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('feed')">Лента</button>
+                <button class="nav-tab" onclick="switchTab('chat')">Чат</button>
+                <button class="nav-tab" onclick="switchTab('profile')">Профиль</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Базовые данные и состояние
-        let currentUser = JSON.parse(localStorage.getItem('portal_user')) || null;
-        let posts = JSON.parse(localStorage.getItem('portal_posts')) || [];
-        let stories = JSON.parse(localStorage.getItem('portal_stories')) || [];
-        let starsData = JSON.parse(localStorage.getItem('portal_stars')) || {};
-
-        // Пароли и роли
-        const ROLES = {
-            'teacher73': { role: 'teacher', name: 'Учитель' },
-            'starosta73': { role: 'starosta', name: 'Староста' },
-            '2134': { role: 'developer', name: 'Матвей (Разработчик)' },
-            '1234': { role: 'student', name: 'Ученик' }
+        // Данные текущего пользователя
+        let currentUser = {
+            name: '',
+            role: 'Ученик',
+            password: '',
+            avatar: ''
         };
 
-        // Инициализация темы
-        const currentTheme = localStorage.getItem('portal_theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
+        // База историй (с аватаркой автора и поддержкой удаления)
+        let stories = [
+            { id: 1, author: 'Лиза', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100', text: 'Экскурсия в музей', bg: '#4f46e5' },
+            { id: 2, author: 'Матвей', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100', text: 'Робототехника', bg: '#0ea5e9' }
+        ];
 
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('portal_theme', theme);
-        });
+        let posts = [
+            { author: 'Классный руководитель', role: 'Учитель', text: 'Завтра сбор у школы в 9:00!' }
+        ];
 
-        // Авторизация
-        document.getElementById('login-btn').addEventListener('click', () => {
-            const inputVal = document.getElementById('username-input').value.trim();
-            if (!inputVal) return;
+        function login() {
+            const userVal = document.getElementById('usernameInput').value.trim();
+            const passVal = document.getElementById('passwordInput').value.trim();
 
-            let roleInfo = ROLES[inputVal];
-            let name = inputVal;
-
-            if (roleInfo) {
-                name = roleInfo.name;
-            } else {
-                // Если ввели обычное имя, сделаем его учеником
-                roleInfo = { role: 'student', name: inputVal };
-            }
-
-            currentUser = {
-                name: name,
-                role: roleInfo.role,
-                avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
-            };
-
-            localStorage.setItem('portal_user', JSON.stringify(currentUser));
-            initApp();
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('portal_user');
-            currentUser = null;
-            initApp();
-        });
-
-        function initApp() {
-            if (currentUser) {
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('dashboard-section').classList.remove('hidden');
-                document.getElementById('logout-btn').classList.remove('hidden');
-
-                document.getElementById('user-display-name').textContent = currentUser.name;
-                document.getElementById('user-role-badge').textContent = currentUser.role.toUpperCase();
-                document.getElementById('user-avatar-img').src = currentUser.avatar;
-
-                if (currentUser.role === 'teacher' || currentUser.role === 'starosta' || currentUser.role === 'developer') {
-                    document.getElementById('admin-tab-link').classList.remove('hidden');
-                } else {
-                    document.getElementById('admin-tab-link').classList.add('hidden');
-                }
-
-                renderStories();
-                renderPosts();
-                renderStars();
-                renderAdmin();
-            } else {
-                document.getElementById('auth-section').classList.remove('hidden');
-                document.getElementById('dashboard-section').classList.add('hidden');
-                document.getElementById('logout-btn').classList.add('hidden');
-            }
-        }
-
-        // Переключение вкладок
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-
-                link.classList.add('active');
-                const tabId = 'tab-' + link.getAttribute('data-tab');
-                document.getElementById(tabId).classList.remove('hidden');
-            });
-        });
-
-        // Истории
-        document.getElementById('add-story-btn').addEventListener('click', () => {
-            const text = document.getElementById('story-input').value.trim();
-            if (!text) return;
-
-            const newStory = {
-                id: Date.now(),
-                author: currentUser.name,
-                avatar: currentUser.avatar,
-                text: text
-            };
-
-            stories.unshift(newStory);
-            localStorage.setItem('portal_stories', JSON.stringify(stories));
-            document.getElementById('story-input').value = '';
-            renderStories();
-        });
-
-        function renderStories() {
-            const container = document.getElementById('stories-list');
-            container.innerHTML = '';
-
-            if (stories.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted);">Нет историй</p>';
+            if (!userVal || !passVal) {
+                alert('Введите имя и пароль!');
                 return;
             }
+
+            // Проверка паролей согласно условиям
+            if (passVal === 'teacher73') {
+                currentUser.role = 'Классный руководитель';
+            } else if (passVal === 'starosta73') {
+                currentUser.role = 'Староста';
+            } else if (passVal === '2134') {
+                currentUser.role = 'Разработчик (Матвей Марков)';
+            } else if (passVal === '1234') {
+                currentUser.role = 'Ученик';
+            } else {
+                alert('Неверный пароль! (Подсказки: teacher73, starosta73, 1234, 2134)');
+                return;
+            }
+
+            currentUser.name = userVal;
+            currentUser.password = passVal;
+            currentUser.avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(userVal)}`;
+
+            document.getElementById('headerName').innerText = currentUser.name;
+            document.getElementById('headerRole').innerText = currentUser.role;
+            document.getElementById('headerAvatar').innerHTML = `<img src="${currentUser.avatar}" alt="avatar">`;
+
+            document.getElementById('authScreen').classList.remove('active');
+            document.getElementById('portalScreen').classList.add('active');
+            renderStories();
+            renderPosts();
+        }
+
+        function logout() {
+            document.getElementById('portalScreen').classList.remove('active');
+            document.getElementById('authScreen').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function renderStories() {
+            const container = document.getElementById('storiesContainer');
+            container.innerHTML = '';
 
             stories.forEach(story => {
                 const card = document.createElement('div');
                 card.className = 'story-card';
+                card.style.backgroundColor = story.bg || '#4f46e5';
                 
-                const canDelete = currentUser.role === 'teacher' || currentUser.role === 'developer' || story.author === currentUser.name;
+                // Кнопка удаления доступна автору или учителю/разработчику
+                let deleteBtnHtml = '';
+                if (story.author === currentUser.name || currentUser.role.includes('Учитель') || currentUser.role.includes('Разработчик')) {
+                    deleteBtnHtml = `<button class="delete-story-btn" onclick="deleteStory(${story.id}); event.stopPropagation();">×</button>`;
+                }
 
                 card.innerHTML = `
-                    <div class="story-header">
-                        <img src="${story.avatar}" class="story-avatar" alt="">
-                        <span class="story-author">${story.author}</span>
+                    ${deleteBtnHtml}
+                    <div class="story-author-badge">
+                        <img src="${story.avatar}" alt="">
+                        <span>${story.author}</span>
                     </div>
-                    <div class="story-content">${escapeHtml(story.text)}</div>
-                    ${canDelete ? `<button class="delete-story-btn" onclick="deleteStory(${story.id})">×</button>` : ''}
+                    <span style="font-size: 11px;">${story.text}</span>
                 `;
                 container.appendChild(card);
             });
         }
 
-        window.deleteStory = function(id) {
+        function addStory() {
+            const text = prompt('Введите текст истории:');
+            if (text) {
+                stories.push({
+                    id: Date.now(),
+                    author: currentUser.name,
+                    avatar: currentUser.avatar,
+                    text: text,
+                    bg: '#' + Math.floor(Math.random()*16777215).toString(16)
+                });
+                renderStories();
+            }
+        }
+
+        function deleteStory(id) {
             stories = stories.filter(s => s.id !== id);
-            localStorage.setItem('portal_stories', JSON.stringify(stories));
             renderStories();
-        };
-
-        // Посты / Чат
-        document.getElementById('add-post-btn').addEventListener('click', () => {
-            const text = document.getElementById('post-input').value.trim();
-            if (!text) return;
-
-            const newPost = {
-                id: Date.now(),
-                author: currentUser.name,
-                avatar: currentUser.avatar,
-                role: currentUser.role,
-                text: text,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            posts.unshift(newPost);
-            localStorage.setItem('portal_posts', JSON.stringify(posts));
-            document.getElementById('post-input').value = '';
-            renderPosts();
-        });
+        }
 
         function renderPosts() {
-            const container = document.getElementById('posts-list');
+            const container = document.getElementById('feedContainer');
             container.innerHTML = '';
-
-            if (posts.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted);">Нет сообщений</p>';
-                return;
-            }
-
             posts.forEach(post => {
                 const div = document.createElement('div');
                 div.className = 'post';
                 div.innerHTML = `
                     <div class="post-header">
-                        <img src="${post.avatar}" class="avatar" style="width: 35px; height: 35px;" alt="">
-                        <div>
-                            <strong>${escapeHtml(post.author)}</strong> <span style="font-size: 0.75rem; color: var(--accent);">[${post.role}]</span>
-                            <div class="post-meta">${post.time}</div>
-                        </div>
+                        <strong>${post.author}</strong> <span style="font-size:11px; color:var(--text-secondary);">(${post.role})</span>
                     </div>
-                    <p>${escapeHtml(post.text)}</p>
+                    <div class="post-content">${post.text}</div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        // Звезды
-        function renderStars() {
-            const count = starsData[currentUser.name] || 0;
-            document.getElementById('my-stars-count').textContent = `⭐ ${count}`;
-        }
-
-        document.getElementById('request-stars-btn').addEventListener('click', () => {
-            alert('Запрос на начисление звезд отправлен старосте!');
-        });
-
-        // Управление
-        function renderAdmin() {
-            const container = document.getElementById('admin-controls-content');
-            container.innerHTML = '';
-
-            if (currentUser.role === 'teacher' || currentUser.role === 'starosta' || currentUser.role === 'developer') {
-                container.innerHTML = `
-                    <p>Панель управления баллами и контентом для роли: <b>${currentUser.role}</b></p>
-                    <div style="margin-top: 1rem;">
-                        <input type="text" id="target-user" placeholder="Имя ученика" style="margin-bottom: 0.5rem;">
-                        <input type="number" id="target-stars" placeholder="Количество звезд" style="margin-bottom: 0.5rem;">
-                        <button onclick="giveStars()">Начислить звезды</button>
-                        ${currentUser.role === 'developer' ? '<button class="danger" onclick="subStars()" style="margin-left: 0.5rem;">Вычесть звезды</button>' : ''}
-                    </div>
-                `;
+        function addPost() {
+            const text = prompt('Введите текст публикации:');
+            if (text) {
+                posts.unshift({
+                    author: currentUser.name,
+                    role: currentUser.role,
+                    text: text
+                });
+                renderPosts();
             }
         }
 
-        window.giveStars = function() {
-            const name = document.getElementById('target-user').value.trim();
-            const amount = parseInt(document.getElementById('target-stars').value) || 0;
-            if (!name) return;
-
-            starsData[name] = (starsData[name] || 0) + amount;
-            localStorage.setItem('portal_stars', JSON.stringify(starsData));
-            alert(`Успешно начислено ${amount} ⭐ пользователю ${name}`);
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            if (tabName === 'chat') {
+                alert('Раздел чата (использует данные из чата класса)');
+            }
         }
-
-        window.subStars = function() {
-            const name = document.getElementById('target-user').value.trim();
-            const amount = parseInt(document.getElementById('target-stars').value) || 0;
-            if (!name) return;
-
-            starsData[name] = Math.max(0, (starsData[name] || 0) - amount);
-            localStorage.setItem('portal_stars', JSON.stringify(starsData));
-            alert(`Успешно вычтено ${amount} ⭐ у пользователя ${name}`);
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        // Запуск при загрузке
-        initApp();
     </script>
 </body>
 </html>
