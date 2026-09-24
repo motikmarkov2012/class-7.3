@@ -129,7 +129,7 @@
             <div class="glass-panel p-5 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-semibold text-sm text-[#1d1d1f] tracking-tight">Истории класса</h3>
-                    <button id="add-story-btn-ui" onclick="openAddStoryModal()" class="text-xs font-semibold text-[#0071e3] hover:bg-blue-50 px-3 py-1.5 rounded-xl transition">+ Добавить историю (+2 ⭐)</button>
+                    <button onclick="openAddStoryModal()" class="text-xs font-semibold text-[#0071e3] hover:bg-blue-50 px-3 py-1.5 rounded-xl transition">+ Добавить историю (+2 ⭐)</button>
                 </div>
                 <div id="stories-tray" class="flex gap-3 overflow-x-auto no-scrollbar py-1"></div>
             </div>
@@ -146,7 +146,7 @@
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">Лента класса</h3>
-                    <button id="add-post-btn-ui" onclick="openNewPostModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
+                    <button onclick="openNewPostModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
                         Написать пост (+3 ⭐)
                     </button>
                 </div>
@@ -156,13 +156,13 @@
             </div>
         </div>
 
-        <!-- 2. ПОСЕЩАЕМОСТЬ И УЧЕНИКИ (В ОДНОМ МЕСТЕ) -->
+        <!-- 2. УЧЕНИКИ И ПОСЕЩАЕМОСТЬ (Единственное место со списком) -->
         <div id="tab-attendance" class="space-y-5 hidden">
             <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
                     <div>
-                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">Ученики и Посещаемость</h3>
-                        <p class="text-xs text-[#86868b] mt-0.5">Список класса, карточки и отметка присутствия одной кнопкой</p>
+                        <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">Ученики 7 «3» класса</h3>
+                        <p class="text-xs text-[#86868b] mt-0.5">Вся информация, профили и посещаемость</p>
                     </div>
                     <input type="text" id="attendance-search" placeholder="Поиск ученика..." class="w-full sm:w-60 px-4 py-2.5 rounded-2xl border border-black/10 text-xs focus:outline-none focus:ring-2 focus:ring-[#0071e3] bg-white/50">
                 </div>
@@ -178,7 +178,7 @@
                         <h3 class="text-xl font-bold text-[#1d1d1f] tracking-tight">Галерея</h3>
                         <p class="text-xs text-[#86868b] mt-0.5">Фотографии и воспоминания</p>
                     </div>
-                    <button id="add-photo-btn-ui" onclick="openAddPhotoModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
+                    <button onclick="openAddPhotoModal()" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold px-4 py-2.5 rounded-2xl transition shadow-sm">
                         Загрузить фото (+5 ⭐)
                     </button>
                 </div>
@@ -206,13 +206,11 @@
                     <div>
                         <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">Аватарка</label>
                         <div class="flex gap-2">
-                            <label class="flex-grow bg-black/5 hover:bg-black/10 py-3 px-4 rounded-2xl text-xs font-semibold cursor-pointer flex items-center justify-center transition border border-black/10 text-[#1d1d1f]">
-                                📂 Выбрать фото
+                            <label class="flex-grow bg-black/5 hover:bg-black/10 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center justify-center transition border border-black/10">
+                                📂 Выбрать фото из галереи
                                 <input type="file" accept="image/*" class="hidden" onchange="uploadFileAsAvatar(this)">
                             </label>
-                            <button onclick="removeMyAvatar()" class="bg-red-500/10 hover:bg-red-500/20 text-red-600 px-4 py-3 rounded-2xl text-xs font-semibold transition border border-red-500/20">
-                                Убрать
-                            </button>
+                            <button onclick="removeMyAvatar()" class="px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-2xl text-xs font-semibold transition border border-red-200">Убрать</button>
                         </div>
                     </div>
                     <div>
@@ -244,7 +242,7 @@
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
             <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
-            <span id="nav-profile-label" class="text-[10px] font-medium tracking-tight">Настройки</span>
+            <span class="text-[10px] font-medium tracking-tight">Настройки</span>
         </button>
     </nav>
 
@@ -282,7 +280,7 @@
                 <img id="view-story-img" src="" class="w-full h-full object-contain">
             </div>
             <p id="view-story-caption" class="text-xs text-gray-200 mb-4 text-center"></p>
-            <button id="like-story-btn-ui" onclick="likeCurrentStory()" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-3 rounded-2xl transition">
+            <button onclick="likeCurrentStory()" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-3 rounded-2xl transition">
                 Нравится (<span id="view-story-likes">0</span>)
             </button>
         </div>
@@ -328,7 +326,8 @@
             <button onclick="closeStudentModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
             <div id="modal-img-container" class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-blue-50 flex items-center justify-center text-[#0071e3] font-bold text-xl shadow-inner"></div>
             <h3 id="modal-name" class="font-bold text-[#1d1d1f] text-base mb-1">Имя</h3>
-            <div id="modal-stars-badge-wrapper" class="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-700 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-4 border border-amber-500/20">
+            <div id="modal-role-badge-box" class="inline-flex items-center gap-1.5 bg-blue-500/10 text-blue-700 text-[10px] font-semibold px-3 py-1 rounded-full mb-2 hidden border border-blue-500/20"></div>
+            <div class="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-700 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-4 border border-amber-500/20">
                 Звёзды: <span id="modal-stars-count">0</span>
             </div>
             <p id="modal-bio-text" class="text-xs text-[#86868b] italic bg-white/50 p-4 rounded-2xl border border-black/5">Нет описания</p>
@@ -341,10 +340,12 @@
                     <button onclick="modStar(1)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">+1 Звезда</button>
                 </div>
 
+                <!-- Кнопка запроса для старост -->
                 <div id="starosta-request-container" class="hidden">
                     <button onclick="requestStarFromTeacher(1)" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">Запросить +1 звезду у Анастасии Евгеньевны</button>
                 </div>
 
+                <!-- Вычитание звёзд - ТОЛЬКО Матвей -->
                 <div id="minus-star-container" class="hidden">
                     <button onclick="modStar(-1)" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">-1 Звезда (Только для Матвея)</button>
                 </div>
@@ -408,6 +409,16 @@
         ];
 
         window.onload = function() {
+            // Очищаем аватарки и звёзды у всех принудительно по вашему запросу
+            if (!localStorage.getItem("reset_done_v3")) {
+                students.forEach(s => {
+                    localStorage.removeItem(`avatar_${s.name}`);
+                    localStorage.removeItem(`avatar_${s.id}`);
+                    localStorage.setItem(`stars_${s.id}`, '0');
+                });
+                localStorage.setItem("reset_done_v3", "true");
+            }
+
             if (!localStorage.getItem("bio_Анастасия Евгеньевна")) {
                 localStorage.setItem("bio_Анастасия Евгеньевна", "Любимый классный руководитель 7 «3» класса. Всегда поддержит, поможет разобраться в учебе и направит класс к новым победам!");
             }
@@ -454,7 +465,7 @@
             localStorage.removeItem(`avatar_${currentUserName}`);
             const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
             if (me) localStorage.removeItem(`avatar_${me.id}`);
-            showToast("Аватарка удалена", "Установлен стандартный значок");
+            showToast("Аватарка удалена", "Установлен стандартный вид");
             showMainSite();
         }
 
@@ -595,7 +606,7 @@
             document.getElementById('current-user-name-badge').textContent = currentUserName;
             document.getElementById('current-user-role-badge').textContent = roleTitle;
 
-            // Только Анастасия Евгеньевна или Матвей могут писать объявление учителя
+            // Только Анастасия Евгеньевна и Матвей могут писать объявление
             if (currentUserRole === 'admin' || currentUserRole === 'developer') {
                 document.getElementById('teacher-edit-box').classList.remove('hidden');
             } else {
@@ -606,45 +617,35 @@
                 renderTeacherRequests();
             }
 
-            const isGuest = currentUserRole === 'guest';
-            
-            // Настройка для гостя (нет кошелька и нет профиля)
-            if (isGuest) {
+            if (currentUserRole === 'guest') {
                 document.getElementById('my-wallet').classList.add('hidden');
+                document.getElementById('nav-profile').classList.add('hidden');
                 document.getElementById('header-profile-click').removeAttribute('onclick');
-                document.getElementById('nav-profile-label').textContent = 'Гость';
-                document.getElementById('add-story-btn-ui').classList.add('hidden');
-                document.getElementById('add-post-btn-ui').classList.add('hidden');
-                document.getElementById('add-photo-btn-ui').classList.add('hidden');
             } else {
                 document.getElementById('my-wallet').classList.remove('hidden');
+                document.getElementById('nav-profile').classList.remove('hidden');
                 document.getElementById('header-profile-click').setAttribute('onclick', "switchTab('profile')");
-                document.getElementById('nav-profile-label').textContent = 'Настройки';
-                document.getElementById('add-story-btn-ui').classList.remove('hidden');
-                document.getElementById('add-post-btn-ui').classList.remove('hidden');
-                document.getElementById('add-photo-btn-ui').classList.remove('hidden');
             }
 
             const currentAvatar = localStorage.getItem(`avatar_${currentUserName}`) || (currentUserName === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
-            if (!isGuest) {
-                document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
-            }
+            document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
             
             const headerAvatar = document.getElementById('header-user-avatar');
             const profileAvatar = document.getElementById('my-profile-avatar-box');
             
             const avatarHtml = currentAvatar ? `<img src="${currentAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : currentUserName[0];
             headerAvatar.innerHTML = avatarHtml;
-            if (profileAvatar) profileAvatar.innerHTML = avatarHtml;
+            profileAvatar.innerHTML = avatarHtml;
 
-            if (!isGuest) {
-                document.getElementById('my-profile-name').textContent = currentUserName;
-                document.getElementById('my-profile-role').textContent = roleTitle;
+            document.getElementById('my-profile-name').textContent = currentUserName;
+            document.getElementById('my-profile-role').textContent = roleTitle;
+
+            if (currentUserRole !== 'guest') {
                 const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
                 if (me) {
                     document.getElementById('my-wallet-stars').textContent = localStorage.getItem(`stars_${me.id}`) || '0';
                 } else {
-                    document.getElementById('my-wallet-stars').textContent = '999';
+                    document.getElementById('my-wallet-stars').textContent = '0';
                 }
             }
 
@@ -652,18 +653,15 @@
         }
 
         function switchTab(tabName) {
-            if (currentUserRole === 'guest' && tabName === 'profile') {
-                alert("Гость не имеет личного кабинета и настроек.");
-                return;
-            }
+            if (currentUserRole === 'guest' && tabName === 'profile') return;
             ['home', 'attendance', 'photos', 'profile'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 const navBtn = document.getElementById(`nav-${t}`);
-                navBtn.className = "flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group";
+                if (navBtn) navBtn.className = "flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group";
             });
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             const activeNav = document.getElementById(`nav-${tabName}`);
-            activeNav.className = "flex flex-col items-center text-[#0071e3] transition p-1 group";
+            if (activeNav) activeNav.className = "flex flex-col items-center text-[#0071e3] transition p-1 group";
         }
 
         function saveMyProfile() {
@@ -683,12 +681,13 @@
             const teacher = students[0];
             activeModalStudentId = teacher.id;
             document.getElementById('modal-name').textContent = teacher.name;
-            
-            const badgeWrapper = document.getElementById('modal-stars-badge-wrapper');
-            badgeWrapper.style.display = 'inline-flex';
             document.getElementById('modal-stars-count').textContent = '∞';
-            
             document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${teacher.name}`) || "Классный руководитель 7 «3» класса.";
+            
+            const roleBadge = document.getElementById('modal-role-badge-box');
+            roleBadge.textContent = "Классный руководитель";
+            roleBadge.classList.remove('hidden');
+
             document.getElementById('modal-img-container').innerHTML = `<img src="Teacher.jpg" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">`;
             
             document.getElementById('developer-controls').classList.add('hidden');
@@ -696,26 +695,255 @@
             document.getElementById('student-modal').classList.add('flex');
         }
 
+        // Поиск лидера по звёздам (у кого больше всех, если не равны)
+        function getTopStudentId() {
+            let maxStars = -1;
+            let topId = -1;
+            let allEqual = true;
+            let firstStars = -1;
+
+            students.forEach((s, idx) => {
+                const st = parseInt(localStorage.getItem(`stars_${s.id}`) || '0');
+                if (idx === 0) firstStars = st;
+                if (st !== firstStars) allEqual = false;
+                if (st > maxStars) {
+                    maxStars = st;
+                    topId = s.id;
+                }
+            });
+
+            if (allEqual || maxStars === 0) return null;
+            return topId;
+        }
+
+        function renderAttendanceList(filter = '') {
+            const container = document.getElementById('attendance-list');
+            container.innerHTML = '';
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const topStudentId = getTopStudentId();
+            
+            students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
+                const statusKey = `att_${student.id}_${todayKey}`;
+                const status = localStorage.getItem(statusKey) || 'absent';
+                const isTeacher = student.id === 0;
+                const isStarosta = starostaNames.includes(student.name);
+                const isLeader = student.id === topStudentId;
+                const starsCount = localStorage.getItem(`stars_${student.id}`) || '0';
+                const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || (isTeacher ? "Teacher.jpg" : '');
+
+                const div = document.createElement('div');
+                // Если больше всех звёзд — желтая рамочка
+                const borderClass = isLeader ? "border-2 border-amber-400 bg-white shadow-md" : "border border-black/5 bg-white/50";
+                div.className = `flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-2xl gap-3 cursor-pointer hover:bg-white/80 transition ${borderClass}`;
+                
+                let badgesHtml = '';
+                if (isTeacher) badgesHtml += `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-2 py-0.5 rounded-full">Учитель</span> `;
+                if (isStarosta) badgesHtml += `<span class="bg-purple-100 text-purple-700 text-[9px] font-bold px-2 py-0.5 rounded-full">Староста</span> `;
+                if (isLeader) badgesHtml += `<span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-2 py-0.5 rounded-full">⭐ Лидер по звёздам</span> `;
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] overflow-hidden font-bold flex items-center justify-center shrink-0">
+                            ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : student.name[0]}
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="font-semibold text-xs text-[#1d1d1f] truncate">${student.name}</div>
+                            <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                <span class="text-[10px] text-amber-700 font-medium">⭐ ${starsCount}</span>
+                                ${badgesHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        ${!isTeacher ? `
+                            <button onclick="event.stopPropagation(); toggleAttendance(${student.id})" class="px-4 py-2 rounded-xl text-xs font-semibold transition ${status === 'present' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-black/5 text-[#86868b]'}" title="Нажмите для переключения">
+                                ${status === 'present' ? '✓ Присутствует' : 'Отсутствует'}
+                            </button>
+                        ` : `<span class="text-[10px] text-gray-400">Всегда на связи</span>`}
+                        <button onclick="openStudentModalCard(${student.id})" class="px-3 py-2 bg-black/5 hover:bg-black/10 rounded-xl text-xs font-semibold text-[#1d1d1f]">Профиль</button>
+                    </div>
+                `;
+                div.onclick = () => openStudentModalCard(student.id);
+                container.appendChild(div);
+            });
+        }
+
+        // Переключение присутствия одной кнопкой
+        function toggleAttendance(studentId) {
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const statusKey = `att_${studentId}_${todayKey}`;
+            const current = localStorage.getItem(statusKey) || 'absent';
+            const next = current === 'present' ? 'absent' : 'present';
+            localStorage.setItem(statusKey, next);
+            renderAttendanceList(document.getElementById('attendance-search').value);
+        }
+
+        document.getElementById('attendance-search').oninput = (e) => renderAttendanceList(e.target.value);
+
+        function openAddPhotoModal() {
+            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
+            document.getElementById('photo-modal').classList.remove('hidden');
+            document.getElementById('photo-modal').classList.add('flex');
+        }
+        function closeAddPhotoModal() { document.getElementById('photo-modal').classList.remove('flex'); document.getElementById('photo-modal').classList.add('hidden'); }
+
+        function publishClassPhoto() {
+            const url = document.getElementById('class-photo-url').value.trim();
+            const caption = document.getElementById('class-photo-caption').value.trim();
+            if (!url) { alert("Выберите файл фото!"); return; }
+            const photos = JSON.parse(localStorage.getItem('class_photos') || '[]');
+            photos.unshift({ author: currentUserName, url, caption, date: new Date().toLocaleDateString() });
+            localStorage.setItem('class_photos', JSON.stringify(photos));
+            closeAddPhotoModal();
+            addStarsToCurrentStudent(5, "За загрузку фотографии в галерею класса");
+            renderClassPhotos();
+        }
+
+        function renderClassPhotos() {
+            const grid = document.getElementById('class-photos-grid');
+            const photos = JSON.parse(localStorage.getItem('class_photos') || '[]');
+            if (photos.length === 0) return;
+            grid.innerHTML = '';
+            photos.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "bg-white/50 border border-black/5 rounded-2xl overflow-hidden shadow-sm flex flex-col";
+                card.innerHTML = `
+                    <div class="h-32 bg-black overflow-hidden"><img src="${p.url}" class="w-full h-full object-cover"></div>
+                    <div class="p-3 text-[11px] text-[#1d1d1f]">
+                        <p class="font-semibold truncate">${p.caption || 'Фото'}</p>
+                        <span class="text-[10px] text-[#86868b]">Автор: ${p.author}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openAddStoryModal() {
+            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
+            document.getElementById('story-modal').classList.remove('hidden'); document.getElementById('story-modal').classList.add('flex');
+        }
+        function closeAddStoryModal() { document.getElementById('story-modal').classList.remove('flex'); document.getElementById('story-modal').classList.add('hidden'); }
+        
+        function publishStory() {
+            const img = document.getElementById('story-img-input').value.trim();
+            const caption = document.getElementById('story-caption-input').value.trim();
+            if (!img) { alert("Выберите фото!"); return; }
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            stories.unshift({ id: Date.now(), author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', image: img, caption, likes: 0, likedBy: [] });
+            localStorage.setItem('class_stories', JSON.stringify(stories));
+            closeAddStoryModal();
+            addStarsToCurrentStudent(2, "За публикацию новой истории");
+            renderStoriesTray();
+        }
+
+        function renderStoriesTray() {
+            const tray = document.getElementById('stories-tray');
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            tray.innerHTML = `
+                <div onclick="openAddStoryModal()" class="flex flex-col items-center cursor-pointer shrink-0">
+                    <div class="w-14 h-14 rounded-full border border-dashed border-[#0071e3] flex items-center justify-center bg-blue-50/50 text-[#0071e3] font-bold">+</div>
+                    <span class="text-[10px] text-[#86868b] font-medium mt-1">Добавить</span>
+                </div>
+            `;
+            stories.forEach(s => {
+                const div = document.createElement('div');
+                div.className = "flex flex-col items-center cursor-pointer shrink-0";
+                div.onclick = () => viewStory(s.id);
+                div.innerHTML = `
+                    <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-[#0071e3] to-blue-400">
+                        <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center font-bold text-xs">
+                            ${s.avatar ? `<img src="${s.avatar}" class="w-full h-full object-cover">` : s.author[0]}
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-[#1d1d1f] font-medium mt-1 truncate w-14 text-center">${s.author.split(' ')[0]}</span>
+                `;
+                tray.appendChild(div);
+            });
+        }
+        function viewStory(id) {
+            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            const s = stories.find(x => x.id === id);
+            if (!s) return;
+            activeStoryId = id;
+            document.getElementById('view-story-author').textContent = s.author;
+            document.getElementById('view-story-img').src = s.image;
+            document.getElementById('view-story-caption').textContent = s.caption || '';
+            document.getElementById('view-story-likes').textContent = s.likes || 0;
+            document.getElementById('view-story-modal').classList.remove('hidden'); document.getElementById('view-story-modal').classList.add('flex');
+        }
+        function closeViewStoryModal() { document.getElementById('view-story-modal').classList.remove('flex'); document.getElementById('view-story-modal').classList.add('hidden'); }
+        function likeCurrentStory() {
+            let stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
+            const s = stories.find(x => x.id === activeStoryId);
+            if (!s) return;
+            if (!s.likedBy) s.likedBy = [];
+            if (!s.likedBy.includes(currentUserName)) {
+                s.likedBy.push(currentUserName); s.likes = (s.likes || 0) + 1;
+                localStorage.setItem('class_stories', JSON.stringify(stories));
+                document.getElementById('view-story-likes').textContent = s.likes;
+            } else { alert("Вы уже оценили эту историю."); }
+        }
+
+        function openNewPostModal() { document.getElementById('post-modal').classList.remove('hidden'); document.getElementById('post-modal').classList.add('flex'); }
+        function closeNewPostModal() { document.getElementById('post-modal').classList.remove('flex'); document.getElementById('post-modal').classList.add('hidden'); }
+        
+        function publishPost() {
+            const text = document.getElementById('new-post-text').value.trim();
+            const img = document.getElementById('new-post-img').value.trim();
+            if (!text) { alert("Введите текст публикации!"); return; }
+            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
+            posts.unshift({ author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', text, image: img, date: new Date().toLocaleDateString() });
+            localStorage.setItem('telegram_posts', JSON.stringify(posts));
+            closeNewPostModal();
+            addStarsToCurrentStudent(3, "За публикацию в ленту класса");
+            renderTelegramPosts();
+        }
+
+        function renderTelegramPosts() {
+            const feed = document.getElementById('telegram-posts-feed');
+            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
+            if (posts.length === 0) return;
+            feed.innerHTML = '';
+            posts.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "bg-white/50 border border-black/5 p-4 rounded-2xl";
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-9 h-9 rounded-full bg-blue-50 overflow-hidden font-bold flex items-center justify-center text-xs text-[#0071e3]">
+                            ${p.avatar ? `<img src="${p.avatar}" class="w-full h-full object-cover">` : p.author[0]}
+                        </div>
+                        <div><div class="font-semibold text-xs text-[#1d1d1f]">${p.author}</div><div class="text-[10px] text-[#86868b]">${p.date}</div></div>
+                    </div>
+                    <p class="text-xs text-[#1d1d1f] leading-relaxed">${p.text}</p>
+                    ${p.image ? `<img src="${p.image}" class="mt-3 rounded-2xl max-h-60 w-full object-cover shadow-sm">` : ''}
+                `;
+                feed.appendChild(div);
+            });
+        }
+
         function openStudentModalCard(studentId) {
             const student = students.find(s => s.id === studentId);
             if (!student) return;
             activeModalStudentId = student.id;
             document.getElementById('modal-name').textContent = student.name;
-            
-            const badgeWrapper = document.getElementById('modal-stars-badge-wrapper');
-            if (currentUserRole === 'guest') {
-                badgeWrapper.style.display = 'none'; // У гостя нет звёзд даже в модалке
-            } else {
-                badgeWrapper.style.display = 'inline-flex';
-                document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
-            }
-
+            document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
             document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
             
+            const roleBadge = document.getElementById('modal-role-badge-box');
+            if (student.name === "Анастасия Евгеньевна") {
+                roleBadge.textContent = "Классный руководитель";
+                roleBadge.classList.remove('hidden');
+            } else if (starostaNames.includes(student.name)) {
+                roleBadge.textContent = "Староста класса";
+                roleBadge.classList.remove('hidden');
+            } else {
+                roleBadge.classList.add('hidden');
+            }
+
             const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || (student.name === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
             document.getElementById('modal-img-container').innerHTML = customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : student.name[0];
 
-            if ((currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') && currentUserRole !== 'guest') {
+            if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
                 document.getElementById('developer-controls').classList.remove('hidden');
                 
                 if (currentUserRole === 'developer') {
@@ -804,221 +1032,6 @@
             localStorage.setItem('teacher_star_requests', JSON.stringify(requests));
             renderTeacherRequests();
             alert("Запрос отклонён.");
-        }
-
-        // Единый список учеников и посещаемости
-        function renderAttendanceList(filter = '') {
-            const container = document.getElementById('attendance-list');
-            container.innerHTML = '';
-            const todayKey = new Date().toISOString().slice(0, 10);
-            
-            // Анастасия Евгеньевна (id: 0) не участвует в посещаемости, её выводим отдельно наверху или в общем списке без кнопок присутствия
-            students.filter(s => s.id !== 0 && s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
-                const statusKey = `att_${student.id}_${todayKey}`;
-                const status = localStorage.getItem(statusKey) || ''; // '' значит не отмечен
-
-                const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-3.5 bg-white/50 border border-black/5 rounded-2xl hover:bg-white/80 transition";
-                
-                const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || '';
-                const starsCount = currentUserRole === 'guest' ? '' : `<span class="text-[10px] text-amber-700 font-medium">⭐ ${localStorage.getItem(`stars_${student.id}`) || '0'}</span>`;
-
-                div.innerHTML = `
-                    <div class="flex items-center gap-3 cursor-pointer overflow-hidden flex-grow" onclick="openStudentModalCard(${student.id})">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] overflow-hidden font-bold flex items-center justify-center shrink-0">
-                            ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover">` : student.name[0]}
-                        </div>
-                        <div class="overflow-hidden">
-                            <div class="font-semibold text-xs text-[#1d1d1f] truncate">${student.name}</div>
-                            ${starsCount}
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="toggleAttendance(${student.id})" class="px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm ${
-                            status === 'present' ? 'bg-[#0071e3] text-white' : 
-                            status === 'absent' ? 'bg-red-500 text-white' : 
-                            'bg-black/5 text-[#86868b] hover:bg-black/10'
-                        }">
-                            ${status === 'present' ? 'Присутствует' : status === 'absent' ? 'Отсутствует' : 'Отметить'}
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // Переключатель одной кнопкой: нет -> присутствует -> отсутствует -> нет
-        function toggleAttendance(studentId) {
-            const todayKey = new Date().toISOString().slice(0, 10);
-            const statusKey = `att_${studentId}_${todayKey}`;
-            const current = localStorage.getItem(statusKey);
-            
-            let next = 'present';
-            if (current === 'present') next = 'absent';
-            else if (current === 'absent') next = '';
-            
-            if (next) {
-                localStorage.setItem(statusKey, next);
-            } else {
-                localStorage.removeItem(statusKey);
-            }
-            renderAttendanceList(document.getElementById('attendance-search').value);
-        }
-        document.getElementById('attendance-search').oninput = (e) => renderAttendanceList(e.target.value);
-
-        function openAddPhotoModal() {
-            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
-            document.getElementById('photo-modal').classList.remove('hidden');
-            document.getElementById('photo-modal').classList.add('flex');
-        }
-        function closeAddPhotoModal() { document.getElementById('photo-modal').classList.remove('flex'); document.getElementById('photo-modal').classList.add('hidden'); }
-
-        function publishClassPhoto() {
-            const url = document.getElementById('class-photo-url').value.trim();
-            const caption = document.getElementById('class-photo-caption').value.trim();
-            if (!url) { alert("Выберите файл фото!"); return; }
-            const photos = JSON.parse(localStorage.getItem('class_photos') || '[]');
-            photos.unshift({ author: currentUserName, url, caption, date: new Date().toLocaleDateString() });
-            localStorage.setItem('class_photos', JSON.stringify(photos));
-            closeAddPhotoModal();
-            addStarsToCurrentStudent(5, "За загрузку фотографии в галерею класса");
-            renderClassPhotos();
-        }
-
-        function renderClassPhotos() {
-            const grid = document.getElementById('class-photos-grid');
-            const photos = JSON.parse(localStorage.getItem('class_photos') || '[]');
-            if (photos.length === 0) return;
-            grid.innerHTML = '';
-            photos.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "bg-white/50 border border-black/5 rounded-2xl overflow-hidden shadow-sm flex flex-col";
-                card.innerHTML = `
-                    <div class="h-32 bg-black overflow-hidden"><img src="${p.url}" class="w-full h-full object-cover"></div>
-                    <div class="p-3 text-[11px] text-[#1d1d1f]">
-                        <p class="font-semibold truncate">${p.caption || 'Фото'}</p>
-                        <span class="text-[10px] text-[#86868b]">Автор: ${p.author}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function openAddStoryModal() {
-            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
-            document.getElementById('story-modal').classList.remove('hidden'); document.getElementById('story-modal').classList.add('flex');
-        }
-        function closeAddStoryModal() { document.getElementById('story-modal').classList.remove('flex'); document.getElementById('story-modal').classList.add('hidden'); }
-        
-        function publishStory() {
-            const img = document.getElementById('story-img-input').value.trim();
-            const caption = document.getElementById('story-caption-input').value.trim();
-            if (!img) { alert("Выберите фото!"); return; }
-            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
-            stories.unshift({ id: Date.now(), author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', image: img, caption, likes: 0, likedBy: [] });
-            localStorage.setItem('class_stories', JSON.stringify(stories));
-            closeAddStoryModal();
-            addStarsToCurrentStudent(2, "За публикацию новой истории");
-            renderStoriesTray();
-        }
-
-        function renderStoriesTray() {
-            const tray = document.getElementById('stories-tray');
-            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
-            
-            let addBtnHtml = currentUserRole === 'guest' ? '' : `
-                <div onclick="openAddStoryModal()" class="flex flex-col items-center cursor-pointer shrink-0">
-                    <div class="w-14 h-14 rounded-full border border-dashed border-[#0071e3] flex items-center justify-center bg-blue-50/50 text-[#0071e3] font-bold">+</div>
-                    <span class="text-[10px] text-[#86868b] font-medium mt-1">Добавить</span>
-                </div>
-            `;
-            
-            tray.innerHTML = addBtnHtml;
-            stories.forEach(s => {
-                const div = document.createElement('div');
-                div.className = "flex flex-col items-center cursor-pointer shrink-0";
-                div.onclick = () => viewStory(s.id);
-                div.innerHTML = `
-                    <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-[#0071e3] to-blue-400">
-                        <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center font-bold text-xs">
-                            ${s.avatar ? `<img src="${s.avatar}" class="w-full h-full object-cover">` : s.author[0]}
-                        </div>
-                    </div>
-                    <span class="text-[10px] text-[#1d1d1f] font-medium mt-1 truncate w-14 text-center">${s.author.split(' ')[0]}</span>
-                `;
-                tray.appendChild(div);
-            });
-        }
-        function viewStory(id) {
-            const stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
-            const s = stories.find(x => x.id === id);
-            if (!s) return;
-            activeStoryId = id;
-            document.getElementById('view-story-author').textContent = s.author;
-            document.getElementById('view-story-img').src = s.image;
-            document.getElementById('view-story-caption').textContent = s.caption || '';
-            document.getElementById('view-story-likes').textContent = s.likes || 0;
-            
-            if (currentUserRole === 'guest') {
-                document.getElementById('like-story-btn-ui').classList.add('hidden');
-            } else {
-                document.getElementById('like-story-btn-ui').classList.remove('hidden');
-            }
-
-            document.getElementById('view-story-modal').classList.remove('hidden'); document.getElementById('view-story-modal').classList.add('flex');
-        }
-        function closeViewStoryModal() { document.getElementById('view-story-modal').classList.remove('flex'); document.getElementById('view-story-modal').classList.add('hidden'); }
-        function likeCurrentStory() {
-            if (currentUserRole === 'guest') return;
-            let stories = JSON.parse(localStorage.getItem('class_stories') || '[]');
-            const s = stories.find(x => x.id === activeStoryId);
-            if (!s) return;
-            if (!s.likedBy) s.likedBy = [];
-            if (!s.likedBy.includes(currentUserName)) {
-                s.likedBy.push(currentUserName); s.likes = (s.likes || 0) + 1;
-                localStorage.setItem('class_stories', JSON.stringify(stories));
-                document.getElementById('view-story-likes').textContent = s.likes;
-            } else { alert("Вы уже оценили эту историю."); }
-        }
-
-        function openNewPostModal() {
-            if (!currentUserName || currentUserRole === 'guest') { alert("Требуется авторизация!"); return; }
-            document.getElementById('post-modal').classList.remove('hidden'); document.getElementById('post-modal').classList.add('flex');
-        }
-        function closeNewPostModal() { document.getElementById('post-modal').classList.remove('flex'); document.getElementById('post-modal').classList.add('hidden'); }
-        
-        function publishPost() {
-            const text = document.getElementById('new-post-text').value.trim();
-            const img = document.getElementById('new-post-img').value.trim();
-            if (!text) { alert("Введите текст публикации!"); return; }
-            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
-            posts.unshift({ author: currentUserName, avatar: localStorage.getItem(`avatar_${currentUserName}`) || '', text, image: img, date: new Date().toLocaleDateString() });
-            localStorage.setItem('telegram_posts', JSON.stringify(posts));
-            closeNewPostModal();
-            addStarsToCurrentStudent(3, "За публикацию в ленту класса");
-            renderTelegramPosts();
-        }
-
-        function renderTelegramPosts() {
-            const feed = document.getElementById('telegram-posts-feed');
-            const posts = JSON.parse(localStorage.getItem('telegram_posts') || '[]');
-            if (posts.length === 0) return;
-            feed.innerHTML = '';
-            posts.forEach(p => {
-                const div = document.createElement('div');
-                div.className = "bg-white/50 border border-black/5 p-4 rounded-2xl";
-                div.innerHTML = `
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-9 h-9 rounded-full bg-blue-50 overflow-hidden font-bold flex items-center justify-center text-xs text-[#0071e3]">
-                            ${p.avatar ? `<img src="${p.avatar}" class="w-full h-full object-cover">` : p.author[0]}
-                        </div>
-                        <div><div class="font-semibold text-xs text-[#1d1d1f]">${p.author}</div><div class="text-[10px] text-[#86868b]">${p.date}</div></div>
-                    </div>
-                    <p class="text-xs text-[#1d1d1f] leading-relaxed">${p.text}</p>
-                    ${p.image ? `<img src="${p.image}" class="mt-3 rounded-2xl max-h-60 w-full object-cover shadow-sm">` : ''}
-                `;
-                feed.appendChild(div);
-            });
         }
 
         function modStar(val) {
