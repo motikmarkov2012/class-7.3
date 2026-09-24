@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 90px; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 96px; -webkit-font-smoothing: antialiased; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
@@ -61,7 +61,7 @@
         
         <!-- Шапка профиля -->
         <div class="flex justify-between items-center gap-4 mb-6 glass-panel p-4 rounded-3xl shadow-sm border border-white/60">
-            <div class="flex items-center gap-3 overflow-hidden">
+            <div class="flex items-center gap-3 overflow-hidden cursor-pointer" onclick="switchTab('profile')">
                 <div id="header-user-avatar" class="w-10 h-10 rounded-2xl bg-blue-50 text-[#0071e3] font-bold flex items-center justify-center text-sm shrink-0 overflow-hidden shadow-inner"></div>
                 <div class="overflow-hidden">
                     <div id="current-user-name-badge" class="font-semibold text-sm text-[#1d1d1f] truncate">Пользователь</div>
@@ -84,15 +84,26 @@
         <div id="tab-home" class="space-y-5">
             
             <!-- Плашка Анастасии Евгеньевны -->
-            <div class="glass-panel p-5 rounded-[32px] shadow-sm border border-white/60 flex items-center gap-4">
+            <div class="glass-panel p-5 rounded-[32px] shadow-sm border border-white/60 flex items-center gap-4 cursor-pointer hover:border-blue-500/30 transition" onclick="openTeacherProfile()">
                 <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-inner border border-black/10 bg-blue-50">
-                    <img src="Teacher" alt="Анастасия Евгеньевна" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">
+                    <img src="Teacher.jpg" alt="Анастасия Евгеньевна" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">
                 </div>
                 <div>
                     <span class="text-[10px] font-semibold text-[#0071e3] uppercase tracking-wider">Наш классный руководитель</span>
                     <h3 class="text-base font-bold text-[#1d1d1f] leading-tight mt-0.5">Анастасия Евгеньевна</h3>
                     <p class="text-xs text-[#86868b] mt-1 leading-relaxed">Вдохновляет, поддерживает и ведёт наш 7 «3» класс к новым победам!</p>
                 </div>
+            </div>
+
+            <!-- Уведомления старостам для подтверждения начислений -->
+            <div id="teacher-requests-section" class="glass-panel p-5 rounded-[32px] shadow-sm border border-amber-500/30 hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span class="text-[11px] font-semibold text-amber-600 uppercase tracking-widest">Запросы от старост на звёзды</span>
+                    </div>
+                </div>
+                <div id="teacher-requests-list" class="space-y-2.5"></div>
             </div>
 
             <!-- Объявление учителя -->
@@ -112,6 +123,15 @@
                     <textarea id="teacher-input-announcement" placeholder="Написать важное объявление для класса..." class="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white placeholder-gray-400 focus:outline-none mb-2 h-20 resize-none"></textarea>
                     <button onclick="saveTeacherAnnouncement()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Опубликовать объявление</button>
                 </div>
+            </div>
+
+            <!-- Все ученики класса на главной -->
+            <div class="glass-panel p-6 rounded-[32px] shadow-sm border border-white/60">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold text-base text-[#1d1d1f] tracking-tight">Ученики 7 «3» класса</h3>
+                    <button onclick="switchTab('profile')" class="text-xs font-semibold text-[#0071e3] hover:underline">Все ({students.length})</button>
+                </div>
+                <div id="home-students-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto pr-1"></div>
             </div>
 
             <!-- Исторический факт -->
@@ -180,7 +200,6 @@
         <!-- 4. ПРОФИЛЬ И НАСТРОЙКИ -->
         <div id="tab-profile" class="space-y-5 hidden">
             <div class="glass-panel p-7 rounded-[32px] shadow-sm border border-white/60 text-center">
-                <!-- Кнопка смены аватарки напрямую -->
                 <div class="relative w-24 h-24 mx-auto mb-4 group cursor-pointer">
                     <div id="my-profile-avatar-box" class="w-24 h-24 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center font-bold text-3xl overflow-hidden border-2 border-white shadow-inner"></div>
                     <label class="absolute inset-0 bg-black/40 text-white rounded-full flex flex-col items-center justify-center text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition cursor-pointer">
@@ -194,7 +213,7 @@
                 
                 <div class="max-w-md mx-auto space-y-4 text-left border-t border-black/5 pt-6">
                     <div>
-                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">Аватарка (нажмите на круглое фото выше или загрузите файл)</label>
+                        <label class="block text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-1.5">Аватарка</label>
                         <label class="w-full bg-black/5 hover:bg-black/10 py-3 rounded-2xl text-xs font-semibold cursor-pointer flex items-center justify-center transition border border-black/10">
                             📂 Выбрать фото из галереи устройства
                             <input type="file" accept="image/*" class="hidden" onchange="uploadFileAsAvatar(this)">
@@ -222,22 +241,22 @@
 
     </div>
 
-    <!-- НАВИГАЦИЯ С КРАСИВЫМИ МИНИ-ИКОНКАМИ -->
+    <!-- НИЖНЯЯ НАВИГАЦИЯ (Apple iOS UI без стикеров, чистые иконки-векторы) -->
     <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-2.5 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
         <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-[#0071e3] transition p-1 group">
-            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">🏠</div>
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 9-9 9 9M5 10v10a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V10M9 21h6"/></svg>
             <span class="text-[10px] font-bold tracking-tight">Главная</span>
         </button>
         <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
-            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">📋</div>
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4"/></svg>
             <span class="text-[10px] font-medium tracking-tight">Ученики</span>
         </button>
         <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
-            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">🖼️</div>
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4 16 4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2 1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"/></svg>
             <span class="text-[10px] font-medium tracking-tight">Галерея</span>
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1 group">
-            <div class="w-6 h-6 flex items-center justify-center text-base mb-0.5">⚙️</div>
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
             <span class="text-[10px] font-medium tracking-tight">Настройки</span>
         </button>
     </nav>
@@ -316,7 +335,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно ученика с разделением прав (вычитать может ТОЛЬКО Марков Матвей) -->
+    <!-- Модальное окно ученика -->
     <div id="student-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="glass-panel rounded-[32px] max-w-sm w-full p-6 shadow-2xl relative text-center border border-white/60">
             <button onclick="closeStudentModal()" class="absolute top-5 right-5 text-[#86868b] hover:text-[#1d1d1f] text-lg font-bold">✕</button>
@@ -330,13 +349,21 @@
             <!-- Панель управления звёздами -->
             <div id="developer-controls" class="mt-4 pt-4 border-t border-black/5 hidden space-y-2">
                 <div id="dev-panel-title" class="text-[10px] font-bold text-purple-600 uppercase tracking-widest mb-1">Управление звёздами</div>
+                
                 <div id="add-star-btn-container">
                     <button onclick="modStar(1)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">+1 Звезда</button>
                 </div>
-                <!-- Кнопка вычитания доступна ИСКЛЮЧИТЕЛЬНО Маркову Матвею -->
+
+                <!-- Кнопка запроса для старост -->
+                <div id="starosta-request-container" class="hidden">
+                    <button onclick="requestStarFromTeacher(1)" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">Запросить +1 звезду у Анастасии Евгеньевны</button>
+                </div>
+
+                <!-- Вычитание звёзд - ТОЛЬКО Матвей -->
                 <div id="minus-star-container" class="hidden">
                     <button onclick="modStar(-1)" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 rounded-xl text-xs transition mb-2">-1 Звезда (Только для Матвея)</button>
                 </div>
+
                 <button id="reset-class-stars-btn" onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition hidden">Сбросить звёзды всего класса</button>
             </div>
         </div>
@@ -410,6 +437,7 @@
             renderStoriesTray();
             renderClassPhotos();
             renderAttendanceList();
+            renderHomeStudents();
         };
 
         function uploadFileForInput(inputElement, targetInputId) {
@@ -450,22 +478,6 @@
                 </div>
             `;
             container.appendChild(toast);
-            
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.08, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.25);
-            } catch(e) {}
-
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-10px)';
@@ -485,6 +497,7 @@
             document.getElementById('my-wallet-stars').textContent = current;
             showToast(`Получено +${amount} ⭐`, reason);
             renderStudents();
+            renderHomeStudents();
         }
 
         function loadDailyFact() {
@@ -534,19 +547,16 @@
             const passInput = document.getElementById('login-pass-input').value.trim();
             if (!nameInput) { alert("Введите ФИО!"); return; }
 
-            // МАРКОВ МАТВЕЙ (УЛЬТРА-ПРАВА С ВЫЧИТАНИЕМ ЗВЁЗД)
             if (nameInput.toLowerCase().includes("марков матвей")) {
-                if (passInput !== "1234") { alert("Неверный пароль разработчика! (Пароль: 1234)"); return; }
+                if (passInput !== "2134") { alert("Неверный пароль разработчика!"); return; }
                 loginUserAndSet('developer', "Марков Матвей Сергеевич");
                 return;
             }
-            // Учитель
             if (nameInput.toLowerCase().includes("анастасия евгеньевна")) {
                 if (passInput !== "teacher73") { alert("Неверный пароль учителя!"); return; }
                 loginUserAndSet('admin', "Анастасия Евгеньевна");
                 return;
             }
-            // Старосты (могут только начислять звёзды, но НЕ вычитать)
             if (starostaNames.some(s => s.toLowerCase() === nameInput.toLowerCase())) {
                 if (passInput !== "starosta73") { alert("Неверный пароль старосты!"); return; }
                 loginUserAndSet('starosta', nameInput);
@@ -554,7 +564,7 @@
             }
 
             if (passInput !== "1234") {
-                alert("Неверный пароль! (Для учеников пароль: 1234)");
+                alert("Неверный пароль!");
                 return;
             }
 
@@ -599,13 +609,17 @@
                 document.getElementById('teacher-edit-box').classList.add('hidden');
             }
 
-            const currentAvatar = localStorage.getItem(`avatar_${currentUserName}`) || '';
+            if (currentUserRole === 'admin') {
+                renderTeacherRequests();
+            }
+
+            const currentAvatar = localStorage.getItem(`avatar_${currentUserName}`) || (currentUserName === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
             document.getElementById('profile-bio-input').value = localStorage.getItem(`bio_${currentUserName}`) || '';
             
             const headerAvatar = document.getElementById('header-user-avatar');
             const profileAvatar = document.getElementById('my-profile-avatar-box');
             
-            const avatarHtml = currentAvatar ? `<img src="${currentAvatar}" class="w-full h-full object-cover">` : currentUserName[0];
+            const avatarHtml = currentAvatar ? `<img src="${currentAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : currentUserName[0];
             headerAvatar.innerHTML = avatarHtml;
             profileAvatar.innerHTML = avatarHtml;
 
@@ -621,6 +635,7 @@
             }
 
             renderStudents();
+            renderHomeStudents();
         }
 
         function switchTab(tabName) {
@@ -644,6 +659,144 @@
             }
             showMainSite();
             alert("Изменения успешно сохранены.");
+        }
+
+        function openTeacherProfile() {
+            const teacher = students[0];
+            activeModalStudentId = teacher.id;
+            document.getElementById('modal-name').textContent = teacher.name;
+            document.getElementById('modal-stars-count').textContent = '∞';
+            document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${teacher.name}`) || "Классный руководитель 7 «3» класса.";
+            document.getElementById('modal-img-container').innerHTML = `<img src="Teacher.jpg" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">`;
+            
+            document.getElementById('developer-controls').classList.add('hidden');
+            document.getElementById('student-modal').classList.remove('hidden');
+            document.getElementById('student-modal').classList.add('flex');
+        }
+
+        function renderHomeStudents() {
+            const grid = document.getElementById('home-students-grid');
+            grid.innerHTML = '';
+            students.forEach(student => {
+                const card = document.createElement('div');
+                card.className = "bg-white/50 border border-black/5 p-2.5 rounded-2xl flex items-center gap-2.5 cursor-pointer hover:bg-white transition";
+                const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || (student.name === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
+                
+                card.innerHTML = `
+                    <div class="w-9 h-9 rounded-full bg-blue-50 text-[#0071e3] overflow-hidden font-bold flex items-center justify-center shrink-0">
+                        ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : student.name[0]}
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="font-semibold text-[11px] text-[#1d1d1f] truncate">${student.name}</div>
+                        <div class="text-[9px] text-amber-700 font-medium">⭐ ${localStorage.getItem(`stars_${student.id}`) || '0'}</div>
+                    </div>
+                `;
+                card.onclick = () => openStudentModalCard(student.id);
+                grid.appendChild(card);
+            });
+        }
+
+        function openStudentModalCard(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            activeModalStudentId = student.id;
+            document.getElementById('modal-name').textContent = student.name;
+            document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
+            document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
+            
+            const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || (student.name === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
+            document.getElementById('modal-img-container').innerHTML = customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : student.name[0];
+
+            if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
+                document.getElementById('developer-controls').classList.remove('hidden');
+                
+                if (currentUserRole === 'developer') {
+                    document.getElementById('dev-panel-title').textContent = "Панель Ультра-Разработчика (Матвей)";
+                    document.getElementById('add-star-btn-container').classList.remove('hidden');
+                    document.getElementById('starosta-request-container').classList.add('hidden');
+                    document.getElementById('minus-star-container').classList.remove('hidden');
+                    document.getElementById('reset-class-stars-btn').classList.remove('hidden');
+                } else if (currentUserRole === 'admin') {
+                    document.getElementById('dev-panel-title').textContent = "Панель Учителя";
+                    document.getElementById('add-star-btn-container').classList.remove('hidden');
+                    document.getElementById('starosta-request-container').classList.add('hidden');
+                    document.getElementById('minus-star-container').classList.add('hidden');
+                    document.getElementById('reset-class-stars-btn').classList.remove('hidden');
+                } else if (currentUserRole === 'starosta') {
+                    document.getElementById('dev-panel-title').textContent = "Панель Старосты";
+                    document.getElementById('add-star-btn-container').classList.add('hidden');
+                    document.getElementById('starosta-request-container').classList.remove('hidden');
+                    document.getElementById('minus-star-container').classList.add('hidden');
+                    document.getElementById('reset-class-stars-btn').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('developer-controls').classList.add('hidden');
+            }
+
+            document.getElementById('student-modal').classList.remove('hidden');
+            document.getElementById('student-modal').classList.add('flex');
+        }
+
+        function requestStarFromTeacher(amount) {
+            if (activeModalStudentId === null) return;
+            const student = students.find(s => s.id === activeModalStudentId);
+            const requests = JSON.parse(localStorage.getItem('teacher_star_requests') || '[]');
+            requests.push({ id: Date.now(), studentId: student.id, studentName: student.name, amount, starosta: currentUserName });
+            localStorage.setItem('teacher_star_requests', JSON.stringify(requests));
+            alert("Запрос на начисление звезды отправлен Анастасии Евгеньевне.");
+            closeStudentModal();
+        }
+
+        function renderTeacherRequests() {
+            const section = document.getElementById('teacher-requests-section');
+            const list = document.getElementById('teacher-requests-list');
+            const requests = JSON.parse(localStorage.getItem('teacher_star_requests') || '[]');
+            if (requests.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+            section.classList.remove('hidden');
+            list.innerHTML = '';
+            requests.forEach(req => {
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-3 bg-white/60 border border-amber-500/20 rounded-2xl text-xs";
+                div.innerHTML = `
+                    <div>
+                        <span class="font-bold text-[#1d1d1f]">${req.studentName}</span> 
+                        <span class="text-gray-500">(+${req.amount} ⭐ от старосты ${req.starosta})</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="approveRequest(${req.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl font-semibold">Одобрить</button>
+                        <button onclick="rejectRequest(${req.id})" class="bg-red-500 hover:bg-red-400 text-white px-3 py-1.5 rounded-xl font-semibold">Отклонить</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function approveRequest(id) {
+            let requests = JSON.parse(localStorage.getItem('teacher_star_requests') || '[]');
+            const req = requests.find(r => r.id === id);
+            if (req) {
+                const key = `stars_${req.studentId}`;
+                let current = parseInt(localStorage.getItem(key) || '0');
+                current += req.amount;
+                localStorage.setItem(key, current);
+                requests = requests.filter(r => r.id !== id);
+                localStorage.setItem('teacher_star_requests', JSON.stringify(requests));
+                renderTeacherRequests();
+                renderStudents();
+                renderHomeStudents();
+                showToast("Звезда одобрена", `Ученику ${req.studentName} начислена звезда по запросу старосты`);
+            }
+        }
+
+        function rejectRequest(id) {
+            let requests = JSON.parse(localStorage.getItem('teacher_star_requests') || '[]');
+            requests = requests.filter(r => r.id !== id);
+            localStorage.setItem('teacher_star_requests', JSON.stringify(requests));
+            renderTeacherRequests();
+            alert("Запрос отклонён.");
         }
 
         function renderAttendanceList(filter = '') {
@@ -822,55 +975,25 @@
             students.filter(s => s.name.toLowerCase().includes(filter.toLowerCase())).forEach(student => {
                 const card = document.createElement('div');
                 card.className = "bg-white/50 border border-black/5 p-3.5 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-white/80 transition";
-                const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`);
+                const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`) || (student.name === "Анастасия Евгеньевна" ? "Teacher.jpg" : '');
                 const isTeacher = student.name === "Анастасия Евгеньевна";
                 
                 card.innerHTML = `
                     <div class="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] overflow-hidden font-bold flex items-center justify-center shrink-0">
-                        ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover">` : student.name[0]}
+                        ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80'">` : student.name[0]}
                     </div>
                     <div class="overflow-hidden">
                         <div class="font-semibold text-xs text-[#1d1d1f] truncate">${student.name}</div>
                         <div class="text-[10px] text-amber-700 font-medium mt-0.5">${isTeacher ? 'Руководитель' : 'Звёзды: ' + (localStorage.getItem(`stars_${student.id}`) || '0')}</div>
                     </div>
                 `;
-                card.onclick = () => {
-                    activeModalStudentId = student.id;
-                    document.getElementById('modal-name').textContent = student.name;
-                    document.getElementById('modal-stars-count').textContent = localStorage.getItem(`stars_${student.id}`) || '0';
-                    document.getElementById('modal-bio-text').textContent = localStorage.getItem(`bio_${student.id}`) || localStorage.getItem(`bio_${student.name}`) || "Информация не указана";
-                    
-                    // ПРАВА УПРАВЛЕНИЯ ЗВЁЗДАМИ
-                    if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
-                        document.getElementById('developer-controls').classList.remove('hidden');
-                        
-                        if (currentUserRole === 'developer') {
-                            document.getElementById('dev-panel-title').textContent = "Панель Ультра-Разработчика (Матвей)";
-                            document.getElementById('minus-star-container').classList.remove('hidden'); // Вычитать может ТОЛЬКО Матвей
-                            document.getElementById('reset-class-stars-btn').classList.remove('hidden');
-                        } else if (currentUserRole === 'admin') {
-                            document.getElementById('dev-panel-title').textContent = "Панель Учителя";
-                            document.getElementById('minus-star-container').classList.add('hidden'); // Учитель не вычитает, только Матвей
-                            document.getElementById('reset-class-stars-btn').classList.remove('hidden');
-                        } else {
-                            document.getElementById('dev-panel-title').textContent = "Панель Старосты";
-                            document.getElementById('minus-star-container').classList.add('hidden'); // Старостам запрещено вычитать
-                            document.getElementById('reset-class-stars-btn').classList.add('hidden');
-                        }
-                    } else {
-                        document.getElementById('developer-controls').classList.add('hidden');
-                    }
-
-                    document.getElementById('student-modal').classList.remove('hidden');
-                    document.getElementById('student-modal').classList.add('flex');
-                };
+                card.onclick = () => openStudentModalCard(student.id);
                 grid.appendChild(card);
             });
         }
 
         function modStar(val) {
             if (activeModalStudentId === null) return;
-            // Проверка безопасности: если кто-то попытается вычесть звезды (val < 0), но он не Матвей (developer)
             if (val < 0 && currentUserRole !== 'developer') {
                 alert("Ошибка доступа: вычитать звёзды может только Марков Матвей!");
                 return;
@@ -883,6 +1006,7 @@
             localStorage.setItem(key, current);
             document.getElementById('modal-stars-count').textContent = current;
             renderStudents();
+            renderHomeStudents();
             showToast(val > 0 ? "Звезда начислена" : "Звезда вычитана", "Изменение применено");
         }
 
@@ -899,6 +1023,7 @@
             const me = students.find(s => s.name.toLowerCase() === currentUserName.toLowerCase());
             if (me) document.getElementById('my-wallet-stars').textContent = '0';
             renderStudents();
+            renderHomeStudents();
             alert("Звёзды всего класса обнулены.");
         }
 
