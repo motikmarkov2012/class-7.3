@@ -70,7 +70,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <div id="my-wallet" class="bg-amber-500/10 text-amber-700 text-xs font-semibold px-3 py-2 rounded-2xl border border-amber-500/20 hidden flex items-center gap-1">
-                    <span>Звёзды:</span> <span id="my-wallet-stars">0</span>
+                    <span>⭐</span> <span id="my-wallet-stars">0</span>
                 </div>
                 <button onclick="logout()" class="p-2.5 rounded-2xl bg-black/5 hover:bg-black/10 text-[#1d1d1f] transition text-xs font-semibold" title="Выйти">
                     Выйти
@@ -210,23 +210,19 @@
 
     </div>
 
-    <!-- НАВИГАЦИЯ -->
-    <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-2.5 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
+    <!-- НАВИГАЦИЯ (Без лишних иконки/эмодзи, только чистый текст) -->
+    <nav id="bottom-nav" class="fixed bottom-4 left-4 right-4 max-w-md mx-auto glass-nav border border-white/60 px-4 py-3 rounded-3xl z-40 hidden shadow-xl flex justify-around items-center">
         <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-[#0071e3] transition p-1">
-            <span class="text-base font-bold">🏠</span>
-            <span class="text-[10px] font-semibold mt-0.5">Главная</span>
+            <span class="text-xs font-bold tracking-tight">Главная</span>
         </button>
         <button onclick="switchTab('attendance')" id="nav-attendance" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-base font-bold">📋</span>
-            <span class="text-[10px] font-medium mt-0.5">Ученики</span>
+            <span class="text-xs font-medium tracking-tight">Ученики</span>
         </button>
         <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-base font-bold">🖼️</span>
-            <span class="text-[10px] font-medium mt-0.5">Галерея</span>
+            <span class="text-xs font-medium tracking-tight">Галерея</span>
         </button>
         <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-[#86868b] hover:text-[#1d1d1f] transition p-1">
-            <span class="text-base font-bold">⚙️</span>
-            <span class="text-[10px] font-medium mt-0.5">Настройки</span>
+            <span class="text-xs font-medium tracking-tight">Настройки</span>
         </button>
     </nav>
 
@@ -322,7 +318,7 @@
                     <button onclick="modStar(1)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs transition">+1 Звезда</button>
                     <button onclick="modStar(-1)" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-xl text-xs transition">-1 Звезда</button>
                 </div>
-                <button onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition">🔄 Сбросить звёзды всего класса</button>
+                <button onclick="resetAllClassStars()" class="w-full bg-black/10 hover:bg-black/20 text-[#1d1d1f] font-semibold py-2 rounded-xl text-xs transition">Сбросить звёзды всего класса</button>
             </div>
         </div>
     </div>
@@ -330,6 +326,7 @@
     <!-- Скрипт -->
     <script>
         const students = [
+            { id: 0, name: "Анастасия Евгеньевна", role: "admin" },
             { id: 1, name: "Афанасьев Марк Константинович" },
             { id: 2, name: "Афонин Александр Андреевич" },
             { id: 3, name: "Батовский Иван Игоревич" },
@@ -380,6 +377,11 @@
         ];
 
         window.onload = function() {
+            // Инициализация описания и фото учителя по умолчанию, если не задано
+            if (!localStorage.getItem("bio_Анастасия Евгеньевна")) {
+                localStorage.setItem("bio_Анастасия Евгеньевна", "Любимый классный руководитель 7 «3» класса. Всегда поддержит, поможет разобраться в учебе и направит класс к новым победам!");
+            }
+
             if (currentUserRole && currentUserName) {
                 showMainSite();
             }
@@ -463,7 +465,7 @@
             localStorage.setItem(key, current);
             
             document.getElementById('my-wallet-stars').textContent = current;
-            showToast(`Получено +${amount} звёзд`, reason);
+            showToast(`Получено +${amount} ⭐`, reason);
             renderStudents();
         }
 
@@ -570,7 +572,7 @@
             document.getElementById('bottom-nav').classList.remove('hidden');
             document.getElementById('bottom-nav').classList.add('flex');
 
-            let roleTitle = currentUserRole === 'developer' ? '👑 Ультра-Разработчик (Матвей)' : currentUserRole === 'admin' ? '👩‍🏫 Классный руководитель' : currentUserRole === 'starosta' ? '⭐ Староста класса' : currentUserRole === 'guest' ? '👁️ Гость портала' : '🎓 Ученик класса';
+            let roleTitle = currentUserRole === 'developer' ? 'Ультра-Разработчик (Матвей)' : currentUserRole === 'admin' ? 'Классный руководитель' : currentUserRole === 'starosta' ? 'Староста класса' : currentUserRole === 'guest' ? 'Гость портала' : 'Ученик класса';
             document.getElementById('current-user-name-badge').textContent = currentUserName;
             document.getElementById('current-user-role-badge').textContent = roleTitle;
 
@@ -802,13 +804,15 @@
                 const card = document.createElement('div');
                 card.className = "bg-white/50 border border-black/5 p-3.5 rounded-2xl flex items-center gap-3 cursor-pointer hover:bg-white/80 transition";
                 const customAvatar = localStorage.getItem(`avatar_${student.name}`) || localStorage.getItem(`avatar_${student.id}`);
+                const isTeacher = student.name === "Анастасия Евгеньевна";
+                
                 card.innerHTML = `
                     <div class="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] overflow-hidden font-bold flex items-center justify-center shrink-0">
                         ${customAvatar ? `<img src="${customAvatar}" class="w-full h-full object-cover">` : student.name[0]}
                     </div>
                     <div class="overflow-hidden">
                         <div class="font-semibold text-xs text-[#1d1d1f] truncate">${student.name}</div>
-                        <div class="text-[10px] text-amber-700 font-medium mt-0.5">Звёзды: ${localStorage.getItem(`stars_${student.id}`) || '0'}</div>
+                        <div class="text-[10px] text-amber-700 font-medium mt-0.5">${isTeacher ? 'Руководитель' : 'Звёзды: ' + (localStorage.getItem(`stars_${student.id}`) || '0')}</div>
                     </div>
                 `;
                 card.onclick = () => {
@@ -821,7 +825,7 @@
                     if (currentUserRole === 'developer' || currentUserRole === 'admin' || currentUserRole === 'starosta') {
                         document.getElementById('developer-controls').classList.remove('hidden');
                         if (currentUserRole === 'developer') {
-                            document.getElementById('dev-panel-title').textContent = "👑 Панель Ультра-Разработчика (Матвей)";
+                            document.getElementById('dev-panel-title').textContent = "Панель Ультра-Разработчика (Матвей)";
                         }
                     } else {
                         document.getElementById('developer-controls').classList.add('hidden');
@@ -835,7 +839,7 @@
         }
 
         function modStar(val) {
-            if (!activeModalStudentId) return;
+            if (activeModalStudentId === null) return;
             const key = `stars_${activeModalStudentId}`;
             let current = parseInt(localStorage.getItem(key) || '0');
             current += val;
